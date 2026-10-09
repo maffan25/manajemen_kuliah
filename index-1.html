@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sisita m4</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+:root{--top:#1e9a1e;--side:#229a22;--side2:#2aa72a;--sideact:#1a6f1a;--teal:#1a9d94;--hg:#1d6b2a;--dk:#0b5a0b;--bg:#e6e6e6;--line:#dee2e6}
+*{box-sizing:border-box;margin:0}
+body{font:14px/1.45 Lato,'Segoe UI',Arial,sans-serif;color:#2b3a2e;background:var(--bg)}
+a{color:var(--hg);text-decoration:none}
+button,input,select{font:inherit}
+.btn{display:inline-block;border:1px solid var(--dk);background:var(--dk);color:#fff;border-radius:3px;padding:5px 12px;cursor:pointer;font-weight:700}
+.btn:hover{background:#083f08}
+.btn.g{background:#6c757d;border-color:#6c757d}.btn.s{padding:3px 9px;font-size:12px}.btn.l{background:#fff;color:#444;border-color:#bbb;font-weight:400}.btn.gr{background:#238c3b;border-color:#238c3b}
+/* ===== LOGIN ===== */
+#login{min-height:100vh;display:flex;flex-direction:column;background:#f7fdf8}
+.lhead{background:linear-gradient(135deg,#2a8c3e,#55b66e);padding:22px 12px 26px;text-align:center;height:130px}
+.lhead div{display:inline-block;background:#ffffff1f;border:1px solid #ffffff30;border-radius:14px;padding:12px 40px;color:#fff}
+.lhead h1{font-size:24px;font-weight:700;color:#1d5e2c;text-shadow:0 1px 0 #ffffff55}
+.lhead p{font-size:12px;margin-top:2px}
+.lbody{flex:1;display:grid;grid-template-columns:45% 55%}
+.lleft{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 20px}
+.lleft h2{font-size:30px;color:var(--hg);font-weight:900;margin-bottom:6px}
+.lcard{background:#fff;border-radius:10px;box-shadow:0 4px 18px #0001;padding:26px 22px;width:min(330px,100%)}
+.lcard h3{font-size:19px;color:var(--hg);margin-bottom:12px}
+.lcard label{display:block;font-size:12.5px;color:#356b42;margin:8px 0 3px;text-transform:uppercase}
+.lcard input[type=text],.lcard input[type=password],.lcard input[type=email]{width:100%;padding:7px 8px;border:1px solid #bcd;background:#e8f0fe;border-radius:3px}
+.lcard .chk{display:flex;gap:6px;align-items:center;margin:10px 0 4px;font-size:13px;text-transform:none}
+.lcard .lp{font-weight:700;font-size:12.5px;display:block;margin-bottom:10px;color:var(--hg)}
+.lcard .btn{width:100%;padding:9px;box-shadow:0 3px 6px #0004}
+#forgot{display:none;font-size:13px}#forgot ul{margin:8px 0 12px 18px}
+.lright{background:linear-gradient(#2d8f3f,#47aa5c);padding:30px 28px 0;max-height:calc(100vh - 130px);overflow:auto;position:sticky;top:0}
+.lright h3{color:#fff;font-size:16px;margin-bottom:8px}
+.ev{background:#fff;border-radius:4px;padding:12px 14px;margin-bottom:12px;box-shadow:0 1px 3px #0003;border-left:2px solid #1e7a2e}
+.ev b{display:block;color:var(--hg);font-size:15px}.ev i{display:block;font-size:11px;color:#777;margin-bottom:3px}
+.ev p{font-size:12px}.ev span.t{display:inline-block;background:#e8f5e9;color:#356b42;font-size:11px;padding:2px 8px;margin:6px 6px 0 0;border-radius:2px}
+/* ===== APP ===== */
+#app{display:none}
+.top{position:fixed;left:0;right:0;top:0;height:50px;background:var(--top);display:flex;align-items:center;color:#fff;z-index:20}
+.logo{width:230px;height:50px;background:var(--side);display:flex;align-items:center;gap:8px;padding:0 14px;font:italic 700 17px Lato}
+.logo .c{width:26px;height:26px;border-radius:50%;background:#fff;color:var(--hg);display:grid;place-items:center;font:900 13px Lato;font-style:normal}
+.hb{background:none;border:0;color:#fff;font-size:20px;padding:0 16px;cursor:pointer}
+.tr{margin-left:auto;display:flex;gap:16px;align-items:center;padding-right:14px;font-size:13px}
+.side{position:fixed;top:50px;bottom:0;left:0;width:230px;background:var(--side);color:#e6f5e6;overflow-y:auto;z-index:15;transition:transform .2s}
+.prof{display:flex;gap:10px;align-items:center;padding:14px}
+.av{width:38px;height:38px;border-radius:50%;background:#dfe6e0;display:grid;place-items:center;color:#8a948c;font-size:22px;flex:none}
+.prof b{display:block;color:#fff;font-weight:400;font-size:14px}.prof u{font-size:12px}
+.menu{list-style:none;padding:0}
+.menu>li>a{display:flex;align-items:center;gap:10px;padding:10px 14px;color:#e6f5e6;border-left:3px solid transparent;cursor:pointer;font-size:13.5px}
+.menu>li>a .fa:first-child{width:16px;text-align:center}
+.menu>li>a .ch{margin-left:auto;font-size:11px;transition:.15s}
+.menu>li.open>a .ch{transform:rotate(90deg)}
+.menu>li>a:hover{background:var(--sideact)}
+.menu>li.act>a{background:var(--sideact);border-left-color:#7fd67f;color:#fff}
+.sub{list-style:none;padding:0;display:none;background:var(--side2)}
+.menu>li.open>.sub{display:block}
+.sub a{display:flex;gap:8px;align-items:center;padding:6px 14px 6px 28px;color:#eaf8ea;font-size:12.5px;cursor:pointer}
+.sub a:hover{color:#fff}.sub li.act a{background:var(--sideact);color:#fff}
+.wrap{margin-left:230px;padding-top:50px;min-height:100vh;transition:margin .2s}
+.ph{background:#fff;padding:10px 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px}
+.ph h1{font-size:20px;font-weight:400;color:var(--hg)}.ph h1 small{display:block;font-size:12px;font-style:italic;color:#2f6a3d;margin-top:-2px}
+.bc{font-size:12px;color:#666}.bc a{color:var(--hg)}
+.ct{padding:22px 26px 40px;max-width:100%}
+.box{background:#fff;border-radius:3px;box-shadow:0 1px 3px #0003;padding:18px 16px;margin-bottom:22px}
+.box h2{font-size:18px;color:var(--hg);margin-bottom:12px}
+.box h2 b{font-weight:900}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:22px 28px;margin-bottom:22px}
+.sb{display:flex;background:#fff;box-shadow:0 1px 3px #0003;border-radius:3px;min-height:66px}
+.sb .ico{width:70px;background:var(--teal);color:#fff;display:grid;place-items:center;font-size:28px}
+.sb div.t{padding:10px 14px}.sb .t b{display:block;font-weight:400;font-size:15px}.sb .t u{font-weight:700;font-size:14px;text-decoration:underline dotted}
+.cl{border:1px solid var(--line);border-radius:3px;margin-bottom:14px}
+.cl div{padding:9px 14px;border-bottom:1px solid var(--line);font-size:13px}.cl div:last-child{border:0}
+.cl .fa-check-square{color:#1d6b2a;margin-right:6px}.cl .fa-window-close{color:#333;margin-right:6px}
+.al{padding:12px 16px;border-radius:3px;margin-bottom:14px;font-size:13px}
+.al.r{background:#f8d7da;color:#842029;border:1px solid #f5c2c7}.al.i{background:#d1ecf1;color:#0c5460;border:1px solid #bee5eb}
+hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+.lbl{display:inline-block;background:var(--teal);color:#fff;font-size:12px;padding:1px 6px;border-radius:3px;margin-right:6px}
+.big{font-size:21px;font-weight:700;color:var(--hg);margin:3px 0}
+.cp{display:flex;gap:2px;align-items:center;margin-top:4px}.cp input{border:1px solid #aaa;padding:3px 6px;width:170px;font-size:13px}
+.kg{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.kc{border:1px solid var(--line);border-radius:3px;padding:14px;background:#fff;display:flex;flex-direction:column}
+.kc h4{color:var(--hg);font-size:15px}.kc .nm{font-size:12px;color:#555;margin:3px 0 4px;text-transform:uppercase}
+.kc ul{padding-left:18px;font-size:12px;line-height:1.5;flex:1}.kc li b{color:var(--hg)}
+.kc .bt{margin-top:12px;display:flex;align-items:center;gap:8px;color:var(--hg);font-weight:700;font-size:13px}
+.sw{position:relative;width:34px;height:18px;flex:none;display:inline-block}
+.sw input{appearance:none;width:34px;height:18px;border-radius:9px;background:#cfd4cf;margin:0;cursor:pointer;transition:.15s}
+.sw input::after{content:"";position:absolute;left:2px;top:2px;width:14px;height:14px;background:#fff;border-radius:50%;transition:.15s}
+.sw input:checked{background:#198754}.sw input:checked::after{left:18px}
+.sw input:disabled{opacity:.55;cursor:default}
+.tt{text-align:center;color:var(--hg);font-size:20px;border-bottom:1px solid #ccc;padding-bottom:4px}
+.tt+p{text-align:center;font-size:12px;border-bottom:1px solid #ddd;padding:2px;margin-bottom:8px}
+.mode{display:flex;justify-content:space-between;align-items:center;font-size:10px;margin:6px 0}
+.mode b{font-size:13px;color:#9b1c1c;display:flex;align-items:center;gap:6px}.mode b span{color:var(--hg)}
+.view{text-align:right;margin:8px 0 12px;font-size:12px}
+.view .btn{border-radius:0;padding:2px 9px;font-size:12px;background:#fff;color:var(--hg);border-color:#9bc}
+.view .btn.on{background:var(--dk);color:#fff}
+.tw{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:8px 8px;border-bottom:2px solid #d0d5d0;white-space:nowrap;color:#333}
+td{padding:8px;border-bottom:1px solid #e3e6e3;vertical-align:top}
+.stripe tbody tr:nth-child(odd){background:#f2f2f2}
+.bd{background:#198754;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:3px}
+code{color:#d63384;font-size:11px;font-family:Consolas,monospace;display:block;word-break:break-all}
+.kv{display:grid;grid-template-columns:90px 14px 1fr;gap:3px 0;border:1px solid var(--line);padding:10px 14px;font-size:12.5px;margin-bottom:12px;color:#555}
+.sbx{font-size:12px;display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px}.sbx select,.sbx input{padding:3px 6px;border:1px solid #ccc;background:#fff;font-size:12px;border-radius:3px}
+.dt{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin:8px 0;flex-wrap:wrap;gap:6px}
+.dt .grp .btn{border-radius:0;font-size:12px;padding:4px 10px;background:#555;border-color:#666;font-weight:400}
+.dt table th{background:#e9f4ea;color:var(--hg)}
+.cal{border:1px solid #ddd}
+.ct2{display:flex;justify-content:space-between;align-items:center;margin:8px 0;flex-wrap:wrap;gap:6px}
+.ct2 h3{font-size:19px;letter-spacing:.2px;color:#2b3a2e;text-transform:uppercase;font-weight:700}
+.ct2 .btn{background:#238c3b;border-color:#238c3b;padding:5px 12px}
+.ct2 .btn.g{background:#6c757d;border-color:#6c757d}.ct2 .btn.d{background:#1e2b36;border-color:#1e2b36}
+.cg{display:grid;grid-template-columns:repeat(7,1fr);border-top:1px solid #ddd;border-left:1px solid #ddd}
+.cg>div{border-right:1px solid #ddd;border-bottom:1px solid #ddd;min-height:54px;padding:2px 5px;font-size:12px;text-align:right;color:#1d9a2f}
+.cg .h{min-height:0;text-align:center;font-weight:700;padding:5px;color:#222}
+.cg .o{color:#b7dcbd}.cg .td{background:#fdf6d8}
+.cg .e{display:block;text-align:left;background:#2e8b3e;color:#fff;border-radius:3px;padding:0 4px;font-size:10px;margin-top:2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+@media(max-width:820px){
+ .side{transform:translateX(-100%)}.wrap{margin-left:0}.logo{width:auto}
+ body.sbo .side{transform:none}
+ .kg{grid-template-columns:1fr 1fr}.sg{gap:14px}
+ .lbody{grid-template-columns:1fr}.lright{position:static;max-height:420px}
+}
+@media(max-width:520px){.kg{grid-template-columns:1fr}.sg{grid-template-columns:1fr}.logo span.tx{display:none}.ct{padding:14px 10px}}
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<section id="login">
+ <header class="lhead"><div><h1>Selamat Datang di Portal Digital STDIIS</h1><p>Portal terpusat untuk mengakses layanan akademik dan administrasi kampus</p></div></header>
+ <div class="lbody">
+  <div class="lleft"><h2>sisita</h2>
+   <div class="lcard">
+    <form id="lf"><h3><i class="fa fa-user"></i> SIGN IN</h3>
+     <label for="u">Username</label><input id="u" type="text" autocomplete="username" required>
+     <label for="p">Password</label><input id="p" type="password" autocomplete="current-password" required>
+     <label class="chk"><input type="checkbox"> Tetap login</label>
+     <a href="#" class="lp" id="fg">Lupa Password?</a>
+     <button class="btn" type="submit"><i class="fa fa-sign-in"></i> SIGN IN</button></form>
+    <div id="forgot"><h3>Lupa Password?</h3><label for="em">Email</label><input id="em" type="email"><br><br>
+     <button class="btn" type="button">RESET</button>
+     <p style="margin-top:12px">Untuk pengguna yang lupa password atau usernamenya:</p>
+     <ul><li>Mahasiswa silahkan datang ke prodi masing-masing</li><li>Dosen / admin silahkan datang ke bagian TI</li></ul>
+     <a href="#" id="bk">Back to Login</a></div>
+   </div>
+   <p style="font-size:11px;color:#777;margin-top:14px;max-width:330px;text-align:center">Prototipe: data fiktif, form ini tidak mengirim apa pun ke server.</p>
+  </div>
+  <div class="lright"><h3><i class="fa fa-calendar"></i> Kalender Akademik</h3><div id="lev"></div></div>
+ </div>
+</section>
+
+<!-- ===== APP ===== -->
+<div id="app">
+ <header class="top">
+  <div class="logo"><span class="c">s</span><span class="tx">sisita m4</span></div>
+  <button class="hb" id="hb" aria-label="Menu"><i class="fa fa-bars"></i></button>
+  <div class="tr"><span><i class="fa fa-calendar-check-o"></i> 2026/2027 - 1</span><i class="fa fa-info-circle"></i><a href="#" id="out" style="color:#fff" title="Keluar"><i class="fa fa-user"></i></a></div>
+ </header>
+ <aside class="side" id="side">
+  <div class="prof"><div class="av"><i class="fa fa-user"></i></div><div><b>2024.00.0000</b><u>mahasiswa</u></div></div>
+  <ul class="menu" id="menu"></ul>
+ </aside>
+ <div class="wrap"><div class="ph" id="ph"></div><main class="ct" id="ct"></main></div>
+</div>
+
+<script>
+const $=(s,r=document)=>r.querySelector(s);
+const BLN=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+const TODAY=new Date(2026,9,9);
+
+/* ===== DATA FIKTIF (ganti dengan data dari API Sisita) ===== */
+const LEV=[["Yudisium","YUDISIUM","30 Jan 2025","-","TA 2025","Sem. Ganjil"],["Daftar Ulang & Pembayaran UKT Mahasiswa Lama","DU_MHS_LAMA","22 Jun 2025","02 Sep 2025","TA 2025","Sem. Ganjil"],["PKKMB","PKKMB","24 Aug 2025","28 Sep 2025","TA 2025","Sem. Ganjil"],["Pengisian Kartu Rencana Studi","KRS","01 Sep 2025","04 Sep 2025","TA 2025","Sem. Ganjil"],["Koreksi KRS/Jadwal","KRS_KOREKSI","05 Sep 2025","06 Sep 2025","TA 2025","Sem. Ganjil"],["Awal Kuliah & Studium Generale","AWAL_KULIAH","08 Sep 2025","-","TA 2025","Sem. Ganjil"],["Batas Akhir Pengajuan Cuti","CUTI_BATAS_AJUAN","11 Sep 2025","-","TA 2025","Sem. Ganjil"],["Ujian Tengah Semester","UTS","03 Nov 2025","-","TA 2025","Sem. Ganjil"],["Pekan Tenang","PEKAN_TENANG","21 Dec 2025","24 Dec 2025","TA 2025","Sem. Ganjil"],["Daftar Ulang & Pembayaran UKT","DU_MHS_GENAP","22 Dec 2025","05 Feb 2026","TA 2025","Sem. Genap"]];
+const MK=[
+ ["AS21505","Administrasi Perkawinan di Indonesia",2,"Selasa 08:55","Ust. Ahmad Fauzi, S.H",  "A5LA",55,43,"Online"],
+ ["AS21505","Administrasi Perkawinan di Indonesia",2,"Selasa 08:55","Ust. Ahmad Fauzi, S.H",  "A5LB",55,46,"Online"],
+ ["AS21505","Administrasi Perkawinan di Indonesia",2,"Selasa 10:50","Ust. Hasan Rahman, M.H.I","A5LC",45,21,"Aula 2"],
+ ["AS21505","Administrasi Perkawinan di Indonesia",2,"Selasa 10:50","Ust. Hasan Rahman, M.H.I","A5LD",45,39,"Aula 2"],
+ ["AS21507","Dilalat Al-Alfadzh",2,"Jum'at 07:00","Dr. Irfan Mubarak, M.H","A5LB",45,45,"L203"],
+ ["AS21510","Etika Profesi Hukum",2,"Senin 07:00","Dr. Ali Hakim, M.Hum","A5LE",35,32,"Aula 1"],
+ ["AS21705","Fikih Kontemporer",2,"Rabu 07:00","Dr. Anwar Zaki, M.A.","A7LA",45,45,"L102"],
+ ["AS21706","Kritik Dalil",2,"Selasa 08:55","Dr. Yusuf Salim, M.A.","A7LC",45,30,"Online"],
+ ["NA32110","Hukum Acara Peradilan Agama",3,"Rabu 10:50","Dr. Ali Hakim, M.Hum","A5LC",45,28,"Aula 1"],
+ ["AS21509","Manajemen Konflik",2,"Rabu 08:55","Ust. Dewi Lestari, M.Pd","A5LB",40,12,"L212"]
+];
+const key=m=>m[0]+"|"+m[5];
+const diambil=new Set(["AS21505|A5LC","AS21507|A5LB","AS21510|A5LE","AS21705|A7LA","NA32110|A5LC"]);
+const sel=new Set(diambil);
+const HDR=[["09-09-2026","-","-","Hadir"],["16-09-2026","-","Definisi Nawazil, Syarat Nawazil, Pemakaian Diksi Nawazil dalam Literatur Klasik","Hadir"],["23-09-2026","-","Ijtihad dalam Nawazil","Hadir"],["30-09-2026","Pengantar","Tahapan Ijtihad dalam Nawazil, Ijtihad jama'i","Hadir"],["07-10-2026","-","-","Hadir"]];
+const SEM=[
+ {t:"2024-1",sks:19,ip:3.80,k:[["NA32101","PANCASILA",2,96,"A+"],["NA32102","KEWARGANEGARAAN",2,88,"A"],["NA32107","BAHASA ARAB",3,95,"A+"],["NA32112","USHUL FIKIH",3,88,"A"],["ST32101","HIFZHUL QUR'AN 1",2,100,"A+"],["AS21108","FIKIH IBADAH 1",3,97,"A+"]]},
+ {t:"2024-2",sks:19,ip:3.90,k:[["ST32102","HIFZHUL QUR'AN 2",2,100,"A+"],["AS21207","FIKIH IBADAH 2",3,100,"A+"],["AS21209","HADIS 1",2,100,"A+"],["NA32105","STUDI AL QUR'AN",2,93,"A+"]]},
+ {t:"2025-1",sks:24,ip:3.85,k:[["AS21305","USHUL FIKIH 1",2,90,"A"],["AS21310","HADIS 2",2,97,"A+"],["NA32104","PENGANTAR STUDI ISLAM",2,100,"A+"]]},
+ {t:"2025-2",sks:24,ip:3.92,k:[["AS21410","FIKIH MUAMALAH",3,98,"A+"],["AS21412","USHUL FIKIH 2",2,90,"A"]]},
+ {t:"2026-1",sks:23,ip:0,k:[]}
+];
+const HURUF={"A+":4,"A":3.75};
+const EVT=[
+ ["Yudisium","YUDISIUM","2025","Genap","2026-08-28 11:00","","" ],["Batas Akhir Pengajuan Yudisium","YUDISIUM_BATAS_AJUAN","2025","Genap","2026-08-18 18:00","",""],
+ ["Batas Akhir Input Nilai UAS","BATAS_INPUT_NILAI","2025","Genap","2026-07-25 18:00","",""],["Libur Tahunan dan SP","LIBUR_TAHUNAN_SP","2025","Genap","2026-07-12 18:00","2026-08-28 18:00",""],
+ ["Ujian Akhir Semester","UAS","2025","Genap","2026-06-29 04:00","2026-07-11 18:00",""],["Pekan Tenang","PEKAN_TENANG","2025","Genap","2026-06-22 18:00","2026-06-27 18:00",""],
+ ["Idul Adha","IDUL_ADHA","2025","Genap","2026-05-24 11:00","2026-05-29 11:00","Pekan Kegiatan Idul Adha"],["Ujian Tengah Semester","UTS","2025","Genap","2026-04-27 00:00","",""],
+ ["Libur Ramadhan & Idul Fitri","LIBUR_RAMADHAN_IF","2025","Genap","2026-03-08 18:00","2026-03-27 18:00",""],["Wisuda","WISUDA","2025","Genap","2026-02-13 18:00","",""],
+ ["Batas Akhir Pengajuan Cuti","CUTI_BATAS_AJUAN","2025","Genap","2026-02-12 00:07","",""],["Awal Kuliah & Studium Generale","AWAL_KULIAH","2025","Genap","2026-02-09 00:07","",""],
+ ["Koreksi KRS/Jadwal","KRS_KOREKSI","2026","Ganjil","2026-10-14 08:00","",""],["Ujian Tengah Semester","UTS","2026","Ganjil","2026-11-02 08:00","",""]
+];
+const fd=s=>{if(!s)return"-";const[d,t]=s.split(" "),[y,m,dd]=d.split("-");return`${dd}-${m}-${y} ${t}`};
+
+/* ===== LOGIN ===== */
+$("#lev").innerHTML=LEV.map(e=>`<div class="ev"><b>${e[0]}</b><i>(${e[1]})</i><p><i class="fa fa-calendar"></i> <b style="display:inline;font-size:12px;color:#333">Mulai:</b> ${e[2]}<br><i class="fa fa-calendar-o"></i> <b style="display:inline;font-size:12px;color:#333">Selesai:</b> ${e[3]}</p><span class="t">${e[4]}</span><span class="t">${e[5]}</span></div>`).join("");
+$("#lf").onsubmit=e=>{e.preventDefault();location.hash="#/dashboard"};
+$("#fg").onclick=e=>{e.preventDefault();$("#lf").style.display="none";$("#forgot").style.display="block"};
+$("#bk").onclick=e=>{e.preventDefault();$("#lf").style.display="";$("#forgot").style.display="none"};
+$("#out").onclick=e=>{e.preventDefault();location.hash="#/login"};
+$("#hb").onclick=()=>document.body.classList.toggle("sbo");
+
+/* ===== MENU ===== */
+const NAV=[
+ ["dashboard","Dashboard","fa-dashboard"],
+ ["Profil Mahasiswa","fa-user",[["profil","Biodata"]]],
+ ["Perkuliahan","fa-laptop",[["dosen-wali","Dosen Wali","fa-book"],["krs","Isi KRS","fa-check-square-o"],["diambil","Mk Diambil","fa-check-square-o"],["kehadiran","Kehadiran Kuliah","fa-calendar-check-o"]]],
+ ["Prestasi Akademik","fa-area-chart",[["ringkasan","Ringkasan","fa-bar-chart"],["nilai","Nilai Semester 21","fa-line-chart"],["transkrip","Transkrip Sementara 21","fa-pie-chart"],["cetak","Cetak 21","fa-print"]]],
+ ["Informasi Keluarga","fa-users",[["keluarga","Data Keluarga"]]],
+ ["Administrasi","fa-sitemap",[["adm","Layanan Administrasi"]]],
+ ["Kalender Akademik","fa-calendar",[["event","Daftar Event","fa-list"],["kalender","Tampilan Kalender","fa-calendar"]]],
+ ["Informasi Umum","fa-info-circle",[["info","Informasi"]]],
+ ["Gabung Grup Telegram","fa-telegram",[["telegram","Grup Telegram"]]],
+ ["pmb","PMB Internal","fa-dashboard"]
+];
+function buildMenu(cur){
+ $("#menu").innerHTML=NAV.map(n=>{
+  if(!n[2]) return `<li class="${cur===n[0]?"act":""}"><a href="#/${n[0]}"><i class="fa ${n[2]||n[1]}"></i> ${n[1]}</a></li>`;
+  const open=n[2].some(c=>c[0]===cur);
+  return `<li class="${open?"open act-p":""}"><a data-t><i class="fa ${n[1]}"></i> ${n[0]}<i class="fa fa-angle-right ch"></i></a><ul class="sub">${n[2].map(c=>`<li class="${c[0]===cur?"act":""}"><a href="#/${c[0]}">${c[2]?`<i class="fa ${c[2]}"></i>`:""} ${c[1]}</a></li>`).join("")}</ul></li>`}).join("");
+ document.querySelectorAll("[data-t]").forEach(a=>a.onclick=()=>a.parentElement.classList.toggle("open"));
+ document.querySelectorAll("#menu li.open").forEach(l=>l.classList.add("act"));
+}
+
+/* ===== HALAMAN ===== */
+let simulasi=false,tampil="kartu",hadirDetail=null,semTab=null,kalBulan=new Date(2026,9,1);
+const kartu=(m,mode)=>{const k=key(m),on=sel.has(k),sisa=m[6]-m[7];
+ return `<div class="kc"><h4>${m[2]} SKS - ${m[0]}</h4><div class="nm">${m[1]}</div><ul><li>Waktu: <b>${m[3]}</b></li><li>Dosen: <b>${m[4]}</b></li><li>Prodi: <b>HKI pa</b></li><li>Kelas: <b>${m[5]}</b></li><li>Kapasitas: <b>${m[6]} mhs</b></li><li>Diambil: <b>${m[7]} mhs</b></li><li>Tersedia: <b>${sisa} mhs</b></li>${mode==="d"?`<li>Ruang: <b>${m[8]}</b></li><li>Status: <b>Disetujui pada: 2026-09-03 15:59:18</b></li>`:`<li>Status: <b>${on?"Sudah diambil":sisa?"Tersedia":"Penuh"}</b></li><li>Ruang: <b>${m[8]}</b></li>`}</ul>
+ ${mode==="d"?`<button class="btn g" style="margin-top:12px" data-batal="${k}">Batalkan</button>`:`<div class="bt"><span class="sw"><input type="checkbox" data-take="${k}" ${on?"checked":""} ${!simulasi||(!on&&!sisa)?"disabled":""}></span>Ambil</div>`}</div>`};
+const krsAlert=`<div class="al r"><b>Bukan waktu KRS!</b><br>1- Tanggal sekarang: 2026-10-09 21:40:17.<br>2- Saat ini tidak berada dalam jadwal KRS.<br>3- Mahasiswa tidak diperkenankan melakukan KRS di luar jadwal yang telah ditentukan.<br>4- Jadwal KRS periode pertama: 2026-08-31 08:00:00.<br>5- Jadwal KRS periode kedua: 2026-09-01 08:00:00.<br>6- Jadwal KRS berakhir pada: 2026-09-04 14:30:00.</div>`;
+
+const PAGES={
+ dashboard:()=>({t:"Dashboard",i:"fa-user",bc:["Dashboard Mahasiswa","Dashboard"],h:`
+  <div class="sg"><div class="sb"><div class="ico"><i class="fa fa-book"></i></div><div class="t"><b>AKTIF</b><u>Status kini</u></div></div><div class="sb"><div class="ico"><i class="fa fa-pencil-square-o"></i></div><div class="t"><b>3.87</b><u>IP Kumulatif</u></div></div><div class="sb"><div class="ico"><i class="fa fa-check-square-o"></i></div><div class="t"><b>109</b><u>SKS Kumulatif</u></div></div><div class="sb"><div class="ico"><i class="fa fa-check-square"></i></div><div class="t"><b>23</b><u>SKS Kini</u></div></div></div>
+  <div class="box"><h2><b>Ceklist Semester</b></h2><div class="cl"><div><i class="fa fa-check-square"></i>Keuangan: Anda sudah lunas daftar ulang semester ini</div><div><i class="fa fa-check-square"></i>Keuangan: Anda sudah aktif di semester ini</div><div><i class="fa fa-check-square"></i>Prodi: Anda diperkenankan melakukan KRS</div><div><i class="fa fa-window-close"></i>Keuangan: Anda tidak diperkenankan ikut UAS</div></div><hr><div class="al r">Anda tidak diperkenankan ikut UAS Anda tercatat belum melunasi seluruh biaya perkuliahan di semester ini</div><hr></div>
+  <div class="box"><h2><b>Informasi Nomor Rekening</b></h2><span class="lbl">Bank</span><span class="big">Bank Contoh</span><br><span class="lbl">an.</span><span class="big">Mahasiswa Contoh</span><br><span class="lbl">No. VA</span><span class="big">9888 0000 0000 0000</span><div class="cp"><button class="btn s" data-cp="9888000000000000"><i class="fa fa-clone"></i> Salin</button><input value="9888000000000000" readonly></div></div>
+  <div class="box"><h2><b>Informasi akun e-learning</b></h2><span class="lbl">username</span><span class="big">2024.00.0000</span><div class="cp"><button class="btn s" data-cp="2024.00.0000"><i class="fa fa-clone"></i> Salin username</button><input value="2024.00.0000" readonly></div><hr><span class="lbl">password</span><span class="big">••••••••</span><div class="cp"><button class="btn s" data-cp="contoh1234"><i class="fa fa-clone"></i> Salin password</button><input value="••••••••" readonly></div></div>
+  <div class="box"><h2><b>Informasi Asrama</b></h2><table style="width:auto"><tr><td style="border:0;padding:2px 30px 2px 0">Asrama</td><td style="border:0;padding:2px">: Tidak tinggal di asrama</td></tr><tr><td style="border:0;padding:2px 30px 2px 0">Tgl Kadaluarsa</td><td style="border:0;padding:2px">: -</td></tr><tr><td style="border:0;padding:2px 30px 2px 0">Bea Asrama per semester<br>TA 2026/2027 - Gasal</td><td style="border:0;padding:2px">: -</td></tr></table></div>`}),
+
+ krs:()=>({t:"Isi KRS",i:"fa-file-o",bc:["Perkuliahan","Isi KRS"],h:`<div class="box"><h2><b>KRS Mahasiswa</b></h2>${krsAlert}
+  <div class="tt">Daftar MK yang Ditawarkan</div><p>Pada periode IPS acuan (2025 - 2) IPS Anda: 3.92, Jatah maksimal SKS: 24</p>
+  <div class="mode"><span>Mode operasi saat ini</span><b>Simulasi <span class="sw"><input type="checkbox" id="sim" ${simulasi?"checked":""}></span> <span>KRS</span></b></div>
+  <div class="view">Tampilan: <button class="btn ${tampil==="tabel"?"on":""}" data-tp="tabel">Tabel</button><button class="btn ${tampil==="kartu"?"on":""}" data-tp="kartu">Kartu</button></div>
+  ${tampil==="kartu"?`<div class="kg">${MK.map(m=>kartu(m)).join("")}</div>`:`<div class="tw"><table class="stripe"><thead><tr><th>Kode</th><th>Mata Kuliah</th><th>SKS</th><th>Waktu</th><th>Dosen</th><th>Kelas</th><th>Tersedia</th><th>Ambil</th></tr></thead><tbody>${MK.map(m=>{const k=key(m),on=sel.has(k),s=m[6]-m[7];return`<tr><td>${m[0]}</td><td>${m[1]}</td><td>${m[2]}</td><td>${m[3]}</td><td>${m[4]}</td><td>${m[5]}</td><td>${s}</td><td><span class="sw"><input type="checkbox" data-take="${k}" ${on?"checked":""} ${!simulasi||(!on&&!s)?"disabled":""}></span></td></tr>`}).join("")}</tbody></table></div>`}</div>`}),
+
+ diambil:()=>({t:"Isi KRS",i:"fa-file-o",bc:["Perkuliahan","Mk Diambil"],h:`<div class="box"><h2><b>KRS Mahasiswa</b></h2>${krsAlert}<div class="tt">Daftar yang MK yang Sudah Diambil</div><p>Pada periode IPS acuan (2025 - 2) IPS Anda: 3.92, Jatah maksimal SKS: 24</p>
+  <div class="kg" style="margin-top:14px">${MK.filter(m=>diambil.has(key(m))).map(m=>kartu(m,"d")).join("")}</div></div>`}),
+
+ kehadiran:()=>{
+  const info=`<div class="al i">Tahun akademik <b>2026/2027</b>, Gasal.</div>`;
+  if(hadirDetail){const m=MK.find(x=>key(x)===hadirDetail);
+   return {t:"Kehadiran Kuliah",sub:"Daftar jurnal dan status kehadiran mahasiswa",i:"fa-calendar-check-o",bc:["Perkuliahan","Kehadiran Kuliah"],h:`<div class="box"><h2><b>Daftar Mata Kuliah dan Kehadiran</b></h2>${info}<hr><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><h2 style="margin:0;font-size:16px">Jurnal dan Kehadiran</h2><button class="btn g s" id="kembali"><i class="fa fa-arrow-left"></i> Kembali ke Daftar Mata Kuliah</button></div>
+    <div class="kv"><span>Mata Kuliah</span><span>:</span><span>${m[0]} - ${m[1].toUpperCase()}</span><span>Kelas</span><span>:</span><span>${m[5]}</span><span>Dosen</span><span>:</span><span>${m[4]}</span><span>Jadwal</span><span>:</span><span>${m[3]} - ${m[8]}</span></div>
+    <div class="tw"><table class="stripe"><thead><tr><th>#</th><th>Tanggal</th><th>Pokok Bahasan</th><th>Sub Pokok Bahasan</th><th>Status Kehadiran</th></tr></thead><tbody>${HDR.map((r,i)=>`<tr><td>${i+1}</td><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td><td><span class="bd">${r[3]}</span></td></tr>`).join("")}</tbody></table></div>
+    <p style="margin-top:12px;font-size:12px"><b>Ringkasan:</b> Hadir 5, Izin 0, Sakit 0, Alpa 0, Belum diisi 0.</p></div>`}}
+  return {t:"Kehadiran Kuliah",sub:"Daftar jurnal dan status kehadiran mahasiswa",i:"fa-calendar-check-o",bc:["Perkuliahan","Kehadiran Kuliah"],h:`<div class="box"><h2><b>Daftar Mata Kuliah dan Kehadiran</b></h2>${info}<div class="tw"><table class="stripe"><thead><tr><th>#</th><th>Mata Kuliah</th><th>Kelas</th><th>Dosen</th><th>Jadwal</th><th>Aksi</th></tr></thead><tbody>${MK.filter(m=>diambil.has(key(m))).map((m,i)=>`<tr><td>${i+1}</td><td><b style="color:var(--hg)">${m[0]}</b><br><span style="color:var(--hg)">${m[1].toUpperCase()}</span><br><small style="color:#888">${m[2]} SKS</small></td><td>${m[5]}</td><td>${m[4]}</td><td>${m[3].replace(" "," - ")}:00 - ${m[8]}</td><td><button class="btn s" data-hd="${key(m)}"><i class="fa fa-list"></i> Lihat Kehadiran</button></td></tr>`).join("")}</tbody></table></div></div>`}},
+
+ ringkasan:()=>({t:"Dashboard",i:"fa-user",bc:["Dashboard Mahasiswa","Dashboard"],h:`<div class="box"><h2><b>Ringkasan Hasil Studi</b></h2>${(()=>{let tot=0,pts=0;return SEM.map(s=>{const sk=s.k.reduce((a,x)=>a+x[2],0);tot+=s.sks;return`<p style="font-weight:700;font-size:12px;margin-top:10px">Data untuk tahun akademik ${s.t}</p><table class="stripe"><thead><tr><th>Informasi</th><th>Nilai (satuan)</th></tr></thead><tbody><tr><td>SKS Ditempuh</td><td>${s.sks} sks</td></tr><tr><td>IP Semester</td><td>${s.ip?s.ip.toFixed(2):"0.00"}</td></tr><tr><td>Total SKS Ditempuh</td><td>${tot} sks</td></tr><tr><td>IP Kumulatif</td><td>3.87</td></tr></tbody></table>`}).join("")})()}</div>`}),
+
+ nilai:()=>({t:"Dashboard",i:"fa-user",bc:["Dashboard Mahasiswa","Dashboard"],h:`<div class="box"><h2><b>Hasil Studi Per Semester</b></h2>${SEM.filter(s=>s.k.length).map((s,si)=>{let base=15098+si*400,bot=0,sks=0;
+  const rows=s.k.map((r,i)=>{const n=HURUF[r[4]],b=r[2]*n;bot+=b;sks+=r[2];return`<tr><td>${i+1}</td><td>${base+i*6}</td><td>A${si+1}LF</td><td>${r[0]}<br>${r[1]}</td><td>${r[2]}</td><td>${r[3]} | ${n.toFixed(2)}</td><td>${r[4]}</td><td>${b}</td></tr>`}).join("");
+  return`<p style="font-weight:700;font-size:12px;margin-top:10px">Data untuk tahun akademik ${s.t}</p><div class="tw"><table class="stripe"><thead><tr><th>No.</th><th>ID Kls</th><th>Kelas</th><th>Kode/Nama MK</th><th>Sks</th><th>Nilai</th><th>Huruf</th><th>SKS x N</th></tr></thead><tbody>${rows}</tbody></table></div><p style="font-size:12px;margin:10px 0">Jumlah SKS: ${sks}; IP Semester=${(bot/sks).toFixed(2)}<br>Jumlah Bobot: ${bot}</p><hr>`}).join("")}</div>`}),
+
+ event:()=>({t:"Daftar Event",sub:"Daftar Event Kalender Akademik",i:"fa-calendar",bc:["Kalender Akademik","Daftar Event"],h:`<div class="box"><h2><b>Daftar Event Kalender Akademik</b></h2>
+  <div class="sbx"><select><option>-- Semua TA --</option></select><select><option>-- Semua Semester --</option></select><select style="min-width:220px"><option>-- Semua Jenis --</option></select><button class="btn s g">Filter</button><button class="btn s l">Reset</button></div><a class="btn s gr" href="#/kalender"><i class="fa fa-calendar"></i> Tampilan Kalender</a>
+  <div class="dt"><span>Menampilkan <select><option>25</option><option>50</option></select> baris per halaman</span></div><div class="dt"><span class="grp"><button class="btn">Copy</button><button class="btn">Excel</button><button class="btn">CSV</button><button class="btn">PDF</button><button class="btn">Print</button></span><span>Mencari: <input id="q" style="border:1px solid #ccc;padding:3px 6px"></span></div>
+  <div class="dt tw"><table class="stripe" id="et"><thead><tr><th>#</th><th>Jenis Kegiatan</th><th>Tahun Akademik</th><th>Semester</th><th>Tanggal Mulai</th><th>Tanggal Selesai</th><th>Catatan</th></tr></thead><tbody>${EVT.map((e,i)=>`<tr><td>${i+1}</td><td><b style="color:var(--hg)">${e[0]}</b><code>${e[1]}</code></td><td>${e[2]}</td><td>${e[3]}</td><td>${fd(e[4])}</td><td>${fd(e[5])}</td><td>${e[6]}</td></tr>`).join("")}</tbody></table></div></div>`}),
+
+ kalender:()=>{
+  const y=kalBulan.getFullYear(),mo=kalBulan.getMonth(),first=new Date(y,mo,1),start=new Date(y,mo,1-first.getDay());
+  const days=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];let cells=days.map(d=>`<div class="h">${d}</div>`).join("");
+  for(let i=0;i<42;i++){const d=new Date(start);d.setDate(start.getDate()+i);const iso=`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+   const ev=EVT.filter(e=>e[4].startsWith(iso)).map(e=>`<span class="e" title="${e[0]}">${e[0]}</span>`).join("");
+   cells+=`<div class="${d.getMonth()!==mo?"o":""} ${d.toDateString()===TODAY.toDateString()?"td":""}">${d.getDate()}${ev}</div>`}
+  const title=kalBulan.toLocaleString("en-US",{month:"long",year:"numeric"});
+  return {t:"Tampilan Kalender",sub:"Tampilan Kalender Akademik",i:"fa-calendar",bc:["Kalender Akademik","Tampilan Kalender"],h:`<div class="box"><h2><b>Kalender Akademik</b></h2><div class="sbx"><select><option>-- Semua TA --</option></select><select><option>-- Semua Sem --</option></select><select style="flex:1"><option>-- Semua Jenis --</option></select><a class="btn s gr" href="#/event"><i class="fa fa-list"></i> Kelola Isi Kalender</a></div><p style="font-size:12px;color:#555">${EVT.length} event(s) dimuat</p>
+   <div class="ct2"><span><button class="btn" data-bln="-1">&lsaquo;</button> <button class="btn" data-bln="1">&rsaquo;</button> <button class="btn g" data-bln="0">today</button></span><h3>${title}</h3><span><button class="btn d" style="border-radius:3px 0 0 3px">month</button><button class="btn" style="border-radius:0">week</button><button class="btn" style="border-radius:0">day</button><button class="btn" style="border-radius:0 3px 3px 0">list</button></span></div><div class="cg">${cells}</div></div>`}}
+};
+const STUB=n=>({t:"Halaman contoh",i:"fa-file-o",bc:["Menu","Halaman contoh"],h:`<div class="box"><h2>Halaman ini belum dibuat di prototipe</h2><p>Menu <b>${n}</b> hanya tampil agar susunan navigasinya sama dengan aslinya.</p></div>`});
+
+/* ===== ROUTER ===== */
+function render(){
+ const r=location.hash.replace("#/","")||"login";
+ if(r==="login"){$("#login").style.display="flex";$("#app").style.display="none";document.title="Sisita m4";return}
+ $("#login").style.display="none";$("#app").style.display="block";document.body.classList.remove("sbo");
+ const p=(PAGES[r]||(()=>STUB(r)))();buildMenu(r);
+ $("#ph").innerHTML=`<h1><i class="fa ${p.i}"></i> ${p.t}${p.sub?`<small>${p.sub}</small>`:""}</h1><div class="bc"><i class="fa fa-home"></i> / <a>${p.bc[0]}</a> / <span style="color:var(--hg)">${p.bc[1]}</span></div>`;
+ $("#ct").innerHTML=p.h;document.title=p.t+" - Sisita m4";bind();
+}
+function again(){const y=scrollY;render();scrollTo(0,y)}
+function bind(){
+ document.querySelectorAll("[data-cp]").forEach(b=>b.onclick=()=>{navigator.clipboard&&navigator.clipboard.writeText(b.dataset.cp).catch(()=>{});const o=b.innerHTML;b.textContent="Tersalin";setTimeout(()=>b.innerHTML=o,1200)});
+ const s=$("#sim");if(s)s.onchange=()=>{simulasi=s.checked;again()};
+ document.querySelectorAll("[data-tp]").forEach(b=>b.onclick=()=>{tampil=b.dataset.tp;again()});
+ document.querySelectorAll("[data-take]").forEach(c=>c.onchange=()=>{c.checked?sel.add(c.dataset.take):sel.delete(c.dataset.take);again()});
+ document.querySelectorAll("[data-batal]").forEach(b=>b.onclick=()=>alert("Di luar jadwal KRS, pembatalan tidak dapat dilakukan (prototipe)."));
+ document.querySelectorAll("[data-hd]").forEach(b=>b.onclick=()=>{hadirDetail=b.dataset.hd;again()});
+ const k=$("#kembali");if(k)k.onclick=()=>{hadirDetail=null;again()};
+ document.querySelectorAll("[data-bln]").forEach(b=>b.onclick=()=>{const v=+b.dataset.bln;kalBulan=v?new Date(kalBulan.getFullYear(),kalBulan.getMonth()+v,1):new Date(2026,9,1);again()});
+ const q=$("#q");if(q)q.oninput=()=>document.querySelectorAll("#et tbody tr").forEach(tr=>tr.style.display=tr.textContent.toLowerCase().includes(q.value.toLowerCase())?"":"none");
+}
+addEventListener("hashchange",render);render();
+</script>
+</body>
+</html>
