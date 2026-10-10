@@ -1,0 +1,214 @@
+/* =====================================================================
+   Pujian & Kritik anonim, BEM STDIIS
+   Pesan dikirim ke Google Sheets lewat Google Apps Script (Web App).
+   Langkah pemasangan lengkap ada di PANDUAN-ASPIRASI.txt
+   ===================================================================== */
+(function () {
+  "use strict";
+
+  var CONFIG = {
+    // URL Web App Apps Script diisi di file aspirasi-config.js (bukan di sini).
+    MIN: 10,            // minimal karakter pesan
+    MAX: 1000,          // maksimal karakter pesan
+    COOLDOWN_MS: 20000  // jeda antar pengiriman dari perangkat yang sama
+  };
+
+  var MODES = {
+    pujian: { jenis: "Pujian", q: "Apa yang ingin kamu apresiasi?",
+              ph: "Ceritakan hal baik yang kamu lihat atau rasakan.", ok: "Terima kasih. Pujianmu sudah terkirim secara anonim." },
+    kritik: { jenis: "Kritik", q: "Apa yang menurutmu perlu diperbaiki?",
+              ph: "Sampaikan dengan jelas dan sopan agar mudah ditindaklanjuti.", ok: "Terima kasih. Kritikmu sudah terkirim secara anonim." }
+  };
+
+  var pick = document.getElementById("asp-pick"), form = document.getElementById("asp-form");
+  if (!pick || !form) return;
+  var to = document.getElementById("asp-to"), q = document.getElementById("asp-q"),
+      msg = document.getElementById("asp-msg"), cnt = document.getElementById("asp-count"),
+      hp = document.getElementById("asp-hp"), send = document.getElementById("asp-send"),
+      status = document.getElementById("asp-status"), modeBtns = form.querySelectorAll("[data-mode]");
+
+  var st = { item: null, person: null, mode: "" }, busy = false;
+
+  function esc(t) { return String(t == null ? "" : t).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function txt(el) { return el.textContent.replace(/\s+/g, " ").trim(); }
+
+  /* ---------- Data penerima: dibaca dari bagian Kepengurusan, jadi selalu sinkron ---------- */
+  function collect() {
+    var pim = { title: "Pimpinan dan pengawas", items: [] }, kem = { title: "Kementerian", items: [] }, bir = { title: "Biro", items: [] };
+    var seen = {};
+    document.querySelectorAll("#pengurus .leader").forEach(function (l) {
+      var role = txt(l.querySelector("p")), name = txt(l.querySelector("h4")), full = role.replace(/\s*\d+$/, "");
+      var it = seen[full];
+      if (!it) { it = seen[full] = { label: full.replace(/\s*BEM$/, ""), full: full, people: [] }; pim.items.push(it); }
+      it.people.push({ name: name, role: role });
+    });
+    document.querySelectorAll("#pengurus .units").forEach(function (box) {
+      var h = box.previousElementSibling, title = h ? txt(h) : "";
+      box.querySelectorAll(".unit").forEach(function (u) {
+        var full = txt(u.querySelector(".u-name")), m = full.match(/\(([^)]+)\)/);
+        var it = {
+          label: m ? m[1] : full.replace(/^(Kementerian|Biro)\s+/, ""), full: full,
+          people: [].map.call(u.querySelectorAll("li"), function (li) { return { name: txt(li), role: full }; })
+        };
+        (title === "Kementerian" ? kem : title === "Biro" ? bir : pim).items.push(it);
+      });
+    });
+    return [pim, kem, bir].filter(function (g) { return g.items.length; });
+  }
+  var G = collect();
+
+  function render() {
+    pick.innerHTML = G.map(function (g, gi) {
+      return '<div class="asp-g"><h3>' + esc(g.title) + '</h3>' +
+        '<div class="asp-chips" role="group" aria-label="Pilih bagian: ' + esc(g.title) + '">' +
+        g.items.map(function (it, ii) {
+          return '<button type="button" class="chip" aria-pressed="false" data-g="' + gi + '" data-i="' + ii + '">' + esc(it.label) + '</button>';
+        }).join("") + '</div><div class="asp-names" hidden></div></div>';
+    }).join("");
+  }
+
+  function namesHTML(it) {
+    var h = '<p>Pilih siapa yang dituju</p><div class="asp-chips" role="group" aria-label="Pilih nama">';
+    if (it.people.length > 1) h += '<button type="button" class="chip person" aria-pressed="false" data-p="all">Seluruh bagian</button>';
+    it.people.forEach(function (p, pi) {
+      h += '<button type="button" class="chip person" aria-pressed="false" data-p="' + pi + '">' + esc(p.name) +
+        (p.role !== it.full ? ' <small>' + esc(p.role) + '</small>' : "") + '</button>';
+    });
+    return h + "</div>";
+  }
+
+  function setPressed(nodes, fn) { [].forEach.call(nodes, function (n) { n.setAttribute("aria-pressed", fn(n) ? "true" : "false"); }); }
+
+  function refreshTarget() {
+    if (!st.item || st.person == null) {
+      to.innerHTML = '<p class="asp-empty">' + (st.item ? "Pilih nama yang dituju." : "Pilih bagian dan namanya dulu.") + "</p>";
+      return;
+    }
+    if (st.person === "all") to.innerHTML = "<b>Seluruh bagian</b><span>" + esc(st.item.full) + "</span>";
+    else { var p = st.item.people[st.person]; to.innerHTML = "<b>" + esc(p.name) + "</b><span>" + esc(p.role) + "</span>"; }
+  }
+
+  function choosePerson(val, scroll) {
+    st.person = val === "all" ? "all" : +val;
+    var g = pick.querySelector('.asp-names:not([hidden])');
+    if (g) setPressed(g.querySelectorAll(".person"), function (n) { return n.getAttribute("data-p") === String(st.person); });
+    refreshTarget(); clearStatus();
+    if (scroll && window.matchMedia("(max-width:900px)").matches) form.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
+  pick.addEventListener("click", function (e) {
+    var c = e.target.closest(".chip"); if (!c) return;
+    if (c.classList.contains("person")) { choosePerson(c.getAttribute("data-p"), true); return; }
+    var gi = +c.getAttribute("data-g"), ii = +c.getAttribute("data-i");
+    st.item = G[gi].items[ii]; st.person = null;
+    setPressed(pick.querySelectorAll(".chip:not(.person)"), function (n) { return n === c; });
+    [].forEach.call(pick.querySelectorAll(".asp-names"), function (n) { n.hidden = true; n.innerHTML = ""; });
+    var tray = c.closest(".asp-g").querySelector(".asp-names");
+    tray.innerHTML = namesHTML(st.item); tray.hidden = false;
+    if (st.item.people.length === 1) choosePerson(0, true); else { refreshTarget(); clearStatus(); }
+  });
+
+  /* ---------- Pujian / kritik: latar & pertanyaan ikut berubah ---------- */
+  function setMode(m) {
+    st.mode = m; form.setAttribute("data-mode", m);
+    setPressed(modeBtns, function (b) { return b.getAttribute("data-mode") === m; });
+    q.textContent = MODES[m].q; msg.placeholder = MODES[m].ph; msg.disabled = false;
+    clearStatus();
+  }
+  [].forEach.call(modeBtns, function (b) { b.addEventListener("click", function () { setMode(b.getAttribute("data-mode")); }); });
+
+  msg.addEventListener("input", function () { cnt.textContent = msg.value.length + "/" + CONFIG.MAX; clearStatus(); });
+
+  /* ---------- Kirim ---------- */
+  function say(t, kind) { status.className = "asp-status" + (kind ? " " + kind : ""); status.textContent = t; }
+  function clearStatus() { if (!busy) say("", ""); }
+  function lastSent() { try { return +localStorage.getItem("asp_last") || 0; } catch (e) { return 0; } }
+  function markSent() { try { localStorage.setItem("asp_last", String(Date.now())); } catch (e) {} }
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); if (busy) return;
+    if (!st.item || st.person == null) return say("Pilih bagian dan nama yang dituju dulu.", "err");
+    if (!st.mode) return say("Pilih pujian atau kritik dulu.", "err");
+    var text = msg.value.trim();
+    if (text.length < CONFIG.MIN) return say("Tulis minimal " + CONFIG.MIN + " karakter agar pesanmu bisa dipahami.", "err");
+    var wait = CONFIG.COOLDOWN_MS - (Date.now() - lastSent());
+    if (wait > 0) return say("Tunggu " + Math.ceil(wait / 1000) + " detik sebelum mengirim lagi.", "err");
+
+    var m = MODES[st.mode];
+    var payload = {
+      jenis: m.jenis, bagian: st.item.full,
+      penerima: st.person === "all" ? "Seluruh bagian" : st.item.people[st.person].name,
+      pesan: text.slice(0, CONFIG.MAX), website: hp.value
+    };
+    function done() { busy = false; send.disabled = false; send.textContent = "Kirim secara anonim"; }
+    function success() { msg.value = ""; cnt.textContent = "0/" + CONFIG.MAX; markSent(); say(m.ok, "ok"); }
+
+    if (hp.value) { success(); return; } /* jebakan bot: tampak berhasil, tidak dikirim */
+    var EP = typeof window.ASPIRASI_ENDPOINT === "string" ? window.ASPIRASI_ENDPOINT.replace(/[\s"'\u201C\u201D\u2018\u2019]/g, "") : null;
+    if (EP === null) {
+      if (window.console) console.warn("[Aspirasi] aspirasi-config.js tidak terbaca. Pastikan file diunggah dan tanda kutipnya lurus.");
+      return say("Formulir belum tersambung ke Google Sheets (kode C0). Mohon hubungi pengurus.", "err");
+    }
+    if (!EP) return say("Formulir belum tersambung ke Google Sheets (kode C1). Mohon hubungi pengurus.", "err");
+    if (!/^https:\/\/script\.google\.com\/macros\/s\/[^\/]+\/exec$/.test(EP))
+      return say("Alamat Google Sheets belum benar, harus berakhiran /exec (kode C2). Mohon hubungi pengurus.", "err");
+    busy = true; send.disabled = true; send.textContent = "Mengirim..."; say("", "");
+    var ctl = window.AbortController ? new AbortController() : null, to_ = ctl && setTimeout(function () { ctl.abort(); }, 20000);
+    /* Mode "cors" (bukan "no-cors") supaya jawaban skrip bisa dibaca.
+       Dengan no-cors, website selalu mengira berhasil walau skrip gagal menulis ke Sheet. */
+    var ctl = window.AbortController ? new AbortController() : null, to_ = ctl && setTimeout(function () { ctl.abort(); }, 25000);
+    var ERR = {
+      jenis: "Jenis pesan tidak dikenali (kode S1).",
+      data: "Data pesan belum lengkap atau terlalu pendek (kode S2).",
+      nosheet: "Skrip belum terhubung ke Spreadsheet. Pasang kode di Ekstensi > Apps Script dari dalam Sheet, atau isi SHEET_ID (kode S3).",
+      server: "Skrip gagal menyimpan ke Spreadsheet (kode S4). Mohon hubungi pengurus."
+    };
+    fetch(EP, {
+      method: "POST", mode: "cors", credentials: "omit", referrerPolicy: "no-referrer", redirect: "follow",
+      headers: { "Content-Type": "text/plain;charset=utf-8" }, body: JSON.stringify(payload), signal: ctl ? ctl.signal : undefined
+    }).then(function (r) { return r.text(); })
+      .then(function (t) {
+        clearTimeout(to_); done();
+        var j = null; try { j = JSON.parse(t); } catch (x) {}
+        if (j && j.ok) return success();
+        if (j) return say(ERR[j.error] || ERR.server, "err");
+        if (window.console) console.warn("[Aspirasi] Respons bukan JSON dari skrip:", String(t).slice(0, 200));
+        say("Respons bukan dari skrip Google (kode N2). Cek Deployment: 'Yang memiliki akses' harus 'Siapa saja'.", "err");
+      })
+      .catch(function (err) {
+        clearTimeout(to_); done();
+        if (window.console) console.warn("[Aspirasi] Gagal menghubungi skrip:", err);
+        say("Pesan belum terkirim (kode N1). Periksa koneksi, atau pastikan Deployment diset 'Siapa saja' dan URL berakhiran /exec.", "err");
+      });
+  });
+
+  /* ---------- Navigasi halaman: mandiri, tetap jalan walau sop-app.js belum diperbarui ---------- */
+  var page = document.getElementById("asp-app"), home = document.getElementById("home"),
+      others = [document.getElementById("pd-app"), document.getElementById("sop-app")], title0 = document.title;
+  function syncPage() {
+    var on = location.hash === "#aspirasi";
+    if (on) {
+      var fresh = page.hidden;
+      home.hidden = true; others.forEach(function (n) { if (n) n.hidden = true; }); page.hidden = false;
+      document.title = "Pujian dan Kritik | BEM STDIIS"; if (fresh) window.scrollTo(0, 0);
+    } else if (!page.hidden) { page.hidden = true; document.title = title0; }
+    [].forEach.call(document.querySelectorAll(".nav a"), function (a) {
+      if (on) a.classList.toggle("active", a.getAttribute("href") === "#aspirasi");
+      else if (a.getAttribute("href") === "#aspirasi") a.classList.remove("active");
+    });
+  }
+  document.addEventListener("click", function (e) {
+    if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey) return;
+    var a = e.target.closest('a[href="#aspirasi"]'); if (!a) return;
+    e.preventDefault();
+    if (location.hash !== "#aspirasi") { try { history.pushState(null, "", "#aspirasi"); } catch (x) { location.hash = "#aspirasi"; } }
+    syncPage();
+  }, true);
+  document.addEventListener("click", function (e) { if (e.target.closest('a[href^="#"]')) setTimeout(syncPage, 0); });
+  window.addEventListener("hashchange", syncPage);
+  window.addEventListener("popstate", syncPage);
+  syncPage();
+
+  render(); refreshTarget();
+
+})();

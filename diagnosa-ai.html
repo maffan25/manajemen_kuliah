@@ -1,0 +1,15 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Diagnosa ASTA | BEM STDIIS</title>
+<style>body{font:16px/1.6 system-ui,sans-serif;max-width:720px;margin:0 auto;padding:24px 16px;color:#17262c;background:#faf7ee}h1{font-size:24px;margin:0 0 4px}button{font:700 15px inherit;font-family:inherit;background:#17262c;color:#fff;border:0;border-radius:999px;padding:11px 22px;cursor:pointer;margin:14px 0}li{list-style:none;margin:8px 0;padding:10px 14px;border-radius:12px;background:#fff;border:1px solid #e4dcc3}.ok{border-left:5px solid #1f8f6b}.no{border-left:5px solid #b3261e}small{display:block;color:#5d6d74}ul{padding:0}</style></head><body>
+<h1>Diagnosa ASTA</h1><p>Memeriksa apakah SOP, buku panduan, dan PDF sumber sudah bisa dibaca ASTA.</p><button id="go">Jalankan pemeriksaan</button><ul id="out"></ul>
+<script src="sop-data.js"></script><script src="panduan-data.js"></script><script>
+var BK="presiden wakil-presiden sekretaris-jenderal psdm akademik-karier harmonisasi-kampus kemenpora hubeks kesma pengembangan-bahasa biro-administrasi biro-keuangan biro-dkv inspektorat-jenderal".split(" ");
+function row(ok,t,d){var li=document.createElement("li");li.className=ok?"ok":"no";li.innerHTML=(ok?"✔ ":"✘ ")+t+(d?"<small>"+d+"</small>":"");document.getElementById("out").appendChild(li);}
+function has(u){return fetch(u,{method:"HEAD"}).then(function(r){return r.ok&&(r.headers.get("content-type")||"").indexOf("html")<0;}).catch(function(){return false;});}
+document.getElementById("go").onclick=function(){document.getElementById("out").innerHTML="";
+ var S=window.SOP_DATA||[];row(S.length>0,"Data SOP: "+S.length+" SOP terbaca",S.length?"":"sop-data.js belum termuat.");
+ var P=window.PANDUAN||{},k=Object.keys(P).filter(function(x){return P[x]&&P[x].p&&P[x].p.length;});
+ row(k.length>0,"Teks buku panduan: "+k.length+" dari "+BK.length+" buku terbaca",k.length?"":"panduan-data.js masih kosong. Buat lewat admin-panduan.html lalu unggah ke GitHub.");
+ var miss=BK.filter(function(b){return k.indexOf(b)<0;});if(k.length&&miss.length)row(false,"Belum terbaca: "+miss.join(", "),"Ekstrak PDF-nya di admin-panduan.html (PDF hasil scan tidak punya teks).");
+ Promise.all(BK.map(function(b){return has("panduan/"+b+".pdf").then(function(o){return [b,o];});})).then(function(r){var bad=r.filter(function(x){return !x[1];}).map(function(x){return x[0]+".pdf";});row(!bad.length,"PDF buku panduan di folder panduan/: "+(r.length-bad.length)+" dari "+r.length,bad.length?"Belum ada: "+bad.join(", "):"");});
+ var smp=S.slice(0,5);Promise.all(smp.map(function(s){return has("sop/"+s.c+".pdf").then(function(o){return [s.c,o];});})).then(function(r){var bad=r.filter(function(x){return !x[1];}).map(function(x){return x[0]+".pdf";});row(!bad.length,"PDF SOP (contoh 5 pertama) di folder sop/",bad.length?"Belum ada: "+bad.join(", "):"");});
+};</script></body></html>
