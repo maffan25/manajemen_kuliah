@@ -5,7 +5,7 @@ body.cn-immersive{overflow:hidden}
 .cf *{box-sizing:border-box}
 .cf .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .cf-sky{position:fixed;inset:0;width:100%;height:100%;z-index:-3;pointer-events:none}
-.cf-aur{position:fixed;z-index:-2;width:70vmax;height:70vmax;border-radius:50%;filter:blur(70px);opacity:.5;pointer-events:none;will-change:transform}
+.cf-aur{position:fixed;z-index:-2;width:70vmax;height:70vmax;border-radius:50%;opacity:.5;pointer-events:none;will-change:transform;contain:strict}
 .cf-aur.a1{left:-28vmax;top:-30vmax;background:radial-gradient(circle,rgba(31,125,102,.9),transparent 65%);animation:cfdrift 22s ease-in-out infinite alternate}
 .cf-aur.a2{right:-30vmax;bottom:-34vmax;background:radial-gradient(circle,rgba(248,210,74,.38),transparent 65%);animation:cfdrift 28s ease-in-out infinite alternate-reverse}
 @keyframes cfdrift{to{transform:translate3d(9vmax,6vmax,0) scale(1.15)}}
@@ -27,15 +27,15 @@ body.cn-immersive{overflow:hidden}
 
 .cf-main{min-height:calc(100dvh - 92px);display:grid;place-items:center;padding:18px max(16px,env(safe-area-inset-right)) calc(40px + env(safe-area-inset-bottom)) max(16px,env(safe-area-inset-left))}
 .cf-card{position:relative;width:min(560px,100%);padding:34px 30px 28px;border-radius:30px;outline:0;
-  background:linear-gradient(160deg,rgba(255,255,255,.1),rgba(255,255,255,.035));border:1px solid rgba(248,210,74,.24);
-  -webkit-backdrop-filter:blur(16px) saturate(1.2);backdrop-filter:blur(16px) saturate(1.2);box-shadow:0 40px 80px -30px rgba(0,0,0,.75),inset 0 1px 0 rgba(255,255,255,.12)}
+  background:linear-gradient(160deg,rgba(30,78,96,.82),rgba(12,40,53,.86));border:1px solid rgba(248,210,74,.24);
+  box-shadow:0 30px 60px -30px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.12)}
 .cf-card::before{content:"";position:absolute;right:12px;top:12px;width:44px;height:44px;border:solid #d9b872;border-width:1.5px 1.5px 0 0;border-radius:0 18px 0 0;opacity:.8;pointer-events:none}
 .cf-card::after{content:"";position:absolute;left:12px;bottom:12px;width:44px;height:44px;border:solid #d9b872;border-width:0 0 1.5px 1.5px;border-radius:0 0 0 18px;opacity:.55;pointer-events:none}
 .cf-center{display:grid;justify-items:center;text-align:center;gap:6px}
 .cf-emb{margin:2px 0 10px;transform:scale(1.02)}
 .cf-eye{display:inline-block;font:700 11.5px var(--sans);letter-spacing:.24em;text-transform:uppercase;color:#f8d24a}
 .cf-h{font:700 clamp(26px,6.4vw,38px)/1.18 var(--serif);color:#fff;margin:8px 0 6px;text-wrap:balance;outline:0}
-.cf-foil{background:linear-gradient(115deg,#d9b872 0%,#fff2b8 30%,#f8d24a 48%,#fff2b8 66%,#d9b872 100%);background-size:220% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:cfshine 6s linear infinite}
+.cf-foil{background:linear-gradient(115deg,#d9b872 0%,#fff2b8 30%,#f8d24a 48%,#fff2b8 66%,#d9b872 100%);background-size:100% 100%;-webkit-background-clip:text;background-clip:text;color:transparent}
 @keyframes cfshine{to{background-position:-220% 0}}
 .cf-sub{color:#b8d2cc;font-size:15.5px;line-height:1.65;max-width:440px;margin:2px auto 0}
 .cf-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0 6px}
@@ -98,3 +98,6 @@ body.cn-immersive{overflow:hidden}
 @media (max-width:520px){.cf-card{padding:28px 20px 22px;border-radius:26px}.cf-brand span:last-child{display:none}.cf-nav .cf-b{min-width:0;flex:1;padding:14px 16px}.cf-nav.c .cf-b{flex:1 1 100%}.cf-b.big{width:100%}}
 @media (max-height:640px){.cf-main{place-items:start center}}
 @media (prefers-reduced-motion:reduce){.cf-aur,.cf-arch i,.cf-foil,.cf-b.gold::after,.cf-seal .r2{animation:none!important}.cf-seal .r,.cf-seal .ck{stroke-dashoffset:0;animation:none}}
+
+/* Layar penutup: hanya kata penutup, tanpa tombol ke mana pun (untuk umum) */
+.cf-bye{margin-top:14px;font-size:13.5px;color:#9fbdb6;letter-spacing:.02em}

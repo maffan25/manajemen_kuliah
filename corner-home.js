@@ -21,10 +21,11 @@
     ul.innerHTML = list.length ? list.map(function (c, i) {
       var t = TONES[c.warna] || TONES.zamrud, soon = c.status === "segera";
       var st = "--o1:" + t.o1 + ";--o2:" + t.o2 + ";--o3:" + t.o3 + ";--ot:" + t.ot + ";--oa:" + t.oa + ";--i:" + i;
-      return '<li style="' + st + '"><a class="cn-orb' + (soon ? " is-soon" : "") + '" href="#corner/' + esc(c.id) + '" aria-label="Buka corner ' + esc(c.nama) + (soon ? ", segera hadir" : "") + '">' +
+      return '<li style="' + st + '"><a class="cn-orb' + (soon ? " is-soon" : "") + '" href="#corner/' + esc(c.id) + '" aria-label="Buka corner ' + esc(c.nama) + (soon ? ", segera hadir" : window.CornerPin && window.CornerPin.enabled() ? ", khusus pengurus, butuh PIN" : "") + '">' +
         '<span class="cn-ball">' +
         '<span class="cn-orbit o1" aria-hidden="true"><i></i></span><span class="cn-orbit o2" aria-hidden="true"><i></i></span>' +
         '<span class="cn-sph">' + window.CORNER_ORB_SVG(c.ikon || "bintang") + '<span class="cn-gl" aria-hidden="true"></span></span>' +
+        (soon ? "" : '<span class="cn-lockb" aria-hidden="true"><svg class="lc" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="2"/><path d="M7 9V6.5a3 3 0 016 0V9"/></svg><svg class="lo" viewBox="0 0 20 20"><rect x="4.5" y="9" width="11" height="8" rx="2"/><path d="M7 9V6.5a3 3 0 015.6-1.5"/></svg></span>') +
         '<span class="cn-spk s1" aria-hidden="true"></span><span class="cn-spk s2" aria-hidden="true"></span><span class="cn-spk s3" aria-hidden="true"></span>' +
         '<span class="cn-shd" aria-hidden="true"></span></span>' +
         '<span class="cn-abbr">' + esc(c.singkat || c.nama) + '</span>' +

@@ -1,4 +1,4 @@
-/* corner-data.js: data Samasta Corner BEM STDIIS (corner, menu, event, soal penilaian, dan pesan penutup).
+/* corner-data.js: data Samasta Corner BEM STDIIS (corner, menu, event, soal penilaian, pesan penutup, dan PIN).
    Jangan diedit manual. Gunakan admin-corner.html, lalu unduh file ini dan unggah ke GitHub.
    Terakhir dibuat: 10/10/2026, 15.00.00 */
 window.CORNER = {
@@ -51,9 +51,14 @@ window.CORNER = {
  ],
  "penutup": {
   "judul": "Terima kasih, {nama}!",
-  "pesan": "Kehadiran dan penilaianmu untuk {event} sudah tercatat di pembukuan {corner}. Masukanmu menjadi bahan perbaikan kegiatan berikutnya."
+  "pesan": "Kehadiran dan penilaianmu untuk {event} sudah tercatat.\n\nTerima kasih sudah meluangkan waktu. Masukanmu menjadi bahan perbaikan kegiatan berikutnya. Sampai jumpa di acara BEM STDIIS selanjutnya."
  },
  "bukaHari": 2,
+ "pin": {
+  "salt": "b7e2c91f4a60d38e5c1a",
+  "hash": "2c1867aa53ed9a0a38e718f03700448856293ea803a0c8fe367604bfe2bff666",
+  "n": 6
+ },
  "corner": [
   {
    "id": "kesma",

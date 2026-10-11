@@ -15,29 +15,31 @@
 
   /* ================= Langit berbintang ================= */
   function startSky(cv) {
-    var c = cv.getContext("2d"), W = 0, H = 0, dpr = Math.min(2, window.devicePixelRatio || 1), st = [], dust = [], shoot = null, raf = 0, alive = true, tNext = 2500;
+    var c = cv.getContext("2d"), W = 0, H = 0, dpr = Math.min(2, window.devicePixelRatio || 1), st = [], dust = [], shoot = null, raf = 0, alive = true, tNext = 2500, lastT = 0;
     function size() {
       W = cv.clientWidth; H = cv.clientHeight; cv.width = W * dpr; cv.height = H * dpr; c.setTransform(dpr, 0, 0, dpr, 0, 0);
-      var n = Math.round(W * H / 9000); st = []; dust = [];
+      var n = Math.min(170, Math.round(W * H / 12000)); st = []; dust = [];
       for (var i = 0; i < n; i++) st.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.3 + 0.3, p: Math.random() * 6.28, s: Math.random() * 1.4 + 0.5 });
       for (var j = 0; j < 22; j++) dust.push({ x: Math.random() * W, y: Math.random() * H, r: Math.random() * 2 + 1, v: Math.random() * 10 + 6, p: Math.random() * 6.28 });
     }
     function frame(ts) {
       if (!alive) return;
+      if (!reduce) raf = requestAnimationFrame(frame);
+      if (document.hidden || ts - lastT < 30) return;           /* ~33 gambar/detik cukup untuk latar; sisa waktu untuk animasi kartu */
+      var dt = lastT ? Math.min(0.1, (ts - lastT) / 1000) : 0.033; lastT = ts;
       c.clearRect(0, 0, W, H);
       var t = ts / 1000, i, s;
       for (i = 0; i < st.length; i++) { s = st[i]; var a = reduce ? 0.6 : 0.35 + 0.65 * (0.5 + 0.5 * Math.sin(t * s.s + s.p)); c.globalAlpha = a; c.fillStyle = i % 9 === 0 ? "#f8d24a" : "#fff"; c.beginPath(); c.arc(s.x, s.y, s.r, 0, 6.283); c.fill(); }
       if (!reduce) {
-        for (i = 0; i < dust.length; i++) { s = dust[i]; s.y -= s.v / 60; s.x += Math.sin(t * 0.6 + s.p) * 0.12; if (s.y < -6) { s.y = H + 6; s.x = Math.random() * W; } c.globalAlpha = 0.16 + 0.12 * Math.sin(t + s.p); c.fillStyle = "#f8d24a"; c.beginPath(); c.arc(s.x, s.y, s.r, 0, 6.283); c.fill(); }
-        tNext -= 16; if (tNext < 0 && !shoot) { shoot = { x: Math.random() * W * 0.8 + W * 0.1, y: Math.random() * H * 0.35, l: 0 }; tNext = 5500 + Math.random() * 5000; }
+        for (i = 0; i < dust.length; i++) { s = dust[i]; s.y -= s.v * dt; s.x += Math.sin(t * 0.6 + s.p) * 0.12; if (s.y < -6) { s.y = H + 6; s.x = Math.random() * W; } c.globalAlpha = 0.16 + 0.12 * Math.sin(t + s.p); c.fillStyle = "#f8d24a"; c.beginPath(); c.arc(s.x, s.y, s.r, 0, 6.283); c.fill(); }
+        tNext -= dt * 1000; if (tNext < 0 && !shoot) { shoot = { x: Math.random() * W * 0.8 + W * 0.1, y: Math.random() * H * 0.35, l: 0 }; tNext = 5500 + Math.random() * 5000; }
         if (shoot) {
-          shoot.l += 0.035; var gx = shoot.x + shoot.l * 260, gy = shoot.y + shoot.l * 130, g = c.createLinearGradient(shoot.x + shoot.l * 160, shoot.y + shoot.l * 80, gx, gy);
+          shoot.l += dt * 1.05; var gx = shoot.x + shoot.l * 260, gy = shoot.y + shoot.l * 130, g = c.createLinearGradient(shoot.x + shoot.l * 160, shoot.y + shoot.l * 80, gx, gy);
           g.addColorStop(0, "rgba(255,255,255,0)"); g.addColorStop(1, "rgba(255,244,190,.95)"); c.globalAlpha = Math.max(0, 1 - shoot.l); c.strokeStyle = g; c.lineWidth = 1.6; c.beginPath(); c.moveTo(shoot.x + shoot.l * 160, shoot.y + shoot.l * 80); c.lineTo(gx, gy); c.stroke();
           if (shoot.l > 1) shoot = null;
         }
       }
       c.globalAlpha = 1;
-      if (!reduce) raf = requestAnimationFrame(frame);
     }
     size(); raf = requestAnimationFrame(frame);
     window.addEventListener("resize", size);
@@ -79,7 +81,7 @@
 
     root = document.createElement("div"); root.className = "cf"; root.setAttribute("role", "dialog"); root.setAttribute("aria-modal", "true"); root.setAttribute("aria-label", "Absensi dan penilaian " + ev.judul);
     root.innerHTML = '<canvas class="cf-sky" aria-hidden="true"></canvas><div class="cf-aur a1" aria-hidden="true"></div><div class="cf-aur a2" aria-hidden="true"></div><div class="cf-arch" aria-hidden="true"><i></i></div>' +
-      '<header class="cf-top"><a class="cf-x" href="' + esc(x.exit) + '" aria-label="Keluar dari formulir"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15"/></svg><span>Keluar</span></a>' +
+      '<header class="cf-top"><span></span>' +
       '<div class="cf-brand"><span class="emb" aria-hidden="true"></span><span><b>Samasta Corner</b><small>' + esc(c.nama) + '</small></span></div></header>' +
       '<div class="cf-prog" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i></i></div>' +
       '<main class="cf-main"><section class="cf-card" id="cf-card" tabindex="-1" aria-live="polite"></section></main>';
@@ -90,7 +92,7 @@
 
     function setProg() { var p = Math.min(100, Math.round(S.step / (steps.length - 2) * 100)); bar.style.width = p + "%"; pb.setAttribute("aria-valuenow", p); }
     function swap(html, dir, after) {
-      function put() { card.innerHTML = html; setProg(); if (after) after(); if (!reduce) card.animate([{ opacity: 0, transform: "translateX(" + (26 * dir) + "px) scale(.985)", filter: "blur(6px)" }, { opacity: 1, transform: "none", filter: "blur(0)" }], { duration: 480, easing: "cubic-bezier(.2,.8,.2,1)" }); root.scrollTop = 0; }
+      function put() { card.innerHTML = html; setProg(); if (after) after(); if (!reduce) card.animate([{ opacity: 0, transform: "translate3d(" + (26 * dir) + "px,0,0) scale(.985)" }, { opacity: 1, transform: "none" }], { duration: 420, easing: "cubic-bezier(.2,.8,.2,1)" }); root.scrollTop = 0; }
       if (reduce || !card.innerHTML) { put(); return; }
       var a = card.animate([{ opacity: 1, transform: "none" }, { opacity: 0, transform: "translateX(" + (-18 * dir) + "px) scale(.99)" }], { duration: 170, easing: "ease-in", fill: "forwards" });
       a.onfinish = function () { a.cancel(); put(); };
@@ -104,7 +106,7 @@
     /* ---- layar-layar ---- */
     function vClosed() {
       var soon = x.st.k === "nanti";
-      return '<div class="cf-center">' + emblem + head("Absensi " + (soon ? "belum dibuka" : "sudah ditutup"), esc(ev.judul), soon ? "Formulir ini bisa diisi mulai " + esc(x.when.split(" sampai ")[0]) + "." : "Formulir untuk acara ini tidak lagi menerima isian. Hubungi " + esc(c.nama) + " bila kamu merasa seharusnya masih bisa mengisi.") + '<a class="cf-b gold" href="' + esc(x.exit) + '">Ke ' + esc(c.singkat) + "</a></div>";
+      return '<div class="cf-center">' + emblem + head("Absensi " + (soon ? "belum dibuka" : "sudah ditutup"), esc(ev.judul), soon ? "Formulir ini bisa diisi mulai " + esc(x.when.split(" sampai ")[0]) + "." : "Formulir untuk acara ini tidak lagi menerima isian. Hubungi " + esc(c.nama) + " bila kamu merasa seharusnya masih bisa mengisi.") + '</div>';
     }
     function vWelcome() {
       var chips = [x.when, ev.jam, ev.tempat].filter(Boolean).map(function (v) { return "<i>" + esc(v) + "</i>"; }).join("");
@@ -159,8 +161,8 @@
       var first = String(S.nama).split(/\s+/)[0], v = { nama: first, event: ev.judul, corner: c.nama };
       var pm = fill(x.penutup.pesan, v).split(/\n+/).filter(Boolean).map(function (p) { return "<p>" + esc(p) + "</p>"; }).join("");
       return '<div class="cf-center cf-done"><div class="cf-seal" aria-hidden="true"><svg viewBox="0 0 120 120"><circle class="r" cx="60" cy="60" r="54"/><circle class="r2" cx="60" cy="60" r="46"/><path class="ck" pathLength="1" d="M36 62l16 16 32-36"/></svg></div>' +
-        '<h1 class="cf-h cf-foil" id="cf-h" tabindex="-1">' + esc(fill(x.penutup.judul, v)) + '</h1><div class="cf-msg">' + pm + '</div><div class="cf-stamp"><b>' + esc(c.nama) + "</b><small>Tercatat · " + esc(new Date().toLocaleString("id-ID", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" })) + '</small></div>' +
-        '<div class="cf-nav c"><button type="button" class="cf-b ghost" id="cf-again">Isi untuk orang lain</button><a class="cf-b gold" href="' + esc(x.exit) + '">Ke ' + esc(c.singkat) + "</a></div></div>";
+        '<h1 class="cf-h cf-foil" id="cf-h" tabindex="-1">' + esc(fill(x.penutup.judul, v)) + '</h1><div class="cf-msg">' + pm + '</div><div class="cf-stamp"><b>BEM STDIIS</b><small>Tercatat · ' + esc(new Date().toLocaleString("id-ID", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit" })) + '</small></div>' +
+        '<p class="cf-bye">Kamu boleh menutup halaman ini sekarang.</p></div>';
     }
 
     function render(dir) {
@@ -226,7 +228,6 @@
         return;
       }
       if (e.target.closest("#cf-send")) send();
-      if (e.target.closest("#cf-again")) { S = { step: 1, nama: "", nim: "", bagian: "", lain: false, ans: {}, busy: false, done: false }; go(1, -1); }
     });
     card.addEventListener("change", function (e) {
       if (e.target.id === "f-b") {

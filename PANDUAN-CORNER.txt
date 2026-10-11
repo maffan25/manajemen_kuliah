@@ -5,7 +5,8 @@ FILE CORNER
 - corner.css, corner-form.css                         : tampilan
 - corner-home.js, corner-app.js, corner-pages.js,
   corner-form.js, corner-icons.js, qr.js              : logika (tidak perlu diedit)
-- corner-data.js                                      : data corner, menu, event, pertanyaan, kata penutup
+- corner-pin.js                                       : gerbang PIN (logika, tidak perlu diedit)
+- corner-data.js                                      : data corner, menu, event, pertanyaan, kata penutup, PIN
                                                         (diedit lewat admin-corner.html)
 - corner-config.js                                    : alamat Google Apps Script (diisi sekali)
 - admin-corner.html                                   : editor admin
@@ -34,6 +35,14 @@ Tab Penilaian:
               - Kata penutup: judul + pesan setelah peserta selesai. Pakai {nama}, {event}, {corner}.
 Setelah selesai tekan "Unduh corner-data.js" lalu unggah ke GitHub (menimpa file lama).
 
+PIN CORNER
+- Corner (bola di beranda) hanya terbuka dengan PIN. PIN awal: 020503. Bola aktif berlencana gembok.
+- Peserta yang memindai barcode TIDAK memerlukan PIN. Setelah mengirim, mereka hanya melihat kata penutup
+  (tanpa tombol ke mana pun).
+- Mengubah atau mematikan PIN: admin-corner.html > tab PIN > Simpan PIN > Unduh corner-data.js > unggah ke GitHub.
+  PIN disimpan sebagai sidik SHA-256 + garam, bukan teks. Terbuka selama tab dipakai; salah 5 kali = tunggu 60 detik.
+- Situs ini statis, jadi PIN menghalangi pengunjung biasa, bukan orang yang membongkar kode sumber.
+
 MENGAKTIFKAN ABSENSI KE GOOGLE SHEETS (sekali saja)
 1. Buat Google Sheet BARU khusus Corner (jangan Sheet Aspirasi: ini memuat nama dan NIM).
 2. Ekstensi > Apps Script. Tempel isi apps-script-corner.gs.txt.
@@ -50,7 +59,7 @@ ALUR PEMAKAIAN
 1. Beranda > Samasta Corner > bola Irjen > Event > Absensi > pilih event > barcode tampil
    (layar penuh untuk proyektor, unduh poster PNG, cetak, salin tautan).
 2. Peserta scan, lalu masuk antarmuka imersif: sambutan > identitas > satu pertanyaan per layar
-   > tinjau > selesai (kata penutup + konfeti).
+   > tinjau > selesai (kata penutup + konfeti, tanpa tombol lanjutan).
 3. Irjen: Event > Pembukuan > kode akses > pilih event.
    Tab Kehadiran (centang hadir, silang belum hadir), Ringkasan (narasi otomatis + grafik),
    Jawaban tulis (semua jawaban singkat/panjang per pertanyaan). Ada Unduh CSV dan Cetak/PDF.

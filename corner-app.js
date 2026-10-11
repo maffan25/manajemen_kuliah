@@ -147,6 +147,17 @@
     out.innerHTML = '<div class="sp-empty">Periksa kembali barcode atau tautan yang kamu pakai.<a class="link-btn" href="#corner">Kembali ke Samasta Corner</a></div>';
   }
 
+  /* ---------- gerbang PIN ---------- */
+  function vPin(c) {
+    head(c, [["Beranda", "#beranda"], ["Samasta Corner", "#corner"], [c.nama]], c.nama, "Corner ini khusus pengurus BEM.", true);
+    setTitle(c.nama);
+    out.innerHTML = '<div class="cn-lock cn-pinwall"><span class="cn-closed-i">' + ico("gembok") + "</span><h2>Masukkan PIN untuk membuka</h2><p>Hanya pengurus yang memegang PIN yang bisa membuka corner ini. Peserta acara tidak perlu PIN, cukup pindai barcode.</p>" +
+      '<button type="button" class="btn btn-gold" data-a="pin">Masukkan PIN</button></div>' + back("#corner", "Kembali ke Samasta Corner");
+    var t = ++pinToken;
+    window.CornerPin.ask({ corner: c, onOk: function () { if (t === pinToken) { shown = null; route(); } }, onCancel: function () { if (t === pinToken && /^#corner\//.test(location.hash)) location.hash = "#corner"; } });
+  }
+  var pinToken = 0;
+
   /* ---------- tampilan: beranda corner ---------- */
   function vSoon(c) {
     head(c, [["Beranda", "#beranda"], ["Samasta Corner", "#corner"], [c.nama]], c.nama, c.deskripsi, true);
@@ -165,6 +176,7 @@
       return '<a class="cn-tile" href="' + esc(href) + '"' + (out_ ? ' target="_blank" rel="noopener noreferrer"' : "") + '><span class="cn-tile-i">' + ico(x.ikon || (x.tipe === "event" ? "kalender" : x.tipe === "anggota" ? "orang" : x.tipe === "link" ? "tautan" : x.tipe === "dokumen" ? "buku" : "info")) + "</span>" +
         "<span class=\"cn-tile-b\"><b>" + esc(x.judul) + "</b><small>" + esc(x.deskripsi || "") + "</small></span>" + ico("chevron", "cn-i cn-go") + "</a>";
     }).join("") + "</div>" : '<div class="sp-empty">Belum ada menu di corner ini.</div>';
+    if (window.CornerPin && window.CornerPin.enabled()) out.insertAdjacentHTML("beforeend", '<p class="cn-pinbar"><span>' + ico("gembok", "cn-i") + 'Corner terbuka untuk sesi ini.</span><button type="button" class="link-btn" data-a="pinlock">Kunci kembali</button></p>');
   }
 
   /* ---------- tampilan: info dan anggota ---------- */
@@ -441,6 +453,8 @@
     document.body.classList.remove("cn-print-poster", "cn-immersive");
     if (window.CornerForm) window.CornerForm.close();
     if (!c) return notFound(null);
+    var seg0 = p[2];
+    if (seg0 !== "isi" && window.CornerPin && window.CornerPin.needs(c)) return vPin(c);
     var seg = p[2], sub = p[3], eid = p[4] ? decodeURIComponent(p[4]) : "";
     if (!seg) return vHub(c);
     if (c.status === "segera") return vSoon(c);
@@ -502,6 +516,8 @@
     if (a === "reload") { cache = {}; shown = null; sync(); }
     if (a === "csv") csv();
     if (a === "lock") { setKode(""); cache = {}; route(); }
+    if (a === "pin") { var cc = corner(decodeURIComponent((location.hash.slice(1).split("/")[1]) || "")); if (cc && window.CornerPin) vPin(cc); }
+    if (a === "pinlock") { if (window.CornerPin) window.CornerPin.lock(); pinToken++; location.hash = "#corner"; }
   });
   out.addEventListener("input", function (e) { if (e.target.id === "cn-q") { q = e.target.value.trim(); list(); } });
   out.addEventListener("change", function (e) { if (e.target.id === "cn-hide") { hideNames = e.target.checked; var p = out.querySelector('[data-p="komen"]'); if (p) p.innerHTML = panelKomen(RC); } });
