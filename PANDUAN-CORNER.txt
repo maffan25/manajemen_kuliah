@@ -1,87 +1,24 @@
-PANDUAN SAMASTA CORNER
-======================
+PANDUAN SAMASTA CORNER (v6)
+===========================
+FILE
+- corner-icons.js  : pustaka ikon (megafon, perisai, dst) dan warna bola. Dimuat sebelum corner-home.js.
+- corner-home.js   : kerucut berpegas halus (klik, seret, gulir) dan bola corner berikon.
+- corner-app.js    : halaman corner, gerbang scan, Tentang Irjen (struktur interaktif), SOP dan Buku Panduan, pembukuan.
+- corner.css       : seluruh gaya Corner.
+- corner-data.js   : data (diedit lewat admin-corner.html). admin-corner.html : editor admin.
+- ikon.css, ikon.js, rapot.js : dari kamu, ikut disertakan agar paket lengkap.
 
-FILE BARU
-- corner.css, corner-home.js, corner-app.js, qr.js   : tampilan dan logika (tidak perlu diedit)
-- corner-data.js                                      : data corner, menu, event (diedit lewat admin-corner.html)
-- corner-config.js                                    : alamat Google Apps Script (diisi sekali)
-- admin-corner.html                                   : editor admin
-- apps-script-corner.gs.txt                           : kode backend untuk Google Sheets
+YANG BARU
+1. Tab Penilaian di admin: ketik semua pertanyaan; jenis Bintang 1-5, Jawaban singkat, atau Paragraf; tiap pertanyaan Wajib/Opsional.
+   Tiap event boleh punya pertanyaan dan kata penutup khusus.
+2. Kata penutup dan sambutan bisa diedit. Tulis {nama} dan {event} untuk disisipkan otomatis.
+3. Barcode dipindai -> halaman gerbang bertema (langkah: Data diri, Penilaian, Selesai) dengan konfeti.
+4. Menu Irjen: Tentang Irjen (pengertian, tugas, struktur interaktif dari anggota.js), SOP dan Buku Panduan.
+5. Menu baru di admin: "Profil lembaga" dan "SOP dan buku panduan" bisa dipakai corner lain juga.
 
-FILE YANG DIUBAH
-- index.html : tautan CSS, menu "Corner", section #corner, halaman #corner-app, dan skrip.
+PENTING: PERBARUI BACKEND
+Tempel ulang apps-script-corner.gs.txt ke Apps Script, lalu Deployment BARU. Kolom K "Jawaban" ditambahkan; bila tab Absensi sudah ada,
+isi judul "Jawaban" di K1. Tanpa ini, jawaban singkat tidak tersimpan.
 
-MENAMBAH / MENGEDIT CORNER
-1. Buka admin-corner.html.
-2. Tab Corner: tambah atau edit corner (nama, nama singkat, warna bola, status Aktif / Segera hadir).
-   Tombol "Menu" mengatur menu di dalam corner: Info (teks), Event, Daftar anggota, atau Tautan.
-3. Tab Event: tambah event untuk sebuah corner. Pilih target peserta (menentukan daftar hadir/silang).
-4. Tab Penilaian: daftar aspek bintang 1-5. Aspek PERTAMA dianggap "kepuasan utama" untuk grafik.
-5. Tekan "Unduh corner-data.js", unggah ke GitHub (menimpa file lama).
-
-MENGAKTIFKAN ABSENSI KE GOOGLE SHEETS (sekali saja)
-1. Buat Google Sheet BARU khusus Corner (jangan pakai Sheet Aspirasi, karena ini memuat nama dan NIM).
-2. Ekstensi > Apps Script. Tempel isi apps-script-corner.gs.txt.
-3. Isi KODE_AKSES (minimal 6 karakter). Ini kode rahasia Irjen untuk membuka Pembukuan.
-4. Jalankan fungsi "setup" sekali (beri izin).
-5. Terapkan > Deployment baru > Aplikasi web. Jalankan sebagai: Saya. Yang memiliki akses: Siapa saja.
-6. Salin URL berakhiran /exec ke corner-config.js (window.CORNER_ENDPOINT).
-   Tes: buka URL itu di browser, harus muncul "ok":true, "sheet":"terhubung", "kode":"sudah diatur".
-7. Bila kode skrip diubah, buat Deployment BARU (versi baru), lalu URL tetap sama.
-
-ALUR PEMAKAIAN
-1. Beranda > Samasta Corner > bola Irjen > Event > Absensi > pilih event > barcode tampil.
-   Tersedia: layar penuh (untuk proyektor), unduh poster PNG, cetak, salin tautan.
-2. Peserta scan > pilih bagian > pilih nama > isi NIM > bintang > komentar > kirim.
-3. Irjen: Event > Pembukuan > masukkan KODE_AKSES > pilih event.
-   Tab Kehadiran (centang hadir, silang belum hadir), Ringkasan (narasi otomatis + grafik),
-   Komentar (komentar dan kritik). Tersedia Unduh CSV dan Cetak/PDF.
-
-CATATAN PENTING
-- Sebelum CORNER_ENDPOINT diisi, Corner berjalan dalam "mode uji": data hanya tersimpan di
-  peramban perangkat itu. Barcode harus dibuka dari alamat situs yang sudah tayang
-  (bukan file:// atau localhost) agar bisa dipindai ponsel lain; atau isi CORNER_BASE.
-- Satu NIM hanya bisa mengisi satu kali per event (dicek di server).
-- Absensi terbuka sejak hari acara sampai "bukaHari" (default 2 hari) setelah acara selesai.
-  Bisa dipaksa Dibuka / Ditutup per event di admin.
-- Pencocokan hadir memakai nama yang dipilih dari daftar anggota.js. Bila anggota.js diubah
-  (nama diganti), isian lama dengan nama lama akan tampil di "Di luar daftar target".
-- ikon.css, ikon.js, dan rapot.js dirujuk index.html tetapi tidak ada di zip yang saya terima.
-  Kerucut Corner dibuat mandiri dan tidak bergantung pada file-file itu.
-
-
-==================================================
-PEMBARUAN (VERSI 6): BACA BAGIAN INI DULU
-==================================================
-File baru yang HARUS diunggah ke GitHub:
-  corner-icons.js, corner-scan.css, ikon.css, ikon.js, rapot.js
-File yang berubah (timpa yang lama):
-  index.html, corner-app.js, corner-home.js, corner.css, corner-data.js,
-  admin-corner.html, apps-script-corner.gs.txt
-
-1. APPS SCRIPT WAJIB DIPASANG ULANG
-   Pembukuan kini membaca hasil lewat POST. Salin isi apps-script-corner.gs.txt
-   ke proyek Apps Script, lalu Deploy > Manage deployments > Edit > Version:
-   "New version" > Deploy. URL /exec tetap sama. Sheet otomatis mendapat
-   kolom K "Jawaban" (jawaban per soal, format JSON). Data lama tetap terbaca.
-
-2. PENILAIAN (admin-corner.html > tab Penilaian)
-   Jenis jawaban: Bintang 1-5, Jawaban singkat, Paragraf, Pilihan.
-   Tiap soal punya tombol Wajib / Opsional. Soal bisa diurutkan dan dihapus.
-   Event tertentu boleh punya soal sendiri (tab Event > Edit).
-
-3. KATA PENUTUP (tab Kata penutup)
-   Judul, isi, salam, tulisan dan tujuan tombol. {nama} = nama depan peserta,
-   {event} = judul acara. Ada pratinjau langsung. Bisa dibuat khusus per event.
-
-4. HALAMAN "TENTANG IRJEN"
-   Dibuat dari menu bertipe "profil" di corner-data.js: pengertian, 7 tugas,
-   struktur interaktif (diambil dari anggota.js, bagian Inspektorat Jenderal),
-   SOP (disaring dari sop-data.js memakai kata kunci "sopPola"), dan buku panduan.
-   Letakkan PDF di:  panduan/inspektorat-jenderal.pdf
-   (atau ubah lewat admin-panduan.html).
-
-5. TAMPILAN SCAN
-   Peserta yang memindai barcode masuk ke alur bertahap bertema (identitas,
-   pertanyaan satu per satu, ucapan penutup). Menu dan maskot situs disembunyikan
-   selama alur ini agar fokus.
+Langkah sambungan Google Sheets, alur pemakaian, dan catatan lain sama seperti versi sebelumnya:
+isi KODE_AKSES, jalankan setup, deploy Aplikasi web (Siapa saja), tempel URL /exec ke corner-config.js.

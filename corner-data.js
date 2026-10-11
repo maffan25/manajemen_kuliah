@@ -1,23 +1,19 @@
-/* corner-data.js: data Samasta Corner BEM STDIIS (corner, menu, event, soal penilaian, dan kata penutup).
+/* corner-data.js: data Samasta Corner BEM STDIIS (corner, menu, event, pertanyaan penilaian, dan kata penutup).
    Jangan diedit manual. Gunakan admin-corner.html, lalu unduh file ini dan unggah ke GitHub.
-   Terakhir dibuat: 11/10/2026, 08.00.00 */
+   Terakhir dibuat: 11/10/2026, 09.00.00 */
 window.CORNER = {
- "soal": [
-  {"id": "kepuasan", "t": "Kepuasan keseluruhan", "tipe": "bintang", "wajib": true},
-  {"id": "materi", "t": "Materi atau isi acara", "tipe": "bintang", "wajib": true},
-  {"id": "panitia", "t": "Kinerja panitia", "tipe": "bintang", "wajib": true},
-  {"id": "tempat", "t": "Tempat dan fasilitas", "tipe": "bintang", "wajib": true},
-  {"id": "waktu", "t": "Ketepatan waktu", "tipe": "bintang", "wajib": true},
-  {"id": "komentar", "t": "Komentar tentang acara", "tipe": "paragraf", "wajib": false, "bantu": "Apa kesanmu tentang acara ini?"},
-  {"id": "kritik", "t": "Kritik dan saran", "tipe": "paragraf", "wajib": false, "bantu": "Apa yang sebaiknya diperbaiki untuk acara berikutnya?"}
+ "pertanyaan": [
+  {"id":"q-puas","teks":"Kepuasan keseluruhan","tipe":"bintang","wajib":true},
+  {"id":"q-materi","teks":"Materi atau isi acara","tipe":"bintang","wajib":true},
+  {"id":"q-panitia","teks":"Kinerja panitia","tipe":"bintang","wajib":true},
+  {"id":"q-fasilitas","teks":"Tempat dan fasilitas","tipe":"bintang","wajib":true},
+  {"id":"q-waktu","teks":"Ketepatan waktu","tipe":"bintang","wajib":true},
+  {"id":"q-katakunci","teks":"Satu kata yang menggambarkan acara ini","tipe":"singkat","wajib":false},
+  {"id":"komentar","teks":"Komentar tentang acara","tipe":"panjang","wajib":false},
+  {"id":"kritik","teks":"Kritik dan saran untuk acara berikutnya","tipe":"panjang","wajib":false}
  ],
- "penutup": {
-  "judul": "Terima kasih, {nama}!",
-  "isi": "Kehadiran dan penilaianmu sudah tercatat. Masukanmu menjadi bahan kami untuk berbenah di kegiatan berikutnya.\n\nSemoga ilmu dan kebaikan dari acara hari ini bermanfaat dan berkah. Sampai jumpa di kegiatan Kabinet Samasta selanjutnya.",
-  "salam": "Salam hangat, Inspektorat Jenderal BEM STDIIS Kabinet Samasta",
-  "tombol": "Ke Samasta Corner",
-  "url": "#corner"
- },
+ "sambutan": "Selamat datang. Isi kehadiran dan penilaian singkat ini, tidak sampai dua menit.",
+ "penutup": {"judul":"Jazakumullahu khairan, {nama}","isi":"Kehadiran dan penilaianmu sudah tercatat. Masukanmu menjadi bahan Inspektorat Jenderal untuk menjaga mutu setiap kegiatan BEM.\n\nSemoga ilmu dan kebersamaan hari ini membawa kebaikan. Sampai jumpa di kegiatan berikutnya.","ttd":"Inspektorat Jenderal, BEM STDIIS Kabinet Samasta"},
  "bukaHari": 2,
  "corner": [
   {
@@ -44,12 +40,13 @@ window.CORNER = {
    "status": "aktif",
    "unit": "Inspektorat Jenderal",
    "menu": [
-    {"id": "event", "judul": "Event", "deskripsi": "Absensi dengan barcode, penilaian peserta, dan pembukuan kegiatan.", "tipe": "event", "ikon": "kalender"},
-    {"id": "profil", "judul": "Tentang Irjen", "deskripsi": "Pengertian, tugas, struktur, SOP, dan buku panduan Inspektorat Jenderal.", "tipe": "profil", "ikon": "perisai", "pengertian": "Inspektorat Jenderal (Irjen) adalah unit pengawas internal Kabinet Samasta. Irjen memastikan setiap kegiatan, program kerja, dan pengelolaan sumber daya BEM berjalan sesuai SOP, AD/ART, dan peraturan kampus.\n\nIrjen bukan pencari kesalahan. Ia hadir sebagai cermin yang jujur: mencatat apa yang sudah baik, menemukan apa yang perlu dibenahi, lalu mengawal perbaikannya sampai tuntas.", "tugas": [{"t": "Merencanakan pengawasan", "d": "Menyusun rencana dan prioritas pengawasan kegiatan serta program kerja selama periode berjalan."}, {"t": "Memeriksa dan memverifikasi", "d": "Memeriksa pelaksanaan kegiatan, kelengkapan dokumen, administrasi, serta pertanggungjawaban keuangan dan inventaris."}, {"t": "Mencatat kehadiran dan penilaian", "d": "Mengelola absensi barcode dan menghimpun penilaian, komentar, serta kritik peserta setiap kegiatan."}, {"t": "Menyusun temuan dan rekomendasi", "d": "Mencatat temuan, masalah berulang, dan rekomendasi perbaikan secara objektif dan terdokumentasi."}, {"t": "Memantau tindak lanjut", "d": "Mengawal agar rekomendasi benar-benar dijalankan oleh unit terkait sampai selesai."}, {"t": "Menjaga etika dan menangani pengaduan", "d": "Menerima dan menangani pengaduan internal, dugaan pelanggaran kode etik, dan konflik kepentingan secara adil dan rahasia."}, {"t": "Mengevaluasi kinerja pengurus", "d": "Menyusun rapot kinerja pengurus tiap periode sebagai bahan pembinaan dan evaluasi kabinet."}], "panduan": "inspektorat-jenderal", "sopPola": "Irjen|Inspektur|Inspektorat"},
-    {"id": "rapot", "judul": "Rapot anggota", "deskripsi": "Penilaian kinerja pengurus tiap periode.", "tipe": "link", "ikon": "bintang", "url": "#rapot"}
+    {"id":"event","judul":"Event","deskripsi":"Absensi dengan barcode, penilaian peserta, dan pembukuan kegiatan.","tipe":"event","ikon":"kalender"},
+    {"id":"tentang","judul":"Tentang Irjen","deskripsi":"Pengertian, tugas, serta struktur dan anggota Irjen.","tipe":"profil","ikon":"perisai","pengertian":"Inspektorat Jenderal (Irjen) adalah sistem penjaminan mutu organisasi BEM STDIIS Kabinet Samasta: pihak independen yang memastikan apa yang berjalan di BEM benar-benar berjalan dengan baik, sesuai arah yang disepakati bersama, dan terus berkembang dari satu periode ke periode berikutnya.\n\nIrjen bukan pengawas yang mencari kesalahan, melainkan mitra yang membantu kementerian dan biro bekerja lebih baik. Posisinya independen, lintas bidang, dan langsung bertanggung jawab kepada Presiden BEM.","tugas":"Pengawasan | Memantau seluruh kementerian dan biro secara independen lewat checkup berkala, agar arah gerak, OKR, dan kepatuhan SOP tetap sesuai visi dan misi BEM.\nEvaluasi | Menilai kualitas perencanaan, pelaksanaan, dan dampak program kerja, lalu menerbitkan Rapor Proker setiap proker selesai dan Rapor Kementerian setiap dua bulan.\nRekomendasi | Merumuskan rekomendasi perbaikan yang konkret, memantau tindak lanjutnya, dan mengeskalasi ke BPH bila tidak ditindaklanjuti.\nPelaporan | Menerbitkan rapor berkala dan mengelola kanal whistleblowing internal yang aman dan objektif.\nEvaluasi kegiatan | Menyusun form kepuasan peserta, mencatat kehadiran lewat Samasta Corner, dan merangkum hasilnya untuk perbaikan kegiatan berikutnya.","prinsip":"Objektivitas | Penilaian berdasarkan fakta, data, dan standar, bukan kedekatan atau tekanan.\nKerahasiaan | Temuan dan laporan whistleblowing hanya dibahas lewat mekanisme resmi Irjen.\nProfesionalisme | Umpan balik yang jelas, membangun, dan tidak menghakimi personal.\nKonsistensi | Standar yang sama berlaku untuk semua unit.\nIntegritas | Posisi tidak dipakai untuk kepentingan pribadi.\nTepat waktu | Checkup, evaluasi, dan pelaporan berjalan sesuai jadwal.","atas":"Presiden BEM","perananKepala":"Koordinator tim Irjen dan pengawas langsung atas unit yang ditugaskan.","tugasKepala":"Memimpin rapat internal Irjen setiap dua pekan dan memastikan ada notulensi.\nMenjaga konsistensi standar penilaian antaranggota.\nMenyampaikan laporan Irjen kepada Presiden dan Wakil Presiden setiap dua bulan.\nMengeskalasi temuan yang butuh keputusan ke BPH atau Presiden BEM.\nMemastikan seluruh dokumentasi Irjen tersimpan rapi.","perananAnggota":"Penanggung jawab penuh pengawasan dan evaluasi unit yang ditugaskan.","tugasAnggota":"Menjalin komunikasi awal dan mereview Grand Design serta OKR unit.\nMenjalankan checkup proker sesuai alur dan memonitor OKR tiap dua bulan.\nMendokumentasikan temuan dan rekomendasi, lalu memastikan tindak lanjutnya.\nMelaporkan temuan di rapat internal berkala.\nMengelola kanal whistleblowing untuk unit yang ditangani."},
+    {"id":"panduan","judul":"SOP dan Buku Panduan","deskripsi":"Prosedur kerja dan buku panduan Irjen, siap dibuka atau diunduh.","tipe":"panduan","ikon":"buku","buku":"inspektorat-jenderal","sopKode":"IRJ","sopPemilik":"Inspektur Jenderal"},
+    {"id":"rapot","judul":"Rapot anggota","deskripsi":"Penilaian kinerja pengurus tiap periode.","tipe":"link","ikon":"bintang","url":"#rapot"}
    ],
    "event": [
-    {"id": "e-20261009-rapat", "judul": "Rapat Evaluasi, Peresmian, dan Pembahasan Proker serta Sosialisasi SOP", "tanggal": "2026-10-09", "jam": "19.30 sampai 21.30", "tempat": "RB 03", "deskripsi": "Rapat evaluasi, peresmian, pembahasan program kerja, dan sosialisasi SOP Kabinet Samasta.", "target": ["*"], "absen": "auto"}
+    {"id":"e-20261009-rapat","judul":"Rapat Evaluasi, Peresmian, dan Pembahasan Proker serta Sosialisasi SOP","tanggal":"2026-10-09","jam":"19.30 sampai 21.30","tempat":"RB 03","deskripsi":"Rapat evaluasi, peresmian, pembahasan program kerja, dan sosialisasi SOP Kabinet Samasta.","target":["*"],"absen":"auto"}
    ]
   }
  ]
