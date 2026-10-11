@@ -8,7 +8,7 @@ var SHEET_ID = '';            // OPSIONAL. Isi ID Spreadsheet bila skrip dibuat 
 var SHEET_NAME = 'Absensi';
 var KODE_AKSES = '';          // WAJIB DIISI: kode rahasia Irjen untuk membuka Pembukuan. Minimal 6 karakter.
 var MAX_LEN = 1000;
-var MAX_ASPEK = 12;
+var MAX_SOAL = 20;
 
 /* ===== Peserta mengirim absensi dan penilaian ===== */
 function doPost(e) {
@@ -18,27 +18,24 @@ function doPost(e) {
 
     // Jebakan bot: kolom tersembunyi ini hanya terisi oleh bot
     if (d.website) return reply_({ ok: true });
+    if (d.aksi === 'hasil') return hasil_(d);   // kode dikirim lewat POST agar tidak tercatat di URL
     if (d.aksi !== 'absen') return reply_({ ok: false, error: 'aksi' });
 
     var corner = id_(d.corner), event = id_(d.event);
     var nama = clean_(d.nama, 80), nim = clean_(d.nim, 20).toUpperCase(), bagian = clean_(d.bagian, 80);
     if (!corner || !event || nama.length < 3 || !/^[0-9A-Z.\-]{5,20}$/.test(nim) || !bagian) return reply_({ ok: false, error: 'data' });
 
-    // Skor: objek {nama aspek: 1..5}
-    var skor = {}, n = 0, k;
-    for (k in (d.skor || {})) {
-      var v = Number(d.skor[k]);
-      if (!(v >= 1 && v <= 5) || Math.floor(v) !== v) return reply_({ ok: false, error: 'skor' });
-      skor[clean_(k, 60)] = v;
-      if (++n > MAX_ASPEK) return reply_({ ok: false, error: 'skor' });
+    // Jawaban: daftar {id, t (teks soal), tipe, v (nilai)}. bintang = bilangan bulat 1..5, selain itu teks.
+    var jawab = [], src = d.jawab;
+    if (!Array.isArray(src) || !src.length || src.length > MAX_SOAL) return reply_({ ok: false, error: 'skor' });
+    for (var i = 0; i < src.length; i++) {
+      var q = src[i] || {}, tipe = q.tipe === 'bintang' ? 'bintang' : (q.tipe === 'singkat' ? 'singkat' : 'panjang'), v = q.v;
+      if (tipe === 'bintang') {
+        if (v === null || v === '' || v === undefined) v = '';              // soal opsional yang dilewati
+        else { v = Number(v); if (!(v >= 1 && v <= 5) || Math.floor(v) !== v) return reply_({ ok: false, error: 'skor' }); }
+      } else v = clean_(v, tipe === 'singkat' ? 160 : MAX_LEN);
+      jawab.push({ id: id_(q.id) || ('q' + (i + 1)), t: clean_(q.t, 160), tipe: tipe, v: v });
     }
-    // Jawaban teks (jawaban singkat / paragraf): objek {pertanyaan: jawaban}
-    var jawab = {}, nj = 0;
-    for (k in (d.jawab || {})) {
-      var t = clean_(d.jawab[k], MAX_LEN);
-      if (t) { jawab[clean_(k, 120)] = t; if (++nj > MAX_ASPEK) return reply_({ ok: false, error: 'data' }); }
-    }
-    // Penilaian bintang boleh kosong bila semua pertanyaannya opsional
 
     var sh = sheet_();
     if (!sh) return reply_({ ok: false, error: 'nosheet' });
@@ -54,7 +51,7 @@ function doPost(e) {
           if (String(ids[i][0]) === event && String(ids[i][2]).toUpperCase() === nim) return reply_({ ok: false, error: 'duplikat' });
         }
       }
-      sh.appendRow([new Date(), corner, event, clean_(d.judul, 160), nim, nama, bagian, JSON.stringify(skor), clean_(d.komentar, MAX_LEN), clean_(d.kritik, MAX_LEN), JSON.stringify(jawab)]);
+      sh.appendRow([new Date(), corner, event, clean_(d.judul, 160), nim, nama, bagian, JSON.stringify(jawab)]);
       SpreadsheetApp.flush();
     } finally {
       lock.releaseLock();
@@ -66,36 +63,33 @@ function doPost(e) {
   }
 }
 
-/* ===== Irjen membaca pembukuan (wajib kode akses) ===== */
+/* ===== Irjen membaca pembukuan (wajib kode akses, dikirim lewat POST) ===== */
+function hasil_(d) {
+  var cache = CacheService.getScriptCache(), fails = Number(cache.get('gagal') || 0);
+  if (fails >= 10) return reply_({ ok: false, error: 'tunggu' });            // ditahan 10 menit setelah 10 kali salah
+  if (!KODE_AKSES || KODE_AKSES.length < 6) return reply_({ ok: false, error: 'belumkode' });
+  if (String(d.kode || '') !== KODE_AKSES) {
+    cache.put('gagal', String(fails + 1), 600);
+    return reply_({ ok: false, error: 'kode' });
+  }
+  var event = id_(d.event), sh = sheet_();
+  if (!event) return reply_({ ok: false, error: 'data' });
+  if (!sh) return reply_({ ok: false, error: 'nosheet' });
+  var last = sh.getLastRow(), rows = [];
+  if (last > 1) {
+    var vals = sh.getRange(2, 1, last - 1, 8).getValues();
+    vals.forEach(function (r) {
+      if (String(r[2]) !== event) return;
+      var jawab = []; try { jawab = JSON.parse(r[7]); } catch (x) {}
+      rows.push({ t: r[0] instanceof Date ? r[0].toISOString() : String(r[0]), nim: String(r[4]), nama: String(r[5]), bagian: String(r[6]), jawab: jawab });
+    });
+  }
+  return reply_({ ok: true, rows: rows });
+}
+
 function doGet(e) {
   var p = (e && e.parameter) || {};
   try {
-    if (p.aksi === 'hasil') {
-      var cache = CacheService.getScriptCache(), fails = Number(cache.get('gagal') || 0);
-      if (fails >= 10) return reply_({ ok: false, error: 'tunggu' });            // ditahan 10 menit setelah 10 kali salah
-      if (!KODE_AKSES || KODE_AKSES.length < 6) return reply_({ ok: false, error: 'belumkode' });
-      if (String(p.kode || '') !== KODE_AKSES) {
-        cache.put('gagal', String(fails + 1), 600);
-        return reply_({ ok: false, error: 'kode' });
-      }
-      var event = id_(p.event), sh = sheet_();
-      if (!event) return reply_({ ok: false, error: 'data' });
-      if (!sh) return reply_({ ok: false, error: 'nosheet' });
-      var last = sh.getLastRow(), rows = [];
-      if (last > 1) {
-        var vals = sh.getRange(2, 1, last - 1, 11).getValues();
-        vals.forEach(function (r) {
-          if (String(r[2]) !== event) return;
-          var skor = {}; try { skor = JSON.parse(r[7]); } catch (x) {}
-          rows.push({
-            t: r[0] instanceof Date ? r[0].toISOString() : String(r[0]),
-            nim: String(r[4]), nama: String(r[5]), bagian: String(r[6]),
-            skor: skor, komentar: String(r[8] || ''), kritik: String(r[9] || ''), jawab: jawab_(r[10])
-          });
-        });
-      }
-      return reply_({ ok: true, rows: rows });
-    }
     // Buka URL Web App di browser: harus muncul "ok":true DAN "sheet":"terhubung"
     var sh2 = null, msg = '';
     try { sh2 = sheet_(); } catch (err) { msg = String(err); }
@@ -120,8 +114,6 @@ function setup() {
   Logger.log('OK, tab "' + sh.getName() + '" siap di Spreadsheet: ' + sh.getParent().getUrl());
 }
 
-function jawab_(v) { try { return v ? JSON.parse(v) : {}; } catch (x) { return {}; } }
-
 function clean_(v, max) {
   return String(v == null ? '' : v)
     .replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '')
@@ -140,19 +132,17 @@ function sheet_() {
   var sh = ss.getSheetByName(SHEET_NAME);
   if (!sh) {
     sh = ss.insertSheet(SHEET_NAME);
-    sh.appendRow(['Waktu', 'Corner', 'EventID', 'Event', 'NIM', 'Nama', 'Bagian', 'Skor', 'Komentar', 'Kritik', 'Jawaban']);
+    sh.appendRow(['Waktu', 'Corner', 'EventID', 'Event', 'NIM', 'Nama', 'Bagian', 'Jawaban']);
     sh.setFrozenRows(1);
     sh.getRange('1:1').setFontWeight('bold');
     // Semua kolom teks diformat sebagai teks agar isi tidak pernah dibaca sebagai rumus
-    sh.getRange('B:K').setNumberFormat('@');
+    sh.getRange('B:H').setNumberFormat('@');
     sh.getRange('A:A').setNumberFormat('dd/MM/yyyy HH:mm:ss');
-    sh.getRange('I:J').setWrap(true);
+    sh.getRange('H:H').setWrap(true);
     sh.setColumnWidth(1, 150);
     sh.setColumnWidth(4, 240);
     sh.setColumnWidth(6, 200);
-    sh.setColumnWidth(8, 260);
-    sh.setColumnWidth(9, 380);
-    sh.setColumnWidth(10, 380);
+    sh.setColumnWidth(8, 560);
   }
   return sh;
 }
@@ -160,5 +150,3 @@ function sheet_() {
 function reply_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
-
-// CATATAN: bila tab "Absensi" sudah ada dari versi lama, tambahkan judul "Jawaban" di kolom K baris 1 (atau hapus tab lalu jalankan setup).

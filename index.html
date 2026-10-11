@@ -538,7 +538,8 @@ html.focus-on .is-dim::after{opacity:var(--dim)}
 @media (prefers-reduced-motion:reduce){.day.fire,.day.fire::before,.fl,.tk-tag.hot{animation:none}}
 </style>
 <link rel="stylesheet" href="ai.css?v=5">
-<link rel="stylesheet" href="corner.css?v=2">
+<link rel="stylesheet" href="corner.css?v=3">
+<link rel="stylesheet" href="corner-form.css?v=1">
 <link rel="stylesheet" href="ikon.css?v=4">
 <style id="profil-css">
 /* ===== Profil pengurus: avatar, penanda pimpinan, kartu profil ===== */
@@ -920,13 +921,16 @@ html.pf-open{overflow:hidden}
       <h2>Samasta Corner</h2>
       <p>Ruang khusus tiap kementerian dan biro untuk layanan, kegiatan, dan evaluasi.</p>
     </div>
-    <div class="cn-stage" id="cn-stage">
-      <div class="cn-stand">
-        <span class="cn-shadow" aria-hidden="true"></span>
-        <button type="button" class="cn-cone" id="cn-cone" aria-label="Kerucut Samasta Corner. Tekan untuk memutarnya."><span class="cn-tilt" id="cn-tilt"></span></button>
+    <div class="pd-teaser cn-card" id="cn-stage">
+      <div class="ik ik-cone" id="cn-cone" role="button" tabindex="0" aria-label="Kerucut Samasta Corner. Tekan untuk memutarnya."><div class="ik-t" id="cn-tilt"></div></div>
+      <div class="cn-tx">
+        <h3>Satu pintu, banyak corner</h3>
+        <p>Setiap kementerian dan biro punya corner sendiri untuk layanan, kegiatan, dan evaluasi. Pencet kerucut untuk memutarnya, lalu pilih corner di bawah.</p>
       </div>
-      <p class="cn-hint">Pencet atau geser kerucut untuk memutarnya, lalu pilih corner di bawah.</p>
-      <ul class="cn-orbs" id="cn-orbs" aria-label="Daftar corner"></ul>
+      <div class="cn-panel" id="cn-panel">
+        <p class="cn-panel-t"><span>Pilih corner</span></p>
+        <ul class="cn-orbs" id="cn-orbs" aria-label="Daftar corner"></ul>
+      </div>
     </div>
   </div>
 </section>
@@ -1478,10 +1482,12 @@ html.pf-open{overflow:hidden}
 <script src="aspirasi-config.js?v=4"></script>
 <script src="aspirasi.js?v=4"></script>
 <script src="corner-config.js?v=1"></script>
-<script src="corner-data.js?v=2"></script>
-<script src="corner-icons.js?v=1"></script>
+<script src="corner-data.js?v=1"></script>
 <script src="qr.js?v=1"></script>
-<script src="corner-home.js?v=2"></script>
+<script src="corner-icons.js?v=1"></script>
+<script src="corner-home.js?v=1"></script>
+<script src="corner-pages.js?v=1"></script>
+<script src="corner-form.js?v=1"></script>
 <script src="corner-app.js?v=2"></script>
 <script>
 /* panduan-data.js diisi/diganti pengelola lewat GitHub. Parameter waktu (per 5 menit)

@@ -6,151 +6,166 @@
 <meta name="robots" content="noindex, nofollow">
 <title>Editor Samasta Corner | BEM STDIIS</title>
 <style>
-:root{--ink:#0d2a38;--gold:#f8d24a;--cream:#fffbef;--sand:#f6efd5;--line:#e6dbb4;--muted:#5d6b73;--green:#0f6b5a;--red:#b3261e;--r:16px;--gap:16px;
+:root{--ink:#0d2a38;--ink2:#17435a;--gold:#f8d24a;--cream:#fffbef;--sand:#f6efd5;--line:#e6dbb4;--muted:#5d6b73;--green:#0f6b5a;--red:#b3261e;--r:16px;--gap:16px;
   --serif:Georgia,"Times New Roman",serif;--sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
 *{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
 html{-webkit-text-size-adjust:100%}
-body{font:16px/1.55 var(--sans);background:var(--cream);color:var(--ink);padding-bottom:calc(48px + env(safe-area-inset-bottom))}
-.wrap{max-width:960px;margin:0 auto;padding:0 20px}
-header{background:var(--ink);color:#f6f1de;padding:30px 0 28px}
-header h1{font:700 clamp(26px,5vw,36px)/1.15 var(--serif);color:#fff}
-header p{color:#cde0dc;margin-top:8px;max-width:640px}
-.tag{display:inline-block;background:var(--gold);color:var(--ink);font-weight:700;font-size:12.5px;border-radius:999px;padding:3px 12px;margin-bottom:12px}
-.status{position:sticky;top:0;z-index:20;background:var(--sand);border-bottom:1px solid var(--line)}
-.status .wrap{display:flex;align-items:center;gap:12px;min-height:56px;padding-top:8px;padding-bottom:8px}
-.status #stxt{flex:1;min-width:0;font-size:14.5px}
-.dot{width:10px;height:10px;border-radius:50%;background:#9db3ad;flex:none}
+body{font:16px/1.55 var(--sans);background:var(--cream);color:var(--ink);padding-bottom:calc(110px + env(safe-area-inset-bottom))}
+button,input,select,textarea{font:inherit;color:inherit}
+.wrap{width:min(960px,100% - 32px);margin-inline:auto}
+header.top{background:var(--ink);color:#f6f1de;padding:30px 0 28px;position:relative;overflow:hidden}
+header.top::after{content:"";position:absolute;right:-60px;top:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(248,210,74,.25),transparent 70%)}
+header.top .wrap{position:relative;z-index:1}
+.tag{display:inline-block;background:var(--gold);color:var(--ink);font-weight:700;font-size:12px;border-radius:999px;padding:3px 12px;margin-bottom:12px}
+header.top h1{font:700 clamp(26px,5vw,36px)/1.15 var(--serif);color:#fff;margin-bottom:6px}
+header.top p{color:#cde0dc;max-width:620px}
+.status{position:sticky;top:0;z-index:30;background:var(--sand);border-bottom:1px solid var(--line)}
+.status .wrap{display:flex;align-items:center;gap:12px;min-height:54px;padding-block:8px}
+.dot{flex:none;width:10px;height:10px;border-radius:50%;background:#9db3ad}
 .status.dirty .dot{background:var(--gold);box-shadow:0 0 0 4px rgba(248,210,74,.35)}.status.done .dot{background:var(--green)}
-.btn{font:600 15px/1.2 var(--sans);border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:10px 18px;min-height:42px;cursor:pointer;transition:background .15s,transform .15s;display:inline-flex;gap:8px;align-items:center;justify-content:center;white-space:nowrap}
-.btn:hover{background:var(--sand)}.btn:active{transform:scale(.97)}
+#stxt{flex:1;min-width:0;font-size:14.5px;line-height:1.4}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:0 20px;border-radius:999px;border:1.5px solid var(--ink);background:transparent;font-weight:600;font-size:15px;cursor:pointer;white-space:nowrap;transition:background .15s,transform .15s,box-shadow .15s}
+.btn:hover{background:var(--sand)}.btn:active{transform:scale(.97)}.btn:focus-visible,.tab:focus-visible,.icon-btn:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
 .btn.gold{background:var(--gold);border-color:var(--gold)}.btn.gold:hover{background:#f3c92f}
-.btn.dark{background:var(--ink);color:#fff}.btn.dark:hover{background:#17435a}
-.btn.sm{padding:6px 14px;min-height:36px;font-size:13.5px}.btn.red{border-color:var(--red);color:var(--red)}.btn.red:hover{background:#fbe9e7}
-.btn.ic{width:36px;padding:0}
+.btn.dark{background:var(--ink);color:#fff}.btn.dark:hover{background:var(--ink2)}
+.btn.sm{min-height:34px;padding:0 14px;font-size:13.5px}.btn.red{border-color:var(--red);color:var(--red)}.btn.red:hover{background:#fbe9e7}
 .btn[disabled]{opacity:.4;pointer-events:none}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:24px 0 20px}
-.tab{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:9px 20px;font:600 14.5px var(--sans);cursor:pointer;color:var(--muted)}
+.icon-btn{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--line);background:#fff;cursor:pointer;font-size:15px;line-height:1;transition:background .15s,border-color .15s}
+.icon-btn:hover{background:var(--sand);border-color:var(--ink)}.icon-btn[disabled]{opacity:.3;pointer-events:none}.icon-btn.red{color:var(--red)}
+.tabs{display:flex;gap:8px;margin:24px 0 8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;min-height:42px;padding:0 20px;border-radius:999px;border:1.5px solid var(--line);background:#fff;font-weight:600;font-size:14.5px;color:var(--muted);cursor:pointer}
 .tab[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
-.bar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:var(--gap)}
-.bar .grow{flex:1 1 220px;min-width:0}
-.hint{font-size:13.5px;color:var(--muted)}
-input,select,textarea{font:inherit;color:var(--ink);background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;width:100%;min-width:0}
-input:focus,select:focus,textarea:focus{outline:0;border-color:var(--ink);box-shadow:0 0 0 4px rgba(248,210,74,.45)}
-textarea{min-height:96px;resize:vertical;line-height:1.5}
-label{font-weight:600;font-size:14px;display:grid;gap:6px;align-content:start}label small{font-weight:400;color:var(--muted)}
-.list{display:grid;gap:var(--gap)}
-.card{display:grid;grid-template-columns:64px minmax(0,1fr);gap:4px 18px;align-items:start;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:var(--r);padding:18px 20px;box-shadow:0 6px 18px -12px rgba(13,42,56,.35)}
-.card>.main{min-width:0}
-.card h3{font:700 18px/1.3 var(--serif);margin-bottom:8px;overflow-wrap:anywhere}
-.card p{font-size:14.5px;color:var(--muted);margin:10px 0 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.card .act{grid-column:1/-1;display:flex;gap:8px;flex-wrap:wrap;padding-top:14px;margin-top:14px;border-top:1px dashed var(--line)}
-.card .act .sp{flex:1}
-.meta{display:flex;gap:6px;flex-wrap:wrap}
+.panel-bar{display:flex;align-items:center;gap:12px;margin:18px 0 14px;min-height:42px}
+.panel-bar .grow{flex:1;min-width:0}.panel-bar .hint{font-size:14px}
+.hint{color:var(--muted);font-size:13.5px;line-height:1.5}
+.list{display:grid;gap:12px}
+.card{display:grid;grid-template-columns:64px minmax(0,1fr) auto;grid-template-areas:"lead body act";gap:6px 18px;align-items:start;background:#fff;border:1px solid var(--line);border-left:4px solid var(--gold);border-radius:var(--r);padding:16px 18px;box-shadow:0 6px 18px -14px rgba(13,42,56,.4)}
+.card .lead{grid-area:lead}.card .body{grid-area:body;min-width:0}.card .act{grid-area:act;display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.card h3{font:700 18px/1.3 var(--serif);overflow-wrap:anywhere}
+.card p{font-size:14.5px;color:var(--muted);margin-top:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
 .meta i{font-style:normal;font-size:12.5px;font-weight:600;background:var(--sand);border-radius:999px;padding:2px 10px;color:#2a5560}
 .meta i.ok{background:#d6efe6;color:#0f5444}.meta i.soon{background:var(--gold);color:var(--ink)}
-.orb{position:relative;width:60px;height:60px;border-radius:50%;display:grid;place-items:center;color:var(--ot);--ac:#ffe27a;flex:none;
-  background:radial-gradient(circle at 31% 22%,rgba(255,255,255,.7) 0,rgba(255,255,255,0) 26%),radial-gradient(circle at 36% 30%,var(--o1),var(--o2) 56%,var(--o3));box-shadow:inset -6px -8px 14px rgba(0,0,0,.32)}
-.orb[data-tone=emas]{--ac:#14705a}
-.cn-ico{fill:none;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;--ac:currentColor;display:block}
-.cn-ico .f{fill:currentColor;fill-opacity:.2}.cn-ico .ac{stroke:var(--ac)}.cn-ico .dot{fill:var(--ac);stroke:none}
-.orb .cn-ico{width:30px;height:30px}
-.dt{background:var(--sand);border-radius:12px;text-align:center;padding:9px 4px}
-.dt b{display:block;font:700 24px/1 var(--serif)}.dt span{font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase}
-.empty{background:#fff;border:1.5px dashed var(--line);border-radius:var(--r);padding:36px 20px;text-align:center;color:var(--muted)}
-.panel{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px;display:grid;gap:18px;margin-bottom:var(--gap)}
-.panel>h2{font:700 19px/1.3 var(--serif)}.panel>.hint{margin-top:-10px}
-.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.how{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:4px 20px;margin-top:28px}
-.how summary{cursor:pointer;font-weight:700;padding:14px 0}.how ol{padding:0 0 14px 20px;color:#2b4652}.how li{margin-bottom:6px}
-.how .act{display:flex;gap:8px;flex-wrap:wrap;padding-bottom:18px}
-.banner{background:#fff7d6;border:1px solid #ecd67a;border-radius:var(--r);padding:14px 18px;margin-top:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}.banner span{flex:1;min-width:200px}
-.warn{background:#fff1d6;border:1px solid #efc98a;border-radius:var(--r);padding:12px 16px;margin-bottom:var(--gap);font-size:14.5px}
-dialog{border:0;border-radius:22px;padding:0;width:min(680px,calc(100vw - 24px));max-height:calc(100dvh - 24px);box-shadow:0 30px 80px -20px rgba(13,42,56,.6);color:var(--ink);overflow:hidden}
-dialog[open]{display:flex;flex-direction:column}
-dialog::backdrop{background:rgba(13,42,56,.55);backdrop-filter:blur(3px)}
-dialog>form,dialog>div#m-list{display:flex;flex-direction:column;min-height:0;flex:1}
-dialog form[hidden]{display:none}
-.fh{background:var(--ink);color:#fff;padding:18px 24px;font:700 20px var(--serif);flex:none}
-.fb{padding:22px 24px;display:grid;gap:16px;overflow:auto;flex:1;min-height:0;align-content:start}
-.ff{padding:14px 24px;border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;background:var(--cream);flex:none;flex-wrap:wrap}
-.err{color:var(--red);font-size:13.5px;min-height:1.2em}
+.sph{width:56px;height:56px;border-radius:50%;display:grid;place-items:center;position:relative;overflow:hidden;
+  background:radial-gradient(circle at 31% 22%,rgba(255,255,255,.65) 0,rgba(255,255,255,0) 26%),radial-gradient(circle at 36% 30%,var(--o1),var(--o2) 52%,var(--o3));box-shadow:inset -5px -7px 12px rgba(0,0,0,.3),0 8px 14px -8px rgba(13,42,56,.6)}
+.sph svg{width:60%;height:60%;color:var(--ot);overflow:visible}.sph .f{fill:currentColor}.sph .a{fill:var(--oa)}.sph .s{fill:none;stroke:var(--oa);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.dt{width:56px;background:var(--sand);border-radius:12px;text-align:center;padding:8px 4px}
+.dt b{display:block;font:700 22px/1 var(--serif)}.dt span{font-size:11.5px;font-weight:700;color:var(--muted);text-transform:uppercase}
+.empty{background:#fff;border:1.5px dashed var(--line);border-radius:var(--r);padding:40px 20px;text-align:center;color:var(--muted)}
+.warn{background:#fff1d6;border:1px solid #efc98a;border-radius:var(--r);padding:12px 16px;margin-bottom:14px;font-size:14.5px}
+.section{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:18px}
+.section>h2{font:700 20px/1.3 var(--serif);margin-bottom:4px}.section>.hint{margin-bottom:16px}
+.how{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:4px 22px;margin-top:30px}
+.how summary{cursor:pointer;font-weight:700;padding:14px 0}.how ol{padding:0 0 12px 20px;color:#2b4652}.how li{margin-bottom:6px}
+.how .tools{display:flex;gap:8px;flex-wrap:wrap;padding:4px 0 18px}
+.banner{background:#fff7d6;border:1px solid #ecd67a;border-radius:var(--r);padding:12px 18px;margin-top:18px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}.banner span{flex:1;min-width:200px;font-size:14.5px}
+
+/* formulir */
+label.f{display:grid;gap:6px;font-weight:600;font-size:14px}label.f small{font-weight:400;color:var(--muted)}
+.inp,select.inp,textarea.inp{width:100%;min-height:44px;padding:10px 14px;background:#fff;border:1.5px solid var(--line);border-radius:12px;font-size:15.5px;font-weight:400}
+textarea.inp{resize:vertical;min-height:110px;line-height:1.55}
+.inp:focus{outline:0;border-color:var(--ink);box-shadow:0 0 0 4px rgba(248,210,74,.45)}
+.row2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;align-items:end}
+.err{color:var(--red);font-size:14px;font-weight:600;min-height:1.3em}
+.fgrid{display:grid;gap:16px}
 .sw{display:flex;gap:10px;flex-wrap:wrap}
-.sw label{display:block;position:relative;cursor:pointer}.sw input{position:absolute;opacity:0;width:1px;height:1px}
-.sw .orb{width:46px;height:46px;border:3px solid transparent;transition:transform .15s}
-.sw input:checked+.orb{border-color:var(--ink);transform:scale(1.1)}.sw input:focus-visible+.orb{outline:3px solid var(--gold);outline-offset:2px}
-.icons{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:8px}
-.icons label{position:relative;cursor:pointer}.icons input{position:absolute;opacity:0;width:1px;height:1px}
-.icons span{display:grid;justify-items:center;gap:4px;padding:10px 4px 8px;border:1.5px solid var(--line);border-radius:12px;font-size:11.5px;font-weight:600;color:var(--muted);background:#fff}
-.icons .cn-ico{width:28px;height:28px;color:var(--ink);--ac:#b98a14}
-.icons input:checked+span{border-color:var(--ink);background:var(--sand);color:var(--ink)}.icons input:focus-visible+span{outline:3px solid var(--gold)}
-.checks{display:grid;gap:6px;max-height:220px;overflow:auto;border:1.5px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
-.checks label{display:flex;gap:10px;align-items:center;font-weight:500}.checks input{width:18px;height:18px;accent-color:var(--green);flex:none}
-.mrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin-bottom:8px}
-.mrow b{min-width:0;overflow-wrap:anywhere}.mrow small{display:block;color:var(--muted);font-weight:400}
-.mrow .acts{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
-/* editor pertanyaan */
-.qe{display:grid;gap:12px}
-.qr{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px 12px;background:var(--cream);border:1.5px solid var(--line);border-radius:14px;padding:14px}
-.qr .no{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font:700 14px var(--serif)}
-.qr .body{display:grid;gap:10px;min-width:0}
-.qr .opts{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.qr .opts select{flex:1 1 170px;width:auto}
-.sw2{display:inline-flex;align-items:center;gap:10px;font-weight:600;font-size:14px;cursor:pointer;white-space:nowrap}
-.sw2 input{position:absolute;opacity:0;width:1px;height:1px}
-.sw2 i{position:relative;width:44px;height:26px;border-radius:99px;background:#cfd8d6;transition:background .2s;flex:none}
-.sw2 i::after{content:"";position:absolute;left:3px;top:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
-.sw2 input:checked+i{background:var(--green)}.sw2 input:checked+i::after{transform:translateX(18px)}
-.sw2 input:focus-visible+i{outline:3px solid var(--gold);outline-offset:2px}
-.qr .mv{display:flex;gap:6px;margin-left:auto}
-.qadd{display:flex;gap:8px;flex-wrap:wrap}
-.qprev{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:4px}
-.stars5{letter-spacing:2px;color:#f0a800}
-.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:999px;padding:10px 12px 10px 20px;display:flex;gap:14px;align-items:center;transition:.3s;z-index:60;max-width:calc(100vw - 24px)}
-.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
-.toast button{background:var(--gold);border:0;border-radius:999px;padding:6px 14px;font:700 13.5px var(--sans);cursor:pointer;color:var(--ink)}
-@media (max-width:560px){.card{grid-template-columns:52px minmax(0,1fr);gap:4px 14px;padding:16px}.orb{width:52px;height:52px}.row2{grid-template-columns:minmax(0,1fr)}.fb{padding:18px 16px}.fh,.ff{padding-left:16px;padding-right:16px}.status .wrap{flex-wrap:wrap}.qr{padding:12px}.qr .mv{margin-left:0}}
+.pick{position:relative;cursor:pointer}.pick input{position:absolute;opacity:0;inset:0;width:100%;height:100%;cursor:pointer;margin:0}
+.pick .sph{border:3px solid transparent;transition:transform .15s,border-color .15s}.pick input:checked+.sph{border-color:var(--ink);transform:scale(1.08)}.pick input:focus-visible+.sph{outline:3px solid var(--gold);outline-offset:2px}
+.pick.ic .sph{width:48px;height:48px}.pick.cl .sph{width:44px;height:44px}
+.preview{display:flex;align-items:center;gap:16px;background:var(--sand);border-radius:14px;padding:12px 16px}.preview .sph{width:64px;height:64px;flex:none}
+.preview b{display:block;font:700 18px var(--serif)}.preview small{color:var(--muted)}
+.checks{display:grid;gap:2px;max-height:220px;overflow:auto;border:1.5px solid var(--line);border-radius:12px;padding:6px;background:#fff}
+.checks label{display:flex;gap:12px;align-items:center;padding:8px 10px;border-radius:8px;font-weight:500;font-size:15px;cursor:pointer}.checks label:hover{background:var(--sand)}.checks input{width:18px;height:18px;accent-color:var(--green);flex:none}
+.switch{position:relative;display:inline-flex;align-items:center;gap:10px;cursor:pointer;font-weight:600;font-size:14px;user-select:none}
+.switch input{position:absolute;opacity:0}.switch .tr{width:42px;height:24px;border-radius:99px;background:#cdd5d3;position:relative;transition:background .2s;flex:none}
+.switch .tr::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.3);transition:transform .2s}
+.switch input:checked+.tr{background:var(--green)}.switch input:checked+.tr::after{transform:translateX(18px)}.switch input:focus-visible+.tr{outline:3px solid var(--gold);outline-offset:2px}
+.sub{border-top:1px solid var(--line);padding-top:16px;margin-top:2px}.sub h4{font:700 15px var(--sans);margin-bottom:10px}
+
+/* editor soal */
+.qs{display:grid;gap:10px}
+.q,.sub,.section{scroll-margin-top:72px}
+.q{background:var(--cream);border:1.5px solid var(--line);border-radius:14px;padding:14px;display:grid;gap:10px}
+.q-h{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;align-items:center}
+.q-n{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--gold);display:grid;place-items:center;font:700 13px var(--serif)}
+.q-ctl{display:flex;gap:4px}
+.q-o{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;align-items:center}
+.q-o .full{grid-column:1/-1}
+.q-t{display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.seg{display:flex;flex-wrap:wrap;justify-self:start;max-width:100%;border:1.5px solid var(--line);border-radius:18px;overflow:hidden;background:#fff}
+.seg label{position:relative;cursor:pointer}.seg input{position:absolute;opacity:0;inset:0;margin:0;cursor:pointer}.seg span{display:block;padding:7px 14px;font-size:13.5px;font-weight:600;color:var(--muted);white-space:nowrap}
+.seg input:checked+span{background:var(--ink);color:#fff}.seg input:focus-visible+span{outline:3px solid var(--gold);outline-offset:-3px}
+.prev-msg{background:var(--ink);color:#dbe8e4;border-radius:14px;padding:16px 18px;font-size:14.5px;line-height:1.6}.prev-msg b{display:block;font:700 18px var(--serif);color:#f8d24a;margin-bottom:6px}
+
+/* dialog */
+dialog{margin:auto;border:0;border-radius:22px;padding:0;width:min(640px,100% - 20px);max-height:calc(100dvh - 20px);color:var(--ink);background:var(--cream);box-shadow:0 30px 80px -20px rgba(13,42,56,.6);overflow:clip}
+dialog[open]{display:flex;flex-direction:column}
+#m-list,#m-form{display:contents}
+dialog::backdrop{background:rgba(13,42,56,.55);backdrop-filter:blur(3px)}
+.fh{flex:none;background:var(--ink);color:#fff;padding:18px 24px;font:700 20px var(--serif)}
+.fb{flex:1;min-height:0;overflow:auto;padding:22px 24px;display:grid;gap:16px;align-content:start}
+.ff{flex:none;padding:14px 24px calc(14px + env(safe-area-inset-bottom));border-top:1px solid var(--line);display:flex;gap:10px;justify-content:flex-end;background:#fff}
+.mrow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 12px}
+.mrow b{display:block;overflow-wrap:anywhere}.mrow small{color:var(--muted)}.mrow .ctl{display:flex;gap:4px;align-items:center}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;pointer-events:none;background:var(--ink);color:#fff;border-radius:999px;padding:10px 12px 10px 20px;display:flex;gap:14px;align-items:center;transition:.3s;z-index:60;max-width:calc(100vw - 24px);font-size:14.5px}
+.toast.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}.toast button{background:var(--gold);border:0;border-radius:999px;padding:6px 14px;font-weight:700;font-size:13.5px;cursor:pointer;color:var(--ink)}
+.fab{position:fixed;right:max(18px,env(safe-area-inset-right));bottom:calc(18px + env(safe-area-inset-bottom));z-index:30;box-shadow:0 14px 30px -10px rgba(13,42,56,.55);min-height:48px}
+@media (max-width:640px){
+  .card{grid-template-columns:52px minmax(0,1fr);grid-template-areas:"lead body" "act act";padding:14px}
+  .card .act{justify-content:flex-start;padding-top:6px;border-top:1px dashed var(--line);margin-top:6px}
+  .row2{grid-template-columns:minmax(0,1fr)}
+  .sph{width:48px;height:48px}.dt{width:48px}
+  .fh{padding:16px 18px}.fb{padding:18px}.ff{padding-inline:18px}
+  .q-h{grid-template-columns:30px minmax(0,1fr)}.q-ctl{grid-column:1/-1;justify-content:flex-end}
+  .status .wrap{flex-wrap:wrap}
+}
 </style>
 </head>
 <body>
-<header><div class="wrap"><span class="tag">Khusus pengelola</span><h1>Editor Samasta Corner</h1><p>Atur corner, menu, event, pertanyaan penilaian, dan kata penutup. Setelah selesai, unduh <b>corner-data.js</b> lalu unggah ke GitHub.</p></div></header>
-<div class="status" id="status" role="status"><div class="wrap"><i class="dot"></i><span id="stxt"></span><button class="btn gold sm" id="dl">Unduh corner-data.js</button></div></div>
+<header class="top"><div class="wrap"><span class="tag">Khusus pengelola</span><h1>Editor Samasta Corner</h1><p>Atur corner, menu, event, pertanyaan penilaian, dan pesan penutup. Setelah selesai, unduh <b>corner-data.js</b> lalu unggah ke GitHub.</p></div></header>
+
+<div class="status" id="status" role="status"><div class="wrap"><i class="dot"></i><span id="stxt"></span><button class="btn gold sm" id="dl" type="button">Unduh corner-data.js</button></div></div>
 
 <main class="wrap">
-  <div class="banner" id="draft" hidden><span>Ada draf yang belum diterbitkan dari sesi sebelumnya di perangkat ini.</span><button class="btn sm dark" id="draft-ok">Pulihkan draf</button><button class="btn sm" id="draft-no">Buang</button></div>
-  <div class="tabs" id="tabs">
-    <button class="tab" data-t="corner" aria-pressed="true">Corner</button>
-    <button class="tab" data-t="event" aria-pressed="false">Event</button>
-    <button class="tab" data-t="aspek" aria-pressed="false">Penilaian</button>
+  <div class="banner" id="draft" hidden><span>Ada draf yang belum diterbitkan dari sesi sebelumnya di perangkat ini.</span><button class="btn sm dark" id="draft-ok" type="button">Pulihkan draf</button><button class="btn sm" id="draft-no" type="button">Buang</button></div>
+
+  <div class="tabs" id="tabs" role="tablist">
+    <button class="tab" data-t="corner" aria-pressed="true" type="button">Corner</button>
+    <button class="tab" data-t="event" aria-pressed="false" type="button">Event</button>
+    <button class="tab" data-t="soal" aria-pressed="false" type="button">Penilaian</button>
   </div>
 
   <section id="p-corner">
-    <div class="bar"><span class="hint grow">Urutan di sini = urutan bola di beranda.</span><button class="btn dark" id="add-c">+ Tambah corner</button></div>
+    <div class="panel-bar"><span class="hint grow">Urutan di sini sama dengan urutan bola di beranda.</span><button class="btn dark" id="add-c" type="button">+ Tambah corner</button></div>
     <div class="list" id="l-corner"></div>
   </section>
 
   <section id="p-event" hidden>
-    <div class="bar"><select id="ev-c" class="grow" aria-label="Pilih corner"></select><button class="btn dark" id="add-e">+ Tambah event</button></div>
+    <div class="panel-bar"><select id="ev-c" class="inp grow" aria-label="Pilih corner"></select><button class="btn dark" id="add-e" type="button">+ Tambah event</button></div>
     <div id="ev-warn"></div>
     <div class="list" id="l-event"></div>
   </section>
 
-  <section id="p-aspek" hidden>
-    <div class="panel">
+  <section id="p-soal" hidden>
+    <div class="section">
       <h2>Pertanyaan penilaian</h2>
-      <p class="hint">Berlaku untuk semua event, kecuali event yang memakai pertanyaan khusus. Pilih jenis tiap pertanyaan dan tentukan wajib atau opsional. Pertanyaan bintang pertama dipakai sebagai kepuasan utama pada grafik.</p>
-      <div id="q-main"></div>
+      <p class="hint">Dipakai semua event, kecuali event yang punya pertanyaan sendiri. Nama, NIM, dan bagian di BEM selalu ditanyakan lebih dulu, tidak perlu ditambahkan di sini.</p>
+      <div id="qs-global"></div>
       <div class="err" id="a-err" role="alert"></div>
     </div>
-    <div class="panel">
-      <h2>Sambutan dan kata penutup</h2>
-      <label>Sambutan di halaman pertama setelah barcode dipindai <small>(boleh dikosongkan)</small><textarea id="s-sam" maxlength="300" style="min-height:76px"></textarea></label>
-      <label>Judul kata penutup <small>(tulis {nama} untuk menyebut nama depan peserta)</small><input id="p-judul" maxlength="120"></label>
-      <label>Isi kata penutup <small>(baris kosong = paragraf baru. Bisa memakai {nama} dan {event}.)</small><textarea id="p-isi" maxlength="900"></textarea></label>
-      <label>Tanda tangan <small>(baris miring di bawah kata penutup)</small><input id="p-ttd" maxlength="120"></label>
+    <div class="section">
+      <h2>Kata penutup</h2>
+      <p class="hint">Ditampilkan setelah peserta selesai mengisi. Tulis <code>{nama}</code> untuk nama depan peserta, <code>{event}</code> untuk judul acara, dan <code>{corner}</code> untuk nama corner.</p>
+      <div class="fgrid">
+        <label class="f">Judul<input class="inp" id="pn-j" maxlength="80"></label>
+        <label class="f">Pesan <small>(baris kosong = paragraf baru)</small><textarea class="inp" id="pn-p" maxlength="600"></textarea></label>
+        <div class="prev-msg" id="pn-prev" aria-live="polite"></div>
+      </div>
     </div>
-    <div class="panel">
-      <h2>Waktu absensi</h2>
-      <label>Absensi tetap terbuka berapa hari setelah acara selesai? <input id="a-hari" type="number" min="0" max="30" style="max-width:140px"></label>
+    <div class="section">
+      <h2>Pengaturan absensi</h2>
+      <label class="f" style="max-width:360px">Absensi tetap terbuka berapa hari setelah acara selesai?<input class="inp" id="a-hari" type="number" min="0" max="30"></label>
     </div>
   </section>
 
@@ -159,31 +174,34 @@ dialog form[hidden]{display:none}
     <ol>
       <li>Selesai mengubah, tekan <b>Unduh corner-data.js</b>.</li>
       <li>Buka repositori situs di GitHub, tekan <b>Add file</b>, lalu <b>Upload files</b>.</li>
-      <li>Seret file <b>corner-data.js</b> yang baru diunduh. Nama harus persis sama, sehingga file lama otomatis tertimpa.</li>
+      <li>Seret file <b>corner-data.js</b> yang baru diunduh. Nama harus persis sama agar file lama tertimpa.</li>
       <li>Tekan <b>Commit changes</b>, tunggu 1 sampai 2 menit, lalu muat ulang situs.</li>
       <li>Agar absensi tersimpan ke Google Sheets, isi <b>corner-config.js</b> dengan URL Apps Script (lihat PANDUAN-CORNER.txt).</li>
     </ol>
-    <div class="act">
-      <button class="btn sm" id="copy">Salin kode</button>
-      <button class="btn sm" id="imp">Muat file corner-data.js</button>
-      <button class="btn sm red" id="reset">Kembali ke versi situs</button>
+    <div class="tools">
+      <button class="btn sm" id="copy" type="button">Salin kode</button>
+      <button class="btn sm" id="imp" type="button">Muat file corner-data.js</button>
+      <button class="btn sm red" id="reset" type="button">Kembali ke versi situs</button>
       <input type="file" id="file" accept=".js,.json,text/javascript" hidden>
     </div>
   </details>
 </main>
 
+<button class="btn gold fab" id="fab" type="button">+ Corner</button>
+
 <!-- Dialog corner -->
-<dialog id="d-c"><form method="dialog" id="f-c" novalidate>
+<dialog id="d-c"><form method="dialog" id="f-c" novalidate style="display:contents">
   <div class="fh" id="c-title">Tambah corner</div>
   <div class="fb">
-    <div class="row2"><label>Nama lengkap *<input id="c-nama" maxlength="80"></label><label>Nama singkat di bola * <small>(2 sampai 9 huruf)</small><input id="c-singkat" maxlength="9"></label></div>
-    <label>Tagline <small>(muncul di bawah bola)</small><input id="c-tag" maxlength="60"></label>
-    <label>Deskripsi<textarea id="c-desk" maxlength="400"></textarea></label>
-    <label>Ikon di dalam bola<div class="icons" id="c-ikon"></div></label>
-    <label>Warna bola<div class="sw" id="c-warna"></div></label>
+    <div class="preview"><span class="sph" id="c-pv"></span><span><b id="c-pv-n">Corner baru</b><small id="c-pv-t">Pratinjau bola di beranda</small></span></div>
+    <div class="row2"><label class="f">Nama lengkap *<input class="inp" id="c-nama" maxlength="80"></label><label class="f">Nama singkat * <small>(2 sampai 8 huruf)</small><input class="inp" id="c-singkat" maxlength="8"></label></div>
+    <label class="f">Tagline <small>(di bawah bola)</small><input class="inp" id="c-tag" maxlength="60"></label>
+    <label class="f">Deskripsi<textarea class="inp" id="c-desk" maxlength="400" style="min-height:90px"></textarea></label>
+    <div class="f" style="display:grid;gap:8px"><span style="font-weight:600;font-size:14px">Ikon bola</span><div class="sw" id="c-ikon" role="radiogroup" aria-label="Ikon bola"></div></div>
+    <div class="f" style="display:grid;gap:8px"><span style="font-weight:600;font-size:14px">Warna bola</span><div class="sw" id="c-warna" role="radiogroup" aria-label="Warna bola"></div></div>
     <div class="row2">
-      <label>Status<select id="c-status"><option value="aktif">Aktif (menu dapat dibuka)</option><option value="segera">Segera hadir (Coming soon)</option></select></label>
-      <label>Unit di kepengurusan <small>(untuk menu anggota dan struktur)</small><select id="c-unit"></select></label>
+      <label class="f">Status<select class="inp" id="c-status"><option value="aktif">Aktif (menu bisa dibuka)</option><option value="segera">Segera hadir (Coming soon)</option></select></label>
+      <label class="f">Unit di kepengurusan <small>(untuk struktur dan daftar anggota)</small><select class="inp" id="c-unit"></select></label>
     </div>
     <div class="err" id="c-err" role="alert"></div>
   </div>
@@ -194,36 +212,36 @@ dialog form[hidden]{display:none}
 <dialog id="d-m">
   <div id="m-list">
     <div class="fh" id="m-title">Menu</div>
-    <div class="fb"><div id="m-rows"></div><div><button class="btn dark" id="m-add" type="button">+ Tambah menu</button></div></div>
-    <div class="ff"><button class="btn" type="button" data-close>Selesai</button></div>
+    <div class="fb"><div id="m-rows" style="display:grid;gap:8px"></div></div>
+    <div class="ff"><button class="btn dark" id="m-add" type="button">+ Tambah menu</button><span style="flex:1"></span><button class="btn gold" type="button" data-close>Selesai</button></div>
   </div>
   <form method="dialog" id="m-form" novalidate hidden>
     <div class="fh" id="m-ftitle">Tambah menu</div>
     <div class="fb">
-      <label>Judul menu *<input id="m-judul" maxlength="40"></label>
-      <label>Keterangan singkat<input id="m-desk" maxlength="120"></label>
+      <label class="f">Judul menu *<input class="inp" id="m-judul" maxlength="40"></label>
+      <label class="f">Keterangan singkat<input class="inp" id="m-desk" maxlength="140"></label>
       <div class="row2">
-        <label>Jenis menu<select id="m-tipe"><option value="info">Info (teks)</option><option value="event">Event (absensi dan pembukuan)</option><option value="profil">Profil lembaga (pengertian, tugas, struktur)</option><option value="panduan">SOP dan buku panduan</option><option value="anggota">Daftar anggota</option><option value="link">Tautan</option></select></label>
-        <label>Ikon<select id="m-ikon"><option value="kalender">Kalender</option><option value="info">Info</option><option value="orang">Orang</option><option value="perisai">Perisai</option><option value="bintang">Bintang</option><option value="buku">Buku</option><option value="tautan">Tautan</option><option value="papan">Papan</option><option value="bendera">Bendera</option><option value="hati">Hati</option><option value="pesan">Pesan</option></select></label>
+        <label class="f">Jenis menu<select class="inp" id="m-tipe">
+          <option value="info">Info (teks bebas)</option><option value="profil">Profil (pengertian, tugas, struktur)</option><option value="event">Event (absensi dan pembukuan)</option>
+          <option value="dokumen">Dokumen (SOP dan buku panduan)</option><option value="anggota">Daftar anggota unit</option><option value="link">Tautan</option></select></label>
+        <label class="f">Ikon<select class="inp" id="m-ikon"><option value="kalender">Kalender</option><option value="info">Info</option><option value="orang">Orang</option><option value="tautan">Tautan</option><option value="perisai">Perisai</option><option value="bintang">Bintang</option><option value="pesan">Pesan</option><option value="buku">Buku</option><option value="papan">Papan</option><option value="bendera">Bendera</option><option value="hati">Hati</option></select></label>
       </div>
-      <div id="w-info" class="fb" style="padding:0;overflow:visible"><label>Isi halaman <small>(baris kosong = paragraf baru. Awali baris dengan “- ” untuk butir daftar.)</small><textarea id="m-isi" style="min-height:160px"></textarea></label></div>
-      <div id="w-url"><label>Alamat tautan <small>(contoh: #sop, #rapot, atau https://...)</small><input id="m-url" maxlength="300"></label></div>
-      <p class="hint" id="w-ev">Event untuk menu ini dikelola di tab Event.</p>
-      <div id="w-profil" class="fb" style="padding:0;overflow:visible">
-        <label>Pengertian <small>(paragraf pertama tampil besar. Baris kosong = paragraf baru.)</small><textarea id="m-pengertian" style="min-height:150px"></textarea></label>
-        <label>Tugas dan fungsi <small>(satu per baris, format: Judul | uraian)</small><textarea id="m-tugas" style="min-height:150px"></textarea></label>
-        <label>Prinsip kerja <small>(satu per baris, format: Judul | uraian)</small><textarea id="m-prinsip"></textarea></label>
-        <label>Atasan langsung <small>(tampil di puncak bagan)</small><input id="m-atas" maxlength="60"></label>
-        <label>Peran ketua / menteri <small>(satu kalimat)</small><input id="m-pk" maxlength="200"></label>
-        <label>Tanggung jawab ketua / menteri <small>(satu per baris)</small><textarea id="m-tk"></textarea></label>
-        <label>Peran anggota <small>(satu kalimat)</small><input id="m-pa" maxlength="200"></label>
-        <label>Tanggung jawab anggota <small>(satu per baris)</small><textarea id="m-ta"></textarea></label>
-        <p class="hint">Nama anggota dan ketua diambil otomatis dari anggota.js (orang pertama pada unit = ketua / menteri).</p>
+      <div class="fgrid" id="t-info"><label class="f">Isi halaman <small>(baris kosong = paragraf baru. Awali baris dengan “- ” untuk butir daftar.)</small><textarea class="inp" id="m-isi" maxlength="4000"></textarea></label></div>
+      <div class="fgrid" id="t-profil">
+        <label class="f">Pengertian <small>(baris kosong = paragraf baru)</small><textarea class="inp" id="m-pengertian" maxlength="2000"></textarea></label>
+        <label class="f">Prinsip <small>(satu per baris)</small><textarea class="inp" id="m-prinsip" maxlength="800" style="min-height:90px"></textarea></label>
+        <label class="f">Tugas <small>(awali judul dengan “# ”, lalu satu baris penjelasan, lalu butir berawalan “- ”. Pisahkan tiap tugas dengan baris kosong.)</small><textarea class="inp" id="m-tugas" maxlength="5000" style="min-height:220px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px"></textarea></label>
+        <label class="f">Peran ketua <small>(satu per baris, tampil saat kotak ketua diklik)</small><textarea class="inp" id="m-pk" maxlength="800" style="min-height:90px"></textarea></label>
+        <label class="f">Peran anggota <small>(satu per baris)</small><textarea class="inp" id="m-pa" maxlength="800" style="min-height:90px"></textarea></label>
+        <p class="hint">Struktur organisasi dibuat otomatis dari daftar anggota unit di anggota.js. Unit diatur di pengaturan corner.</p>
       </div>
-      <div id="w-panduan" class="fb" style="padding:0;overflow:visible">
-        <label>Buku panduan<select id="m-buku"></select></label>
-        <div class="row2"><label>Kode SOP inti <small>(contoh: IRJ untuk SOP-IRJ-xxx)</small><input id="m-sopkode" maxlength="8"></label><label>Pemilik SOP lain <small>(kata kunci, contoh: Inspektur Jenderal)</small><input id="m-sopown" maxlength="60"></label></div>
+      <div class="fgrid" id="t-dokumen">
+        <label class="f">Tampilkan SOP yang pemiliknya <small>(pisahkan dengan koma. Contoh: Inspektur Jenderal)</small><input class="inp" id="m-pemilik" maxlength="200"></label>
+        <label class="f">Tambah SOP berdasarkan awalan kode <small>(opsional, pisahkan dengan koma. Contoh: SOP-IRJ)</small><input class="inp" id="m-kode" maxlength="200"></label>
+        <label class="f">Kode buku panduan <small>(nama file PDF tanpa .pdf. Contoh: inspektorat-jenderal. Kosongkan bila tidak ada.)</small><input class="inp" id="m-panduan" maxlength="80"></label>
       </div>
+      <div class="fgrid" id="t-link"><label class="f">Alamat tautan <small>(contoh: #sop, #rapot, atau https://...)</small><input class="inp" id="m-url" maxlength="300"></label></div>
+      <p class="hint" id="t-event">Event untuk menu ini dikelola di tab Event. Pertanyaan dan kata penutup diatur di tab Penilaian.</p>
       <div class="err" id="m-err" role="alert"></div>
     </div>
     <div class="ff"><button class="btn" type="button" id="m-back">Kembali</button><button class="btn gold" type="submit">Simpan menu</button></div>
@@ -231,72 +249,60 @@ dialog form[hidden]{display:none}
 </dialog>
 
 <!-- Dialog event -->
-<dialog id="d-e"><form method="dialog" id="f-e" novalidate>
+<dialog id="d-e"><form method="dialog" id="f-e" novalidate style="display:contents">
   <div class="fh" id="e-title">Tambah event</div>
   <div class="fb">
-    <label>Judul event *<input id="e-judul" maxlength="160"></label>
-    <div class="row2"><label>Tanggal mulai *<input id="e-tgl" type="date"></label><label>Tanggal selesai <small>(kosongkan bila satu hari)</small><input id="e-sel" type="date"></label></div>
-    <div class="row2"><label>Jam <small>(contoh: 19.30 sampai 21.30)</small><input id="e-jam" maxlength="60"></label><label>Tempat<input id="e-tempat" maxlength="80"></label></div>
-    <label>Deskripsi<textarea id="e-desk" maxlength="600"></textarea></label>
-    <label>Peserta yang ditargetkan <small>(menentukan daftar hadir di pembukuan)</small><div class="checks" id="e-target"></div></label>
-    <label>Absensi<select id="e-absen"><option value="auto">Otomatis: dibuka sejak hari acara</option><option value="buka">Selalu dibuka</option><option value="tutup">Selalu ditutup</option></select></label>
-    <label class="sw2"><input type="checkbox" id="e-qon"><i></i><span>Pertanyaan khusus untuk event ini</span></label>
-    <div id="e-qbox" hidden class="qe"><p class="hint">Kosong berarti memakai pertanyaan di tab Penilaian.</p><div id="q-ev"></div></div>
-    <label class="sw2"><input type="checkbox" id="e-pon"><i></i><span>Kata penutup khusus untuk event ini</span></label>
-    <div id="e-pbox" hidden class="qe">
-      <label>Judul <input id="ep-judul" maxlength="120"></label>
-      <label>Isi<textarea id="ep-isi" maxlength="900"></textarea></label>
-      <label>Tanda tangan<input id="ep-ttd" maxlength="120"></label>
+    <label class="f">Judul event *<input class="inp" id="e-judul" maxlength="160"></label>
+    <div class="row2"><label class="f">Tanggal mulai *<input class="inp" id="e-tgl" type="date"></label><label class="f">Tanggal selesai <small>(kosongkan bila satu hari)</small><input class="inp" id="e-sel" type="date"></label></div>
+    <div class="row2"><label class="f">Jam <small>(contoh: 19.30 sampai 21.30)</small><input class="inp" id="e-jam" maxlength="60"></label><label class="f">Tempat<input class="inp" id="e-tempat" maxlength="100"></label></div>
+    <label class="f">Deskripsi<textarea class="inp" id="e-desk" maxlength="600" style="min-height:80px"></textarea></label>
+    <div class="f" style="display:grid;gap:8px"><span style="font-weight:600;font-size:14px">Peserta yang ditargetkan <small style="font-weight:400;color:var(--muted)">(menentukan daftar hadir di pembukuan)</small></span><div class="checks" id="e-target"></div></div>
+    <label class="f">Absensi<select class="inp" id="e-absen"><option value="auto">Otomatis: dibuka sejak hari acara</option><option value="buka">Selalu dibuka</option><option value="tutup">Ditutup</option></select></label>
+    <div class="sub">
+      <label class="switch"><input type="checkbox" id="e-cust"><span class="tr"></span><span>Pakai pertanyaan dan kata penutup khusus untuk event ini</span></label>
+      <div id="e-custbox" hidden style="display:grid;gap:16px;margin-top:16px">
+        <div id="qs-event"></div>
+        <label class="f">Judul penutup<input class="inp" id="e-pj" maxlength="80"></label>
+        <label class="f">Pesan penutup<textarea class="inp" id="e-pp" maxlength="600" style="min-height:90px"></textarea></label>
+      </div>
     </div>
     <div class="err" id="e-err" role="alert"></div>
   </div>
   <div class="ff"><button class="btn" type="button" data-close>Batal</button><button class="btn gold" type="submit">Simpan</button></div>
 </form></dialog>
 
-<div class="toast" id="toast"><span id="ttxt"></span><button id="tundo" hidden>Urungkan</button></div>
+<div class="toast" id="toast"><span id="ttxt"></span><button id="tundo" hidden type="button">Urungkan</button></div>
 
 <script src="anggota.js"></script>
 <script src="corner-icons.js"></script>
 <script src="corner-data.js"></script>
 <script>
 (function(){
-  var KEY="bem-corner-draft-v2", A=window.ANGGOTA||{pimpinan:[],unit:[]}, ICONS=window.CORNER_ICONS||{}, TONES=window.CORNER_TONES||{};
-  var BUKU=[["presiden","Presiden"],["wakil-presiden","Wakil Presiden"],["sekretaris-jenderal","Sekretaris Jenderal"],["psdm","Kementerian PSDM"],["akademik-karier","Kementerian Akademik dan Karier"],["harmonisasi-kampus","Kementerian Harmonisasi Kampus"],["kemenpora","Kementerian Pemuda dan Olahraga"],["hubeks","Kementerian Hubungan Eksternal"],["kesma","Kementerian Kesejahteraan Mahasiswa"],["pengembangan-bahasa","Kementerian Pengembangan Bahasa"],["biro-administrasi","Biro Administrasi"],["biro-keuangan","Biro Keuangan"],["biro-dkv","Biro DKV"],["inspektorat-jenderal","Inspektorat Jenderal"]];
-  var TIPE={info:"Info",event:"Event",anggota:"Daftar anggota",link:"Tautan",profil:"Profil lembaga",panduan:"SOP dan buku panduan"};
-  var QT={bintang:"Bintang 1 sampai 5",singkat:"Jawaban singkat",panjang:"Jawaban panjang (paragraf)"};
+  var KEY="bem-corner-draft-v2", A=window.ANGGOTA||{pimpinan:[],unit:[]}, TONES=window.CORNER_TONES, ORB=window.CORNER_ORB;
   var MON=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+  var DEFAULT_SOAL=[{id:"q1",tipe:"bintang",teks:"Kepuasan keseluruhan",wajib:true,utama:true}];
   function $(i){return document.getElementById(i);}
   function esc(t){return String(t==null?"":t).replace(/[&<>"]/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
   function clone(o){return JSON.parse(JSON.stringify(o));}
   function slug(t){return String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");}
-  function icon(k){var d=ICONS[k]||ICONS.bintang;return d?'<svg class="cn-ico" viewBox="0 0 48 48" aria-hidden="true">'+d[1]+'</svg>':"";}
-  function ikKey(c){return window.cornerIconKey?window.cornerIconKey(c):"bintang";}
-  var DEFQ=[{id:"q-puas",teks:"Kepuasan keseluruhan",tipe:"bintang",wajib:true},{id:"komentar",teks:"Komentar tentang acara",tipe:"panjang",wajib:false},{id:"kritik",teks:"Kritik dan saran untuk acara berikutnya",tipe:"panjang",wajib:false}];
-  var DEFP={judul:"Jazakumullahu khairan, {nama}",isi:"Kehadiran dan penilaianmu sudah tercatat. Semoga ilmu dan kebersamaan hari ini membawa kebaikan.",ttd:""};
-  function normQ(a){
-    return (a||[]).slice(0,20).map(function(q,i){return {id:String(q.id||"q-"+i+Math.random().toString(36).slice(2,5)).replace(/[^A-Za-z0-9_\-]/g,""),teks:String(q.teks||"").trim(),tipe:q.tipe==="singkat"||q.tipe==="panjang"?q.tipe:"bintang",wajib:q.wajib!==false,bantuan:String(q.bantuan||"")};}).map(function(q){if(!q.bantuan)delete q.bantuan;return q;});
+  function normSoal(a){
+    var s=(a||[]).map(function(q,i){var o={id:q.id||("q"+(i+1)),tipe:q.tipe==="singkat"||q.tipe==="panjang"?q.tipe:"bintang",teks:String(q.teks||"").trim(),wajib:q.wajib!==false};if(o.tipe==="bintang"&&q.utama)o.utama=true;if(q.petunjuk)o.petunjuk=String(q.petunjuk);return o;});
+    var seen={};s.forEach(function(q){if(seen[q.id]){q.id="q"+(Math.random()*1e5|0);}seen[q.id]=1;});
+    var u=false;s.forEach(function(q){if(q.utama){if(u)delete q.utama;u=true;}});
+    return s;
   }
-  function legacyQ(asp){
-    var r=(asp&&asp.length?asp:["Kepuasan keseluruhan"]).map(function(a,i){return {id:"a"+i,teks:String(a),tipe:"bintang",wajib:true};});
-    r.push({id:"komentar",teks:"Komentar tentang acara",tipe:"panjang",wajib:false},{id:"kritik",teks:"Kritik dan saran",tipe:"panjang",wajib:false});return r;
-  }
-  function normP(p){p=p||{};return {judul:String(p.judul||""),isi:String(p.isi||""),ttd:String(p.ttd||"")};}
-  var MKEYS=["pengertian","tugas","prinsip","atas","perananKepala","tugasKepala","perananAnggota","tugasAnggota","buku","sopKode","sopPemilik"];
   function norm(d){
-    d=d||{};var o={pertanyaan:d.pertanyaan&&d.pertanyaan.length?normQ(d.pertanyaan):(d.pertanyaan?[]:normQ(legacyQ(d.aspek))),sambutan:String(d.sambutan||""),penutup:d.penutup&&d.penutup.isi?normP(d.penutup):normP(DEFP),bukaHari:d.bukaHari==null?2:+d.bukaHari,corner:[]};
+    d=d||{};
+    var soal=d.soal&&d.soal.length?d.soal:(d.aspek&&d.aspek.length?d.aspek.map(function(t,i){return {id:"q"+(i+1),tipe:"bintang",teks:t,wajib:true,utama:i===0};}):DEFAULT_SOAL);
+    var o={soal:normSoal(soal),penutup:{judul:(d.penutup&&d.penutup.judul)||"Terima kasih, {nama}!",pesan:(d.penutup&&d.penutup.pesan)||"Kehadiran dan penilaianmu untuk {event} sudah tercatat."},bukaHari:d.bukaHari==null?2:+d.bukaHari,corner:[]};
     (d.corner||[]).forEach(function(c){
-      o.corner.push({id:c.id,nama:c.nama||"",singkat:c.singkat||"",tagline:c.tagline||"",deskripsi:c.deskripsi||"",warna:TONES[c.warna]?c.warna:"zamrud",ikon:ICONS[c.ikon]?c.ikon:ikKey(c),status:c.status==="segera"?"segera":"aktif",unit:c.unit||"",
-        menu:(c.menu||[]).map(function(m){var x={id:m.id,judul:m.judul||"",deskripsi:m.deskripsi||"",tipe:TIPE[m.tipe]?m.tipe:"info",ikon:m.ikon||"info"};
-          if(x.tipe==="info")x.isi=m.isi||"";if(x.tipe==="link")x.url=m.url||"";
-          if(x.tipe==="profil"||x.tipe==="panduan")MKEYS.forEach(function(k){if(m[k]!=null&&m[k]!=="")x[k]=String(m[k]);});return x;}),
-        event:(c.event||[]).map(function(e){var x={id:e.id,judul:e.judul||"",tanggal:e.tanggal||"",jam:e.jam||"",tempat:e.tempat||"",deskripsi:e.deskripsi||"",target:(e.target&&e.target.length?e.target:["*"]),absen:e.absen||"auto"};
-          if(e.tanggalSelesai)x.tanggalSelesai=e.tanggalSelesai;
-          if(e.pertanyaan&&e.pertanyaan.length)x.pertanyaan=normQ(e.pertanyaan);else if(e.aspek&&e.aspek.length)x.pertanyaan=normQ(legacyQ(e.aspek));
-          if(e.penutup&&e.penutup.isi)x.penutup=normP(e.penutup);return x;})});
+      o.corner.push({id:c.id,nama:c.nama||"",singkat:c.singkat||"",tagline:c.tagline||"",deskripsi:c.deskripsi||"",warna:TONES[c.warna]?c.warna:"zamrud",ikon:ORB[c.ikon]?c.ikon:"bintang",status:c.status==="segera"?"segera":"aktif",unit:c.unit||"",
+        menu:(c.menu||[]).map(function(m){var x={};for(var k in m)if(m[k]!==undefined)x[k]=m[k];return x;}),
+        event:(c.event||[]).map(function(e){var x={id:e.id,judul:e.judul||"",tanggal:e.tanggal||"",jam:e.jam||"",tempat:e.tempat||"",deskripsi:e.deskripsi||"",target:(e.target&&e.target.length?e.target:["*"]),absen:e.absen||"auto"};if(e.tanggalSelesai)x.tanggalSelesai=e.tanggalSelesai;if(e.soal&&e.soal.length)x.soal=normSoal(e.soal);if(e.penutup)x.penutup={judul:e.penutup.judul||"",pesan:e.penutup.pesan||""};return x;})});
     });
     return o;
   }
-  var SITE=JSON.stringify(norm(window.CORNER)), data=norm(window.CORNER), downloaded=false, lastDel=null, tT, tab="corner", curC=null, edC=null, edM=null, edE=null, evQ=[];
+  var SITE=JSON.stringify(norm(window.CORNER)), data=norm(window.CORNER), downloaded=false, lastDel=null, tT, tab="corner", curC=null, edC=null, edM=null, edE=null, evSoal=[];
 
   function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
   function dirty(){return JSON.stringify(data)!==SITE;}
@@ -309,152 +315,159 @@ dialog form[hidden]{display:none}
   function touch(){downloaded=false;save();render();}
   function byId(a,id){for(var i=0;i<a.length;i++)if(a[i].id===id)return i;return -1;}
   function uid(base,arr){var b=slug(base)||"item",id=b,n=2;while(byId(arr,id)>=0)id=b+"-"+(n++);return id;}
-  function tone(c){var t=TONES[c]||TONES.zamrud;return "--o1:"+t.o1+";--o2:"+t.o2+";--o3:"+t.o3+";--ot:"+t.ot;}
+  function toneStyle(k){var t=TONES[k]||TONES.zamrud;return "--o1:"+t.o1+";--o2:"+t.o2+";--o3:"+t.o3+";--ot:"+t.ot+";--oa:"+t.oa;}
+  function sph(c,ik){return '<span class="sph" style="'+toneStyle(c)+'">'+window.CORNER_ORB_SVG(ik,"")+'</span>';}
 
-  /* ---- editor pertanyaan (dipakai tab Penilaian dan dialog event) ---- */
-  function qEditor(host,getArr,setArr){
-    function paint(){
-      var a=getArr();
-      host.innerHTML='<div class="qe">'+(a.length?a.map(function(q,i){
-        return '<div class="qr" data-i="'+i+'"><span class="no">'+(i+1)+'</span><div class="body">'+
-          '<input data-f="teks" value="'+esc(q.teks)+'" maxlength="140" placeholder="Tulis pertanyaannya" aria-label="Teks pertanyaan '+(i+1)+'">'+
-          (q.tipe==="bintang"?'<div class="qprev"><span class="stars5">★★★★★</span> peserta memilih 1 sampai 5 bintang</div>':'')+
-          '<input data-f="bantuan" value="'+esc(q.bantuan||"")+'" maxlength="120" placeholder="Keterangan di bawah pertanyaan (opsional)" aria-label="Keterangan pertanyaan '+(i+1)+'">'+
-          '<div class="opts"><select data-f="tipe" aria-label="Jenis pertanyaan '+(i+1)+'">'+Object.keys(QT).map(function(k){return '<option value="'+k+'"'+(q.tipe===k?" selected":"")+'>'+QT[k]+'</option>';}).join("")+'</select>'+
-          '<label class="sw2"><input type="checkbox" data-f="wajib"'+(q.wajib?" checked":"")+'><i></i><span>'+(q.wajib?"Wajib dijawab":"Opsional")+'</span></label>'+
-          '<span class="mv"><button type="button" class="btn sm ic" data-q="up"'+(i?"":" disabled")+' aria-label="Naikkan">&uarr;</button><button type="button" class="btn sm ic" data-q="down"'+(i<a.length-1?"":" disabled")+' aria-label="Turunkan">&darr;</button><button type="button" class="btn sm ic red" data-q="del" aria-label="Hapus">&times;</button></span></div></div></div>';
-      }).join(""):'<div class="empty">Belum ada pertanyaan. Peserta hanya mengisi data diri.</div>')+
-      '<div class="qadd"><button type="button" class="btn sm dark" data-add="bintang">+ Bintang 1–5</button><button type="button" class="btn sm dark" data-add="singkat">+ Jawaban singkat</button><button type="button" class="btn sm dark" data-add="panjang">+ Paragraf</button></div></div>';
-    }
-    host.onclick=function(x){
-      var a=getArr(),b=x.target.closest("[data-q],[data-add]");if(!b)return;
-      var r=b.closest(".qr"),i=r?+r.getAttribute("data-i"):-1,k=b.getAttribute("data-q");
-      if(b.hasAttribute("data-add")){if(a.length>=20){toast("Maksimal 20 pertanyaan.");return;}a.push({id:"q-"+Math.random().toString(36).slice(2,8),teks:"",tipe:b.getAttribute("data-add"),wajib:b.getAttribute("data-add")==="bintang"});}
-      if(k==="up"&&i>0)a.splice(i-1,0,a.splice(i,1)[0]);
-      if(k==="down"&&i<a.length-1)a.splice(i+1,0,a.splice(i,1)[0]);
-      if(k==="del")a.splice(i,1);
-      setArr(a);paint();
-    };
-    host.oninput=function(x){var f=x.target.getAttribute("data-f"),r=x.target.closest(".qr");if(!f||!r)return;var a=getArr(),q=a[+r.getAttribute("data-i")];
-      if(f==="wajib"){q.wajib=x.target.checked;x.target.parentNode.querySelector("span").textContent=q.wajib?"Wajib dijawab":"Opsional";}else if(f==="tipe"){q.tipe=x.target.value;if(q.tipe==="bintang")q.wajib=q.wajib;setArr(a);paint();return;}else if(f==="bantuan"){q.bantuan=x.target.value;if(!q.bantuan)delete q.bantuan;}else q.teks=x.target.value;
-      setArr(a);};
-    host.onchange=host.oninput;
-    paint();return paint;
-  }
-  function qCheck(a){
-    var t=a.map(function(q){return q.teks.trim();});
-    if(t.some(function(x){return !x;}))return "Semua pertanyaan harus ada tulisannya.";
-    if(t.some(function(x,i){return t.indexOf(x)!==i;}))return "Tulisan pertanyaan tidak boleh kembar.";
-    return "";
-  }
-
-  /* ---- render ---- */
+  /* ---------- render ---------- */
   function render(){
     [].forEach.call(document.querySelectorAll(".tab"),function(b){b.setAttribute("aria-pressed",b.getAttribute("data-t")===tab);});
-    ["corner","event","aspek"].forEach(function(t){$("p-"+t).hidden=t!==tab;});
+    ["corner","event","soal"].forEach(function(t){$("p-"+t).hidden=t!==tab;});
     $("l-corner").innerHTML=data.corner.length?data.corner.map(function(c,i){
-      return '<article class="card"><div class="orb" data-tone="'+esc(c.warna)+'" style="'+tone(c.warna)+'">'+icon(c.ikon)+'</div><div class="main"><h3>'+esc(c.nama||"(tanpa nama)")+'</h3><div class="meta"><i class="'+(c.status==="segera"?"soon":"ok")+'">'+(c.status==="segera"?"Segera hadir":"Aktif")+'</i><i>'+esc(c.singkat)+'</i><i>'+c.menu.length+' menu</i><i>'+c.event.length+' event</i></div>'+(c.deskripsi?'<p>'+esc(c.deskripsi)+'</p>':"")+'</div>'+
-        '<div class="act"><button class="btn sm" data-a="edit" data-id="'+esc(c.id)+'">Edit</button><button class="btn sm" data-a="menu" data-id="'+esc(c.id)+'">Menu ('+c.menu.length+')</button><span class="sp"></span><button class="btn sm ic" data-a="up" data-id="'+esc(c.id)+'"'+(i?"":" disabled")+' aria-label="Naikkan">&uarr;</button><button class="btn sm ic" data-a="down" data-id="'+esc(c.id)+'"'+(i<data.corner.length-1?"":" disabled")+' aria-label="Turunkan">&darr;</button><button class="btn sm red" data-a="del" data-id="'+esc(c.id)+'">Hapus</button></div></article>';
+      return '<article class="card"><div class="lead">'+sph(c.warna,c.ikon)+'</div><div class="body"><h3>'+esc(c.nama||"(tanpa nama)")+'</h3><div class="meta"><i class="'+(c.status==="segera"?"soon":"ok")+'">'+(c.status==="segera"?"Segera hadir":"Aktif")+'</i><i>'+c.menu.length+' menu</i><i>'+c.event.length+' event</i></div><p>'+esc(c.deskripsi)+'</p></div><div class="act"><button class="btn sm" data-a="edit" data-id="'+esc(c.id)+'" type="button">Edit</button><button class="btn sm" data-a="menu" data-id="'+esc(c.id)+'" type="button">Menu ('+c.menu.length+')</button><button class="icon-btn" data-a="up" data-id="'+esc(c.id)+'"'+(i?"":" disabled")+' aria-label="Naikkan" type="button">&uarr;</button><button class="icon-btn" data-a="down" data-id="'+esc(c.id)+'"'+(i<data.corner.length-1?"":" disabled")+' aria-label="Turunkan" type="button">&darr;</button><button class="btn sm red" data-a="del" data-id="'+esc(c.id)+'" type="button">Hapus</button></div></article>';
     }).join(""):'<div class="empty">Belum ada corner. Tekan “Tambah corner” untuk memulai.</div>';
     var sel=$("ev-c"),keep=curC||(sel.value||(data.corner[0]&&data.corner[0].id));
     sel.innerHTML=data.corner.map(function(c){return '<option value="'+esc(c.id)+'">'+esc(c.nama||c.singkat)+'</option>';}).join("");
     if(byId(data.corner,keep)>=0)sel.value=keep;curC=sel.value||null;
-    var c=data.corner[byId(data.corner,curC)];
-    $("add-e").disabled=!c;
+    var c=data.corner[byId(data.corner,curC)];$("add-e").disabled=!c;
     $("ev-warn").innerHTML=c&&!c.menu.some(function(m){return m.tipe==="event";})?'<div class="warn">Corner ini belum punya menu berjenis <b>Event</b>, sehingga event di bawah belum bisa dibuka dari situs. Tambahkan lewat tombol Menu di tab Corner.</div>':"";
     $("l-event").innerHTML=!c?'<div class="empty">Tambahkan corner dulu.</div>':c.event.length?c.event.slice().sort(function(a,b){return a.tanggal<b.tanggal?1:-1;}).map(function(e){
-      var d=/^(\d{4})-(\d{2})-(\d{2})$/.exec(e.tanggal)||[0,0,0,0];
-      var tg=e.target.indexOf("*")>=0?"Semua pengurus":e.target.length+" bagian";
-      return '<article class="card"><div class="dt"><b>'+(+d[3]||"?")+'</b><span>'+(MON[d[2]-1]||"")+'</span></div><div class="main"><h3>'+esc(e.judul)+'</h3><div class="meta">'+(e.jam?'<i>'+esc(e.jam)+'</i>':"")+(e.tempat?'<i>'+esc(e.tempat)+'</i>':"")+'<i>Target: '+esc(tg)+'</i><i>Absensi: '+({auto:"otomatis",buka:"dibuka",tutup:"ditutup"}[e.absen]||"otomatis")+'</i>'+(e.pertanyaan?'<i class="soon">Pertanyaan khusus</i>':"")+(e.penutup?'<i class="soon">Penutup khusus</i>':"")+'</div>'+(e.deskripsi?'<p>'+esc(e.deskripsi)+'</p>':"")+'</div>'+
-        '<div class="act"><button class="btn sm" data-a="e-edit" data-id="'+esc(e.id)+'">Edit</button><button class="btn sm" data-a="e-dup" data-id="'+esc(e.id)+'">Duplikat</button><span class="sp"></span><button class="btn sm red" data-a="e-del" data-id="'+esc(e.id)+'">Hapus</button></div></article>';
+      var d=/^(\d{4})-(\d{2})-(\d{2})$/.exec(e.tanggal)||[0,0,0,0],tg=e.target.indexOf("*")>=0?"Semua pengurus":e.target.length+" bagian";
+      return '<article class="card"><div class="lead"><div class="dt"><b>'+(+d[3]||"?")+'</b><span>'+(MON[d[2]-1]||"")+'</span></div></div><div class="body"><h3>'+esc(e.judul)+'</h3><div class="meta">'+(e.jam?'<i>'+esc(e.jam)+'</i>':"")+(e.tempat?'<i>'+esc(e.tempat)+'</i>':"")+'<i>Target: '+esc(tg)+'</i><i>Absensi: '+({auto:"otomatis",buka:"dibuka",tutup:"ditutup"}[e.absen]||"otomatis")+'</i>'+(e.soal?'<i class="soon">Soal khusus</i>':"")+'</div>'+(e.deskripsi?'<p>'+esc(e.deskripsi)+'</p>':"")+'</div><div class="act"><button class="btn sm" data-a="e-edit" data-id="'+esc(e.id)+'" type="button">Edit</button><button class="btn sm" data-a="e-dup" data-id="'+esc(e.id)+'" type="button">Duplikat</button><button class="btn sm red" data-a="e-del" data-id="'+esc(e.id)+'" type="button">Hapus</button></div></article>';
     }).join(""):'<div class="empty">Belum ada event di corner ini.</div>';
-    if(tab==="aspek"&&!render.q)initAspek();
-    syncAspek();status();
+    if(!qeG)qeG=qEditor($("qs-global"),data.soal,function(a){data.soal=a;downloaded=false;save();status();});
+    else qeG.set(data.soal);
+    $("pn-j").value=data.penutup.judul;$("pn-p").value=data.penutup.pesan;$("a-hari").value=data.bukaHari;penutupPrev();
+    $("fab").hidden=tab==="soal";$("fab").textContent=tab==="event"?"+ Event":"+ Corner";
+    status();
   }
-  function initAspek(){render.q=qEditor($("q-main"),function(){return data.pertanyaan;},function(a){data.pertanyaan=a;readAspek();});}
-  function syncAspek(){$("s-sam").value=data.sambutan;$("p-judul").value=data.penutup.judul;$("p-isi").value=data.penutup.isi;$("p-ttd").value=data.penutup.ttd;$("a-hari").value=data.bukaHari;}
-  function readAspek(){
-    var h=+$("a-hari").value,e=qCheck(data.pertanyaan);
-    $("a-err").textContent=e;data.sambutan=$("s-sam").value.trim();data.penutup={judul:$("p-judul").value.trim(),isi:$("p-isi").value.trim(),ttd:$("p-ttd").value.trim()};
-    data.bukaHari=isNaN(h)?2:Math.max(0,Math.min(30,h));downloaded=false;save();status();
-  }
-  ["s-sam","p-judul","p-isi","p-ttd","a-hari"].forEach(function(i){$(i).addEventListener("input",readAspek);});
 
-  /* ---- corner ---- */
+  /* ---------- editor soal (dipakai di tab Penilaian dan di dialog event) ---------- */
+  var qeG=null;
+  function qEditor(host,list,onChange){
+    var items=clone(list);
+    function nextId(){var n=1;while(items.some(function(q){return q.id==="q"+n;}))n++;return "q"+n;}
+    function emit(){onChange(normSoal(items));}
+    function draw(){
+      host.innerHTML='<div class="qs">'+(items.length?items.map(function(q,i){
+        var nm="t"+Math.random().toString(36).slice(2,7)+i;
+        return '<div class="q" data-i="'+i+'"><div class="q-h"><span class="q-n">'+(i+1)+'</span><input class="inp" data-f="teks" maxlength="140" placeholder="Tulis pertanyaan" aria-label="Pertanyaan '+(i+1)+'" value="'+esc(q.teks)+'"><span class="q-ctl"><button class="icon-btn" data-q="up" type="button" aria-label="Naikkan"'+(i?"":" disabled")+'>&uarr;</button><button class="icon-btn" data-q="down" type="button" aria-label="Turunkan"'+(i<items.length-1?"":" disabled")+'>&darr;</button><button class="icon-btn red" data-q="del" type="button" aria-label="Hapus pertanyaan">&times;</button></span></div>'+
+          '<div class="q-o"><div class="seg" role="radiogroup" aria-label="Jenis jawaban: bintang 1 sampai 5, jawaban singkat, atau jawaban panjang">'+[["bintang","Bintang 1-5"],["singkat","Singkat"],["panjang","Panjang"]].map(function(t){return '<label><input type="radio" name="'+nm+'" data-f="tipe" value="'+t[0]+'"'+(q.tipe===t[0]?" checked":"")+'><span>'+t[1]+'</span></label>';}).join("")+'</div>'+
+          '<div class="q-t"><label class="switch"><input type="checkbox" data-f="wajib"'+(q.wajib?" checked":"")+'><span class="tr"></span><span>Wajib dijawab</span></label>'+(q.tipe==="bintang"?'<label class="switch"><input type="checkbox" data-f="utama"'+(q.utama?" checked":"")+'><span class="tr"></span><span>Nilai utama (grafik kepuasan)</span></label>':"")+'</div>'+
+          '<input class="inp full" data-f="petunjuk" maxlength="140" placeholder="Petunjuk atau contoh jawaban (opsional)" aria-label="Petunjuk" value="'+esc(q.petunjuk||"")+'"></div></div>';
+      }).join(""):'<div class="empty">Belum ada pertanyaan.</div>')+'</div><div style="margin-top:12px"><button class="btn sm dark" data-q="add" type="button">+ Tambah pertanyaan</button></div>';
+    }
+    host.onclick=function(e){
+      var b=e.target.closest("[data-q]");if(!b)return;var a=b.getAttribute("data-q"),row=b.closest(".q"),i=row?+row.getAttribute("data-i"):-1;
+      if(a==="add"){items.push({id:nextId(),tipe:"bintang",teks:"",wajib:true});draw();emit();var ins=host.querySelectorAll('[data-f="teks"]');ins[ins.length-1].focus();return;}
+      if(a==="up"&&i>0)items.splice(i-1,0,items.splice(i,1)[0]);
+      if(a==="down"&&i<items.length-1)items.splice(i+1,0,items.splice(i,1)[0]);
+      if(a==="del"){if(!confirm("Hapus pertanyaan ini?"))return;items.splice(i,1);}
+      draw();emit();
+    };
+    host.onchange=host.oninput=function(e){
+      var f=e.target.getAttribute&&e.target.getAttribute("data-f");if(!f)return;var row=e.target.closest(".q"),q=items[+row.getAttribute("data-i")];
+      if(f==="teks"||f==="petunjuk")q[f]=e.target.value;
+      else if(f==="wajib")q.wajib=e.target.checked;
+      else if(f==="tipe"){if(!e.target.checked)return;q.tipe=e.target.value;if(q.tipe!=="bintang")delete q.utama;draw();}
+      else if(f==="utama"){items.forEach(function(x){delete x.utama;});if(e.target.checked)q.utama=true;draw();}
+      emit();
+    };
+    draw();
+    return {set:function(a){if(JSON.stringify(normSoal(a))!==JSON.stringify(normSoal(items))){items=clone(a);draw();}},get:function(){return normSoal(items);},valid:function(){
+      if(!items.length)return "Minimal satu pertanyaan.";if(items.length>20)return "Maksimal 20 pertanyaan.";
+      for(var i=0;i<items.length;i++)if(!String(items[i].teks).trim())return "Pertanyaan nomor "+(i+1)+" belum ditulis.";return "";}};
+  }
+  function penutupPrev(){
+    var f=function(t){return String(t).replace(/\{nama\}/g,"Abbas").replace(/\{event\}/g,"Rapat Evaluasi").replace(/\{corner\}/g,"Inspektorat Jenderal");};
+    $("pn-prev").innerHTML="<b>"+esc(f($("pn-j").value))+"</b>"+f($("pn-p").value).split(/\n+/).filter(Boolean).map(function(p){return "<p>"+esc(p)+"</p>";}).join("");
+  }
+  $("pn-j").addEventListener("input",function(){data.penutup.judul=this.value;penutupPrev();downloaded=false;save();status();});
+  $("pn-p").addEventListener("input",function(){data.penutup.pesan=this.value;penutupPrev();downloaded=false;save();status();});
+  $("a-hari").addEventListener("input",function(){var h=+this.value;data.bukaHari=isNaN(h)?2:Math.max(0,Math.min(30,h));downloaded=false;save();status();});
+
+  /* ---------- corner ---------- */
+  function cvPrev(){
+    var w=document.querySelector("#c-warna input:checked"),i=document.querySelector("#c-ikon input:checked");
+    var pv=$("c-pv");pv.setAttribute("style",toneStyle(w?w.value:"zamrud"));pv.innerHTML=window.CORNER_ORB_SVG(i?i.value:"bintang","");
+    $("c-pv-n").textContent=$("c-nama").value||"Corner baru";$("c-pv-t").textContent=$("c-tag").value||"Pratinjau bola di beranda";
+  }
   function openC(c){
     edC=c||null;$("c-err").textContent="";$("c-title").textContent=c?"Edit corner":"Tambah corner";
     $("c-nama").value=c?c.nama:"";$("c-singkat").value=c?c.singkat:"";$("c-tag").value=c?c.tagline:"";$("c-desk").value=c?c.deskripsi:"";$("c-status").value=c?c.status:"aktif";
-    $("c-warna").innerHTML=Object.keys(TONES).map(function(k){return '<label title="'+k+'"><input type="radio" name="warna" value="'+k+'"'+((c?c.warna:"zamrud")===k?" checked":"")+'><span class="orb" data-tone="'+k+'" style="'+tone(k)+'"></span></label>';}).join("");
-    var cur=c?c.ikon:"bintang";
-    $("c-ikon").innerHTML=Object.keys(ICONS).map(function(k){return '<label><input type="radio" name="ikon" value="'+k+'"'+(cur===k?" checked":"")+'><span>'+icon(k)+ICONS[k][0]+'</span></label>';}).join("");
+    var wk=c?c.warna:"zamrud",ik=c?c.ikon:"bintang";
+    $("c-warna").innerHTML=Object.keys(TONES).map(function(k){return '<label class="pick cl" title="'+k+'"><input type="radio" name="warna" value="'+k+'"'+(wk===k?" checked":"")+'><span class="sph" style="'+toneStyle(k)+'"></span></label>';}).join("");
+    $("c-ikon").innerHTML=Object.keys(ORB).map(function(k){return '<label class="pick ic" title="'+k+'"><input type="radio" name="ikon" value="'+k+'"'+(ik===k?" checked":"")+'><span class="sph" style="'+toneStyle(wk)+'">'+window.CORNER_ORB_SVG(k,"")+'</span></label>';}).join("");
     $("c-unit").innerHTML='<option value="">(tidak ada)</option>'+(A.unit||[]).map(function(u){return '<option'+(c&&c.unit===u.nama?" selected":"")+'>'+esc(u.nama)+'</option>';}).join("");
-    $("d-c").showModal();$("c-nama").focus();
+    cvPrev();$("d-c").showModal();$("c-nama").focus({preventScroll:true});
   }
+  $("c-warna").addEventListener("change",function(){var w=document.querySelector("#c-warna input:checked").value;[].forEach.call($("c-ikon").querySelectorAll(".sph"),function(s){s.setAttribute("style",toneStyle(w));});cvPrev();});
+  $("c-ikon").addEventListener("change",cvPrev);$("c-nama").addEventListener("input",cvPrev);$("c-tag").addEventListener("input",cvPrev);
   $("f-c").addEventListener("submit",function(x){
     x.preventDefault();var nama=$("c-nama").value.trim(),sing=$("c-singkat").value.trim();
     if(!nama){$("c-err").textContent="Nama lengkap wajib diisi.";return;}
     if(sing.length<2){$("c-err").textContent="Nama singkat minimal 2 huruf.";return;}
-    var w=document.querySelector('#c-warna input:checked'),ik=document.querySelector('#c-ikon input:checked'),o={nama:nama,singkat:sing,tagline:$("c-tag").value.trim(),deskripsi:$("c-desk").value.trim(),warna:w?w.value:"zamrud",ikon:ik?ik.value:"bintang",status:$("c-status").value,unit:$("c-unit").value};
+    var o={nama:nama,singkat:sing,tagline:$("c-tag").value.trim(),deskripsi:$("c-desk").value.trim(),warna:document.querySelector("#c-warna input:checked").value,ikon:document.querySelector("#c-ikon input:checked").value,status:$("c-status").value,unit:$("c-unit").value};
     if(edC){for(var k in o)edC[k]=o[k];toast("Corner disimpan.");}
     else{o.id=uid(sing,data.corner);o.menu=[];o.event=[];data.corner.push(o);curC=o.id;toast("Corner ditambahkan. Atur menunya lewat tombol Menu.");}
     $("d-c").close();touch();
   });
 
-  /* ---- menu ---- */
+  /* ---------- menu ---------- */
+  var TIPE={info:"Info",profil:"Profil",event:"Event",dokumen:"Dokumen",anggota:"Daftar anggota",link:"Tautan"};
   function menuRows(){
-    var c=data.corner[byId(data.corner,edC.id)];
-    $("m-title").textContent="Menu "+c.singkat;
-    $("m-rows").innerHTML=c.menu.length?c.menu.map(function(m,i){return '<div class="mrow"><b>'+esc(m.judul)+'<small>'+TIPE[m.tipe]+'</small></b><span class="acts"><button class="btn sm" data-m="edit" data-id="'+esc(m.id)+'">Edit</button><button class="btn sm ic" data-m="up" data-id="'+esc(m.id)+'"'+(i?"":" disabled")+' aria-label="Naikkan">&uarr;</button><button class="btn sm ic" data-m="down" data-id="'+esc(m.id)+'"'+(i<c.menu.length-1?"":" disabled")+' aria-label="Turunkan">&darr;</button><button class="btn sm red" data-m="del" data-id="'+esc(m.id)+'">Hapus</button></span></div>';}).join(""):'<div class="empty" style="margin-bottom:12px">Belum ada menu.</div>';
+    var c=data.corner[byId(data.corner,edC.id)];$("m-title").textContent="Menu "+c.singkat;
+    $("m-rows").innerHTML=c.menu.length?c.menu.map(function(m,i){return '<div class="mrow"><span><b>'+esc(m.judul)+'</b><small>'+TIPE[m.tipe]+'</small></span><span class="ctl"><button class="btn sm" data-m="edit" data-id="'+esc(m.id)+'" type="button">Edit</button><button class="icon-btn" data-m="up" data-id="'+esc(m.id)+'"'+(i?"":" disabled")+' aria-label="Naikkan" type="button">&uarr;</button><button class="icon-btn" data-m="down" data-id="'+esc(m.id)+'"'+(i<c.menu.length-1?"":" disabled")+' aria-label="Turunkan" type="button">&darr;</button><button class="icon-btn red" data-m="del" data-id="'+esc(m.id)+'" aria-label="Hapus" type="button">&times;</button></span></div>';}).join(""):'<div class="empty">Belum ada menu.</div>';
   }
-  function showMenuPane(f){$("m-list").hidden=f;$("m-form").hidden=!f;}
-  function tipeUi(){var t=$("m-tipe").value;$("w-info").hidden=t!=="info";$("w-url").hidden=t!=="link";$("w-ev").hidden=t!=="event";$("w-profil").hidden=t!=="profil";$("w-panduan").hidden=t!=="panduan";}
-  var MF={pengertian:"m-pengertian",tugas:"m-tugas",prinsip:"m-prinsip",atas:"m-atas",perananKepala:"m-pk",tugasKepala:"m-tk",perananAnggota:"m-pa",tugasAnggota:"m-ta",sopKode:"m-sopkode",sopPemilik:"m-sopown"};
+  function pane(f){$("m-list").hidden=f;$("m-form").hidden=!f;}
+  function tipeUi(){var t=$("m-tipe").value;["info","profil","dokumen","link","event"].forEach(function(k){var el=$("t-"+k);el.hidden=k!==t;});}
+  var IK={event:"kalender",anggota:"orang",link:"tautan",info:"info",profil:"info",dokumen:"buku"};
   function openM(m){
-    edM=m||null;$("m-err").textContent="";$("m-ftitle").textContent=m?"Edit menu":"Tambah menu";
-    $("m-buku").innerHTML='<option value="">(tanpa buku)</option>'+BUKU.map(function(b){return '<option value="'+b[0]+'">'+esc(b[1])+'</option>';}).join("");
-    $("m-judul").value=m?m.judul:"";$("m-desk").value=m?m.deskripsi:"";$("m-tipe").value=m?m.tipe:"info";$("m-ikon").value=m?m.ikon:"info";$("m-isi").value=m&&m.isi||"";$("m-url").value=m&&m.url||"";$("m-buku").value=m&&m.buku||"";
-    for(var k in MF)$(MF[k]).value=m&&m[k]||"";
-    tipeUi();showMenuPane(true);$("m-judul").focus();
+    edM=m||null;$("m-err").textContent="";$("m-ftitle").textContent=m?"Edit menu":"Tambah menu";m=m||{};
+    $("m-judul").value=m.judul||"";$("m-desk").value=m.deskripsi||"";$("m-tipe").value=m.tipe||"info";$("m-ikon").value=m.ikon||"info";$("m-isi").value=m.isi||"";$("m-url").value=m.url||"";
+    $("m-pengertian").value=m.pengertian||"";$("m-prinsip").value=m.prinsip||"";$("m-tugas").value=m.tugas||"";$("m-pk").value=m.peranKepala||"";$("m-pa").value=m.peranAnggota||"";
+    $("m-pemilik").value=m.pemilikSop||"";$("m-kode").value=m.kodeSop||"";$("m-panduan").value=m.panduan||"";
+    tipeUi();pane(true);$("m-judul").focus({preventScroll:true});
   }
-  $("m-tipe").addEventListener("change",function(){tipeUi();var i={event:"kalender",anggota:"orang",link:"tautan",info:"info",profil:"perisai",panduan:"buku"}[this.value];if(!edM)$("m-ikon").value=i;});
-  $("m-add").onclick=function(){openM(null);};
-  $("m-back").onclick=function(){showMenuPane(false);};
+  $("m-tipe").addEventListener("change",function(){tipeUi();if(!edM)$("m-ikon").value=IK[this.value];});
+  $("m-add").onclick=function(){openM(null);};$("m-back").onclick=function(){pane(false);};
   $("m-form").addEventListener("submit",function(x){
     x.preventDefault();var c=data.corner[byId(data.corner,edC.id)],j=$("m-judul").value.trim(),t=$("m-tipe").value;
     if(!j){$("m-err").textContent="Judul menu wajib diisi.";return;}
     if(t==="link"&&!/^(#|https?:\/\/)/i.test($("m-url").value.trim())){$("m-err").textContent="Alamat tautan harus diawali # atau https://";return;}
     if(t==="event"&&c.menu.some(function(m){return m.tipe==="event"&&m!==edM;})){$("m-err").textContent="Satu corner hanya boleh punya satu menu Event.";return;}
     var o={judul:j,deskripsi:$("m-desk").value.trim(),tipe:t,ikon:$("m-ikon").value};
-    if(t==="info")o.isi=$("m-isi").value.trim();if(t==="link")o.url=$("m-url").value.trim();
-    if(t==="profil")for(var k in MF){if(k==="sopKode"||k==="sopPemilik")continue;var v=$(MF[k]).value.trim();if(v)o[k]=v;}
-    if(t==="panduan"){if($("m-buku").value)o.buku=$("m-buku").value;if($("m-sopkode").value.trim())o.sopKode=$("m-sopkode").value.trim().toUpperCase();if($("m-sopown").value.trim())o.sopPemilik=$("m-sopown").value.trim();}
+    if(t==="info")o.isi=$("m-isi").value.trim();
+    if(t==="link")o.url=$("m-url").value.trim();
+    if(t==="profil"){o.pengertian=$("m-pengertian").value.trim();o.prinsip=$("m-prinsip").value.trim();o.tugas=$("m-tugas").value.trim();o.peranKepala=$("m-pk").value.trim();o.peranAnggota=$("m-pa").value.trim();}
+    if(t==="dokumen"){o.pemilikSop=$("m-pemilik").value.trim();if($("m-kode").value.trim())o.kodeSop=$("m-kode").value.trim();o.panduan=$("m-panduan").value.trim();}
     if(edM){o.id=edM.id;c.menu[c.menu.indexOf(edM)]=o;}else{o.id=uid(j,c.menu);c.menu.push(o);}
-    toast("Menu disimpan.");showMenuPane(false);menuRows();touch();
+    toast("Menu disimpan.");pane(false);menuRows();touch();
   });
   $("m-rows").addEventListener("click",function(x){
     var b=x.target.closest("[data-m]");if(!b)return;var c=data.corner[byId(data.corner,edC.id)],i=byId(c.menu,b.getAttribute("data-id")),a=b.getAttribute("data-m");
     if(a==="edit")openM(c.menu[i]);
-    if(a==="up"&&i>0){c.menu.splice(i-1,0,c.menu.splice(i,1)[0]);}
-    if(a==="down"&&i<c.menu.length-1){c.menu.splice(i+1,0,c.menu.splice(i,1)[0]);}
+    if(a==="up"&&i>0)c.menu.splice(i-1,0,c.menu.splice(i,1)[0]);
+    if(a==="down"&&i<c.menu.length-1)c.menu.splice(i+1,0,c.menu.splice(i,1)[0]);
     if(a==="del"){if(!confirm("Hapus menu ini?\n\n"+c.menu[i].judul))return;c.menu.splice(i,1);}
     if(a!=="edit"){menuRows();touch();}
   });
 
-  /* ---- event ---- */
+  /* ---------- event ---------- */
+  var qeE=null;
   function openE(e){
     var c=data.corner[byId(data.corner,curC)];if(!c)return;
     edE=e||null;$("e-err").textContent="";$("e-title").textContent=e?"Edit event":"Tambah event";
     $("e-judul").value=e?e.judul:"";$("e-tgl").value=e?e.tanggal:"";$("e-sel").value=e&&e.tanggalSelesai||"";$("e-jam").value=e?e.jam:"";$("e-tempat").value=e?e.tempat:"";$("e-desk").value=e?e.deskripsi:"";$("e-absen").value=e?e.absen:"auto";
-    evQ=e&&e.pertanyaan?clone(e.pertanyaan):clone(data.pertanyaan);
-    $("e-qon").checked=!!(e&&e.pertanyaan);$("e-qbox").hidden=!$("e-qon").checked;qEditor($("q-ev"),function(){return evQ;},function(a){evQ=a;});
-    var p=e&&e.penutup||data.penutup;$("e-pon").checked=!!(e&&e.penutup);$("e-pbox").hidden=!$("e-pon").checked;$("ep-judul").value=p.judul;$("ep-isi").value=p.isi;$("ep-ttd").value=p.ttd;
+    var cust=!!(e&&(e.soal||e.penutup));$("e-cust").checked=cust;custUi();
+    evSoal=clone(e&&e.soal?e.soal:data.soal);qeE=qEditor($("qs-event"),evSoal,function(a){evSoal=a;});
+    $("e-pj").value=e&&e.penutup?e.penutup.judul:data.penutup.judul;$("e-pp").value=e&&e.penutup?e.penutup.pesan:data.penutup.pesan;
     var t=e?e.target:["*"],all=t.indexOf("*")>=0,h='<label><input type="checkbox" value="*"'+(all?" checked":"")+'> <b>Semua pengurus</b></label>';
     if((A.pimpinan||[]).length)h+='<label><input type="checkbox" class="sub" value="Pimpinan"'+(!all&&t.indexOf("Pimpinan")>=0?" checked":"")+(all?" disabled":"")+'> Pimpinan</label>';
     (A.unit||[]).forEach(function(u){h+='<label><input type="checkbox" class="sub" value="'+esc(u.nama)+'"'+(!all&&t.indexOf(u.nama)>=0?" checked":"")+(all?" disabled":"")+'> '+esc(u.nama)+'</label>';});
-    $("e-target").innerHTML=h;$("d-e").showModal();$("e-judul").focus();
+    $("e-target").innerHTML=h;$("d-e").showModal();$("e-judul").focus({preventScroll:true});
   }
-  $("e-qon").addEventListener("change",function(){$("e-qbox").hidden=!this.checked;});
-  $("e-pon").addEventListener("change",function(){$("e-pbox").hidden=!this.checked;});
+  function custUi(){$("e-custbox").hidden=!$("e-cust").checked;}
+  $("e-cust").addEventListener("change",custUi);
   $("e-target").addEventListener("change",function(x){
     if(x.target.value==="*"){[].forEach.call($("e-target").querySelectorAll(".sub"),function(s){s.disabled=x.target.checked;if(x.target.checked)s.checked=false;});}
   });
@@ -465,21 +478,19 @@ dialog form[hidden]{display:none}
     if(s&&s<d){$("e-err").textContent="Tanggal selesai tidak boleh sebelum tanggal mulai.";return;}
     var tg=[].map.call($("e-target").querySelectorAll("input:checked"),function(i){return i.value;});
     if(!tg.length){$("e-err").textContent="Pilih minimal satu target peserta.";return;}
-    if($("e-qon").checked){var qe=qCheck(evQ);if(qe){$("e-err").textContent=qe;return;}}
     var o={judul:j,tanggal:d,jam:$("e-jam").value.trim(),tempat:$("e-tempat").value.trim(),deskripsi:$("e-desk").value.trim(),target:tg.indexOf("*")>=0?["*"]:tg,absen:$("e-absen").value};
     if(s&&s!==d)o.tanggalSelesai=s;
-    if($("e-qon").checked)o.pertanyaan=normQ(evQ);
-    if($("e-pon").checked&&$("ep-isi").value.trim())o.penutup={judul:$("ep-judul").value.trim(),isi:$("ep-isi").value.trim(),ttd:$("ep-ttd").value.trim()};
+    if($("e-cust").checked){var v=qeE.valid();if(v){$("e-err").textContent=v;return;}o.soal=qeE.get();o.penutup={judul:$("e-pj").value.trim(),pesan:$("e-pp").value.trim()};}
     if(edE){o.id=edE.id;c.event[c.event.indexOf(edE)]=o;toast("Event disimpan.");}
     else{o.id="e-"+d.replace(/-/g,"")+"-"+(slug(j).slice(0,16)||"event");var b=o.id,n=2;while(byId(c.event,o.id)>=0)o.id=b+"-"+(n++);c.event.push(o);toast("Event ditambahkan.");}
     $("d-e").close();touch();
   });
 
-  /* ---- aksi umum ---- */
+  /* ---------- aksi umum ---------- */
   $("l-corner").addEventListener("click",function(x){
     var b=x.target.closest("[data-a]");if(!b)return;var i=byId(data.corner,b.getAttribute("data-id")),a=b.getAttribute("data-a");if(i<0)return;
     if(a==="edit")openC(data.corner[i]);
-    if(a==="menu"){edC=data.corner[i];menuRows();showMenuPane(false);$("d-m").showModal();}
+    if(a==="menu"){edC=data.corner[i];menuRows();pane(false);$("d-m").showModal();}
     if(a==="up"&&i>0){data.corner.splice(i-1,0,data.corner.splice(i,1)[0]);touch();}
     if(a==="down"&&i<data.corner.length-1){data.corner.splice(i+1,0,data.corner.splice(i,1)[0]);touch();}
     if(a==="del"){var c=data.corner[i];if(!confirm("Hapus corner ini beserta seluruh menu dan eventnya?\n\n"+c.nama))return;lastDel={t:"c",i:i,v:data.corner.splice(i,1)[0]};touch();toast("Corner dihapus.",true);}
@@ -499,38 +510,30 @@ dialog form[hidden]{display:none}
   $("ev-c").addEventListener("change",function(){curC=this.value;render();});
   $("tabs").addEventListener("click",function(x){var b=x.target.closest("[data-t]");if(!b)return;tab=b.getAttribute("data-t");render();});
   $("add-c").onclick=function(){openC(null);};$("add-e").onclick=function(){openE(null);};
+  $("fab").onclick=function(){if(tab==="event")openE(null);else{tab="corner";render();openC(null);}};
   [].forEach.call(document.querySelectorAll("[data-close]"),function(b){b.onclick=function(){b.closest("dialog").close();};});
   $("d-m").addEventListener("close",render);
 
-  /* ---- keluaran ---- */
+  /* ---------- keluaran ---------- */
   function output(){
-    var d=norm(data),L=[];
-    L.push(' "pertanyaan": ['+(d.pertanyaan.length?"\n"+d.pertanyaan.map(function(q){return "  "+JSON.stringify(q);}).join(",\n")+"\n ":"")+"]");
-    L.push(' "sambutan": '+JSON.stringify(d.sambutan));L.push(' "penutup": '+JSON.stringify(d.penutup));L.push(' "bukaHari": '+d.bukaHari);
-    var cs=d.corner.map(function(c){
-      var r=['   "id": '+JSON.stringify(c.id),'   "nama": '+JSON.stringify(c.nama),'   "singkat": '+JSON.stringify(c.singkat),'   "tagline": '+JSON.stringify(c.tagline),'   "deskripsi": '+JSON.stringify(c.deskripsi),'   "warna": '+JSON.stringify(c.warna),'   "ikon": '+JSON.stringify(c.ikon),'   "status": '+JSON.stringify(c.status),'   "unit": '+JSON.stringify(c.unit)];
-      r.push('   "menu": ['+(c.menu.length?"\n"+c.menu.map(function(m){return "    "+JSON.stringify(m);}).join(",\n")+"\n   ":"")+"]");
-      r.push('   "event": ['+(c.event.length?"\n"+c.event.map(function(e){return "    "+JSON.stringify(e);}).join(",\n")+"\n   ":"")+"]");
-      return "  {\n"+r.join(",\n")+"\n  }";
-    });
-    L.push(' "corner": ['+(cs.length?"\n"+cs.join(",\n")+"\n ":"")+"]");
-    return "/* corner-data.js: data Samasta Corner BEM STDIIS (corner, menu, event, pertanyaan penilaian, dan kata penutup).\n   Jangan diedit manual. Gunakan admin-corner.html, lalu unduh file ini dan unggah ke GitHub.\n   Terakhir dibuat: "+new Date().toLocaleString("id-ID")+" */\nwindow.CORNER = {\n"+L.join(",\n")+"\n};\n";
+    var bad=qeG.valid();if(bad){tab="soal";render();$("a-err").textContent=bad;toast(bad);return null;}
+    $("a-err").textContent="";
+    return "/* corner-data.js: data Samasta Corner BEM STDIIS (corner, menu, event, soal penilaian, dan pesan penutup).\n   Jangan diedit manual. Gunakan admin-corner.html, lalu unduh file ini dan unggah ke GitHub.\n   Terakhir dibuat: "+new Date().toLocaleString("id-ID")+" */\nwindow.CORNER = "+JSON.stringify(norm(data),null,1)+";\n";
   }
-  function guard(){var e=qCheck(data.pertanyaan);if(e){tab="aspek";render();toast("Perbaiki dulu: "+e);return false;}return true;}
   $("dl").onclick=function(){
-    if(!guard())return;
-    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([output()],{type:"text/javascript"}));a.download="corner-data.js";document.body.appendChild(a);a.click();a.remove();
+    var t=output();if(!t)return;
+    var a=document.createElement("a");a.href=URL.createObjectURL(new Blob([t],{type:"text/javascript"}));a.download="corner-data.js";document.body.appendChild(a);a.click();a.remove();
     setTimeout(function(){URL.revokeObjectURL(a.href);},2000);downloaded=true;status();toast("corner-data.js diunduh. Sekarang unggah ke GitHub.");
   };
-  $("copy").onclick=function(){if(!guard())return;var t=output();if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){toast("Kode disalin.");},function(){toast("Gagal menyalin. Gunakan tombol unduh.");});else toast("Peramban tidak mendukung salin. Gunakan tombol unduh.");};
+  $("copy").onclick=function(){var t=output();if(!t)return;if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(function(){toast("Kode disalin.");},function(){toast("Gagal menyalin. Gunakan tombol unduh.");});else toast("Peramban tidak mendukung salin. Gunakan tombol unduh.");};
   $("imp").onclick=function(){$("file").click();};
   $("file").addEventListener("change",function(e){
     var f=e.target.files[0];if(!f)return;var r=new FileReader();
-    r.onload=function(){try{var w={},fn=new Function("window",String(r.result));fn(w);if(!w.CORNER)throw 0;data=norm(w.CORNER);curC=null;render.q=null;touch();toast("File dimuat: "+data.corner.length+" corner.");}catch(x){alert("Format file tidak dikenali. Gunakan corner-data.js yang dibuat oleh editor ini.");}};
+    r.onload=function(){try{var w={},fn=new Function("window",String(r.result));fn(w);if(!w.CORNER)throw 0;data=norm(w.CORNER);curC=null;touch();toast("File dimuat: "+data.corner.length+" corner.");}catch(x){alert("Format file tidak dikenali. Gunakan corner-data.js yang dibuat oleh editor ini.");}};
     r.readAsText(f);e.target.value="";
   });
-  $("reset").onclick=function(){if(!confirm("Kembalikan semua data ke versi yang sedang tayang di situs? Perubahanmu akan hilang."))return;data=JSON.parse(SITE);downloaded=false;curC=null;render.q=null;try{localStorage.removeItem(KEY);}catch(e){}render();toast("Dikembalikan ke versi situs.");};
-  try{var dd=JSON.parse(localStorage.getItem(KEY)||"null");if(dd&&JSON.stringify(norm(dd))!==SITE){$("draft").hidden=false;$("draft-ok").onclick=function(){data=norm(dd);render.q=null;$("draft").hidden=true;render();};$("draft-no").onclick=function(){try{localStorage.removeItem(KEY);}catch(e){}$("draft").hidden=true;};}}catch(e){}
+  $("reset").onclick=function(){if(!confirm("Kembalikan semua data ke versi yang sedang tayang di situs? Perubahanmu akan hilang."))return;data=JSON.parse(SITE);downloaded=false;curC=null;try{localStorage.removeItem(KEY);}catch(e){}render();toast("Dikembalikan ke versi situs.");};
+  try{var dr=JSON.parse(localStorage.getItem(KEY)||"null");if(dr&&JSON.stringify(norm(dr))!==SITE){$("draft").hidden=false;$("draft-ok").onclick=function(){data=norm(dr);$("draft").hidden=true;render();};$("draft-no").onclick=function(){try{localStorage.removeItem(KEY);}catch(e){}$("draft").hidden=true;};}}catch(e){}
   window.addEventListener("beforeunload",function(e){if(dirty()&&!downloaded){e.preventDefault();e.returnValue="";}});
   render();
 })();
